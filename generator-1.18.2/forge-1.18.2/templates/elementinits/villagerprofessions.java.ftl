@@ -48,9 +48,9 @@ public class ${JavaModName}VillagerProfessions {
 	<#list villagerprofessions as villagerprofession>
 		public static final RegistryObject<VillagerProfession> ${villagerprofession.getModElement().getRegistryNameUpper()} =
 			registerProfession(
-				"${villagerprofession.getModElement().getRegistryName()}",
-				${mappedBlockToBlock(villagerprofession.pointOfInterest)},
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${villagerprofession.actionSound}"))
+					"${villagerprofession.getModElement().getRegistryName()}",
+					${mappedBlockToBlock(villagerprofession.pointOfInterest)},
+					() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${villagerprofession.actionSound}"))
 			);
 	</#list>
 
