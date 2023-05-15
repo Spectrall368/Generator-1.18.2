@@ -1,9 +1,9 @@
 {
   "id": "generator-1.18.2",
-  "minversion": 202100100000,
-  "maxversion": 202100300000,
+  "minversion": 202300100000,
+  "maxversion": 202300300000,
   "info": {
-    "name": "Minecraft Forge 1.18.2 Generator",
+    "name": "Minecraft 1.18.2 Java Edition generator"
     "version": "1.0",
     "authors": "_Spectrall"
   }
