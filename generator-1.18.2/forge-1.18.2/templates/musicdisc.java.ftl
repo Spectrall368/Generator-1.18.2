@@ -39,10 +39,16 @@ public class ${name}Item extends RecordItem {
 
 	public ${name}Item() {
 		<#if data.music.getUnmappedValue().startsWith("CUSTOM:")>
-		super(${data.analogOutput}, ${JavaModName}Sounds.REGISTRY.get(new ResourceLocation("${data.music}")),
+		super(${data.analogOutput}, 
+			${JavaModName}Sounds.REGISTRY.get(new ResourceLocation(
+				"${(data.music?has_content && data.music.getMappedValue()?has_content)?then(data.music, "intentionally_empty")}"
+		)),
 				new Item.Properties().tab(${data.creativeTab}).stacksTo(1).rarity(Rarity.RARE));
 		<#else>
-		super(${data.analogOutput}, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}")),
+		super(${data.analogOutput}, 
+			ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(
+				"${(data.music?has_content && data.music.getMappedValue()?has_content)?then(data.music, "intentionally_empty")}"
+		)),
 				new Item.Properties().tab(${data.creativeTab}).stacksTo(1).rarity(Rarity.RARE));
 		</#if>
 	}
