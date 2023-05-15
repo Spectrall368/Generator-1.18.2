@@ -3,7 +3,7 @@
   "minversion": 202300200000,
   "maxversion": 202300300000,
   "info": {
-    "name": "Minecraft 1.18.2 Java Edition generator"
+    "name": "Minecraft 1.18.2 Java Edition generator",
     "version": "1.0",
     "authors": "_Spectrall"
   }
