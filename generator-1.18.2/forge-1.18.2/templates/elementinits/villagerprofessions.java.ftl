@@ -44,7 +44,7 @@ import net.minecraft.sounds.SoundEvent;
 
 	private static final Map<String, ProfessionPoiType> POI_TYPES = new HashMap<>();
 
-	public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.VILLAGER_PROFESSIONS, ${JavaModName}.MODID);
+	public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, ${JavaModName}.MODID);
 
 	<#list villagerprofessions as villagerprofession>
 		public static final RegistryObject<VillagerProfession> ${villagerprofession.getModElement().getRegistryNameUpper()} =
