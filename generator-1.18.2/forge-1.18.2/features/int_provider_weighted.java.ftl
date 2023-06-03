@@ -1,1 +1,1 @@
-WeightedListInt.of(${field$min}, ${field$max})
+WeightedListInt.of(${entry}, ${field_list$weight[entry?index]}}
