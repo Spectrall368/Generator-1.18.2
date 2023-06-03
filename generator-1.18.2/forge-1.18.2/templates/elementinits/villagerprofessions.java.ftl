@@ -49,22 +49,24 @@ public class ${JavaModName}VillagerProfessions {
 		public static final RegistryObject<VillagerProfession> ${villagerprofession.getModElement().getRegistryNameUpper()} =
 			registerProfession(
 				"${villagerprofession.getModElement().getRegistryName()}",
-				${mappedBlockToBlock(villagerprofession.pointOfInterest)},
+				() -> ${mappedBlockToBlock(villagerprofession.pointOfInterest)},
 				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${villagerprofession.actionSound}"))
 			);
 	</#list>
 
-	private static RegistryObject<VillagerProfession> registerProfession(String name, Block block, Supplier<SoundEvent> soundEventSupplier) {
-		Optional<PoiType> existingCheck = PoiType.forState(block.defaultBlockState());
+	private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<Block> block, Supplier<SoundEvent> soundEventSupplier) {
+		return PROFESSIONS.register(name, () -> {
+			Optional<Holder<PoiType>> existingCheck = PoiTypes.forState(block.get().defaultBlockState());
 
-		if (existingCheck.isPresent()) {
-			${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block + " that is already in use by " + existingCheck);
-			return null;
-		}
+			if (existingCheck.isPresent()) {
+				${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block.get() + " that is already in use by " + existingCheck);
+				return null;
+			}
 
-		Supplier<PoiType> poi = POI.register(name, () -> new PoiType(name, ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1));
-		return PROFESSIONS.register(name, () -> new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poi.get(), soundEventSupplier));
-	}
+			Supplier<PoiType> poi = POI.register(name, () -> new PoiType(ImmutableSet.copyOf(block.get().getStateDefinition().getPossibleStates()), 1, 1));
+			Predicate<Holder<PoiType>> poiPredicate = poiTypeHolder -> poiTypeHolder.get() == poi.get();
+			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poi.get(), soundEventSupplier);
+		});
 
 	public static class RegistrySafeVillagerProfession extends VillagerProfession {
 
