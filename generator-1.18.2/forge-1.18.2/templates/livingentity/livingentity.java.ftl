@@ -93,6 +93,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	public ${name}Entity(EntityType<${name}Entity> type, Level world) {
     	super(type, world);
+		maxUpStep = ${data.stepHeight}f;
 		xpReward = ${data.xpAmount};
 		setNoAi(${(!data.hasAI)});
 
@@ -678,7 +679,6 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				this.flyingSpeed = this.getSpeed() * 0.15F;
 				this.yBodyRot = entity.getYRot();
 				this.yHeadRot = entity.getYRot();
-				this.maxUpStep = 1.0F;
 
 				if (entity instanceof LivingEntity passenger) {
 					this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED));
@@ -707,7 +707,6 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				this.animationPosition += this.animationSpeed;
 				return;
 			}
-			this.maxUpStep = 0.5F;
 			this.flyingSpeed = 0.02F;
 			</#if>
 
