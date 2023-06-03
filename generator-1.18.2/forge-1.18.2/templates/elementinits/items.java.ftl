@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2021, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -61,7 +61,7 @@ public class ${JavaModName}Items {
             public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_BOOTS =
                 REGISTRY.register("${item.getModElement().getRegistryName()}_boots", () -> new ${item.getModElement().getName()}Item.Boots());
             </#if>
-        <#elseif item.getModElement().getTypeString() == "dimension">
+        <#elseif item.getModElement().getTypeString() == "dimension" && item.enableIgniter>
             public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
                 REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
         <#elseif item.getModElement().getTypeString() == "fluid" && item.generateBucket>
