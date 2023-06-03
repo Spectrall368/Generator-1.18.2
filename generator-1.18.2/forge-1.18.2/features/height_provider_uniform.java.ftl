@@ -1,1 +1,1 @@
-UniformHeight.of(${input$value})
+UniformHeight.of(${field$min}, ${field$max})
