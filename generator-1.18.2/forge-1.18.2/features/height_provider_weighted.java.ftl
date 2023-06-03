@@ -1,1 +1,1 @@
-WeightedListHeight.of(${input$value})
+WeightedListHeight.of(${entry}, ${field_list$weight[entry?index]}}
