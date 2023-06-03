@@ -59,16 +59,41 @@ import net.minecraft.sounds.SoundEvent;import java.util.Map;import java.util.con
 		POI_TYPES.put(name, new ProfessionPoiType(block, null));
 
 		return PROFESSIONS.register(name, () -> {
-			Optional<PoiType> existingCheck = PoiType.forState(block.get().defaultBlockState());
+			Predicate<Holder<PoiType>> poiPredicate = poiTypeHolder -> (POI_TYPES.get(name).poiType != null) && (poiTypeHolder.get() == POI_TYPES.get(name).poiType.get());
+			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poi.get(), soundEventSupplier);
+		});
+	}
+	
+	@SubscribeEvent public static void registerProfessionPointsOfInterest(RegisterEvent event) {
+		event.register(ForgeRegistries.Keys.POI_TYPES, registerHelper -> {
+			for (Map.Entry<String, ProfessionPoiType> entry : POI_TYPES.entrySet()) {
+				Block block = entry.getValue().block.get();
+				String name = entry.getKey();
+				
+				Optional<Holder<PoiType>> existingCheck = PoiTypes.forState(block.defaultBlockState());
+				if (existingCheck.isPresent()) {
+					${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block + " that is already in use by " + existingCheck);
+					continue;
+				}
 
-			if (existingCheck.isPresent()) {
-				${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block.get() + " that is already in use by " + existingCheck);
-				return null;
+				PoiType poiType = new PoiType(ImmutableSet.copyOf(block.get().getStateDefinition().getPossibleStates()), 1, 1));
+				registerHelper.register(name, poiType);
+				entry.getValue().poiType = ForgeRegistries.POI_TYPES.getHolder(poiType).get();
 			}
+		});
+	}
 
-		Supplier<PoiType> poi = POI.register(name, () -> new PoiType(ImmutableSet.copyOf(block.get().getStateDefinition().getPossibleStates()), 1, 1));
-		return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poi.get(), soundEventSupplier);
-	});
+	private static class ProfessionPoiType {
+
+		final Supplier<Block> block;
+		Holder<PoiType> poiType;
+
+		ProfessionPoiType(Supplier<Block> block, Holder<PoiType> poiType) {
+			this.block = block;
+			this.poiType = poiType;
+		}
+
+	}
 
 	public static class RegistrySafeVillagerProfession extends VillagerProfession {
 
