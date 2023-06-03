@@ -67,6 +67,7 @@ public class ${JavaModName}VillagerProfessions {
 			Predicate<Holder<PoiType>> poiPredicate = poiTypeHolder -> poiTypeHolder.get() == poi.get();
 			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poi.get(), soundEventSupplier);
 		});
+	}
 
 	public static class RegistrySafeVillagerProfession extends VillagerProfession {
 
