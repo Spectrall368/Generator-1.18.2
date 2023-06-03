@@ -59,12 +59,11 @@ public class ${JavaModName}VillagerProfessions {
 			Optional<Holder<PoiType>> existingCheck = PoiType.forState(block.get().defaultBlockState());
 
 			if (existingCheck.isPresent()) {
-				${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block.get() + " that is already in use by " + existingCheck);
+				${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block + " that is already in use by " + existingCheck);
 				return null;
 			}
 
-			Supplier<PoiType> poi = POI.register(name, () -> new PoiType(ImmutableSet.copyOf(block.get().getStateDefinition().getPossibleStates()), 1, 1));
-			Predicate<Holder<PoiType>> poiPredicate = poiTypeHolder -> poiTypeHolder.get() == poi.get();
+			Supplier<PoiType> poi = POI.register(name, () -> new PoiType(ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1));
 			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poi.get(), soundEventSupplier);
 		});
 	}
