@@ -1,1 +1,1 @@
-WeightedListHeight.of([<#list input_list$entry as entry>{${entry}, ${field_list$weight[entry?index]}<#sep>,</#list>}])
+WeightedListHeight.of([<#list input_list$entry as entry>{${entry}, ${field_list$weight[entry?index]}}<#sep>,</#list>]})
