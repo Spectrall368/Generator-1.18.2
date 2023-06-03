@@ -56,7 +56,7 @@ public class ${JavaModName}VillagerProfessions {
 
 	private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<Block> block, Supplier<SoundEvent> soundEventSupplier) {
 		return PROFESSIONS.register(name, () -> {
-			Optional<Holder<PoiType>> existingCheck = PoiTypes.forState(block.get().defaultBlockState());
+			Optional<Holder<PoiType>> existingCheck = PoiType.forState(block.get().defaultBlockState());
 
 			if (existingCheck.isPresent()) {
 				${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block.get() + " that is already in use by " + existingCheck);
