@@ -42,7 +42,7 @@ import net.minecraft.sounds.SoundEvent;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}VillagerProfessions {
 
-	private static final Map<String, ProfessionPoiType> POI_TYPES = new HashMap<>();
+	private static final Map<String, ProfessionPoiType> POI_TYPE = new HashMap<>();
 
 	public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, ${JavaModName}.MODID);
 
@@ -56,21 +56,21 @@ import net.minecraft.sounds.SoundEvent;
 	</#list>
 
 	private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<Block> block, Supplier<SoundEvent> soundEventSupplier) {
-		POI_TYPES.put(name, new ProfessionPoiType(block, null));
+		POI_TYPE.put(name, new ProfessionPoiType(block, null));
 
 		return PROFESSIONS.register(name, () -> {
-			Predicate<Holder<PoiType>> poiPredicate = poiTypeHolder -> (POI_TYPES.get(name).poiType != null) && (poiTypeHolder.get() == POI_TYPES.get(name).poiType.get());
+			Predicate<Holder<PoiType>> poiPredicate = poiTypeHolder -> (POI_TYPE.get(name).poiType != null) && (poiTypeHolder.get() == POI_TYPE.get(name).poiType.get());
 			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poi.get(), soundEventSupplier);
 		});
 	}
 	
 	@SubscribeEvent public static void registerProfessionPointsOfInterest(RegisterEvent event) {
-		event.register(ForgeRegistries.Keys.POI_TYPES, registerHelper -> {
-			for (Map.Entry<String, ProfessionPoiType> entry : POI_TYPES.entrySet()) {
+		event.register(ForgeRegistries.Keys.POI_TYPE, registerHelper -> {
+			for (Map.Entry<String, ProfessionPoiType> entry : POI_TYPE.entrySet()) {
 				Block block = entry.getValue().block.get();
 				String name = entry.getKey();
 				
-				Optional<Holder<PoiType>> existingCheck = PoiTypes.forState(block.defaultBlockState());
+				Optional<Holder<PoiType>> existingCheck = PoiType.forState(block.defaultBlockState());
 				if (existingCheck.isPresent()) {
 					${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block + " that is already in use by " + existingCheck);
 					continue;
@@ -78,7 +78,7 @@ import net.minecraft.sounds.SoundEvent;
 
 				PoiType poiType = new PoiType(ImmutableSet.copyOf(block.get().getStateDefinition().getPossibleStates()), 1, 1);
 				registerHelper.register(name, poiType);
-				entry.getValue().poiType = ForgeRegistries.POI_TYPES.getHolder(poiType).get();
+				entry.getValue().poiType = ForgeRegistries.POI_TYPE.getHolder(poiType).get();
 			}
 		});
 	}
