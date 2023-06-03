@@ -1,1 +1,1 @@
-WeightedListInt.of(${input$value})
+WeightedListInt.of(${field$min}, ${field$max})
