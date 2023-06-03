@@ -1,6 +1,6 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
-status: legacy
-buildfileversion: 40.2.2
+status: deprecated
+buildfileversion: 40.2.9
 
 java_models:
   key: mojmap-1.18.x
