@@ -1,50 +1,84 @@
-import net.minecraft.entity.merchant.villager.VillagerProfession;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.world.poi.PointOfInterestType; // changed package
-import net.minecraftforge.event.RegistryEvent; // added import
-import net.minecraftforge.eventbus.api.SubscribeEvent; // added import
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IRegistryDelegate.Holder; // changed slash to dot
+<#--
+ # MCreator (https://mcreator.net/)
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # This program is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU General Public License for more details.
+ #
+ # You should have received a copy of the GNU General Public License
+ # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ #
+ # Additional permission for code generator templates (*.ftl files)
+ #
+ # As a special exception, you may create a larger work that contains part or
+ # all of the MCreator code generator templates (*.ftl files) and distribute
+ # that work under terms of your choice, so long as that work isn't itself a
+ # template for code generation. Alternatively, if you modify or redistribute
+ # the template itself, you may (at your option) remove this special exception,
+ # which will cause the template and the resulting code generator output files
+ # to be licensed under the GNU General Public License without this special
+ # exception.
+-->
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class TestModVillagerProfessions {
+<#-- @formatter:off -->
 
-	private static final Map<String, ProfessionPoiType> POI_TYPES = new HashMap<>();
+<#include "../mcitems.ftl">
 
-	public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, TestMod.MODID); // changed VILLAGER_PROFESSIONS to PROFESSIONS
+/*
+ *    MCreator note: This file will be REGENERATED on each build.
+ */
 
-	// ... other code ...
+package ${package}.init;
 
-	@SubscribeEvent // added annotation
-	public static void registerProfessionPointsOfInterest(RegistryEvent.Register<PointOfInterestType> event) { // changed parameter type
-		event.register(ForgeRegistries.Keys.POI_TYPES, registerHelper -> {
-			for (Map.Entry<String, ProfessionPoiType> entry : POI_TYPES.entrySet()) {
-				Block block = entry.getValue().block.get();
-				String name = entry.getKey();
+import net.minecraft.sounds.SoundEvent;
 
-				Optional<PointOfInterestType> existingCheck = PointOfInterestType.forState(block.defaultBlockState());
-				if (existingCheck.isPresent()) {
-					TestMod.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block + " that is already in use by " + existingCheck);
-					continue;
-				}
+public class ${JavaModName}VillagerProfessions {
 
-				PointOfInterestType poiType = PointOfInterestType.register(name, ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1); // changed constructor to register method
-				registerHelper.register(name, poiType);
-				entry.getValue().poiType = ForgeRegistries.POI_TYPES.getHolder(poiType).get();
-			}
-		});
-	}
+	public static final DeferredRegister<PoiType> POI = DeferredRegister.create(ForgeRegistries.POI_TYPES, ${JavaModName}.MODID);
+	public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, ${JavaModName}.MODID);
 
-	private static class ProfessionPoiType {
+	<#list villagerprofessions as villagerprofession>
+		public static final RegistryObject<VillagerProfession> ${villagerprofession.getModElement().getRegistryNameUpper()} =
+			registerProfession(
+				"${villagerprofession.getModElement().getRegistryName()}",
+				${mappedBlockToBlock(villagerprofession.pointOfInterest)},
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${villagerprofession.actionSound}"))
+			);
+	</#list>
 
-		final Supplier<Block> block;
-		Holder<PointOfInterestType> poiType;
+	private static RegistryObject<VillagerProfession> registerProfession(String name, Block block, Supplier<SoundEvent> soundEventSupplier) {
+		Optional<PoiType> existingCheck = PoiType.forState(block.defaultBlockState());
 
-		ProfessionPoiType(Supplier<Block> block, Holder<PointOfInterestType> poiType) {
-			this.block = block;
-			this.poiType = poiType;
+		if (existingCheck.isPresent()) {
+			${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block + " that is already in use by " + existingCheck);
+			return null;
 		}
 
+		Supplier<PoiType> poi = POI.register(name, () -> new PoiType(name, ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1));
+		return PROFESSIONS.register(name, () -> new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poi.get(), soundEventSupplier));
+	}
+
+	public static class RegistrySafeVillagerProfession extends VillagerProfession {
+
+		private final Supplier<SoundEvent> soundEventSupplier;
+
+		public RegistrySafeVillagerProfession(String name, PoiType pointOfInterest, Supplier<SoundEvent> soundEventSupplier) {
+			super(name, pointOfInterest, ImmutableSet.of(), ImmutableSet.of(), null);
+			this.soundEventSupplier = soundEventSupplier;
+		}
+
+		@Override public SoundEvent getWorkSound() {
+			return soundEventSupplier.get();
+		}
 	}
 
 }
+<#-- @formatter:on -->
