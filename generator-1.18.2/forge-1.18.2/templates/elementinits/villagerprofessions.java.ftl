@@ -44,7 +44,7 @@ import net.minecraft.sounds.SoundEvent;
 
 	private static final Map<String, ProfessionPoiType> POI_TYPES = new HashMap<>();
 
-	public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, ${JavaModName}.MODID);
+	public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.VILLAGER_PROFESSIONS, ${JavaModName}.MODID);
 
 	<#list villagerprofessions as villagerprofession>
 		public static final RegistryObject<VillagerProfession> ${villagerprofession.getModElement().getRegistryNameUpper()} =
@@ -55,12 +55,12 @@ import net.minecraft.sounds.SoundEvent;
 			);
 	</#list>
 
-	private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<Block> block, Supplier<SoundEvent> soundEventSupplier) {
+	private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<Block> block, Supplier<SoundEvent> soundEvent) {
 		POI_TYPES.put(name, new ProfessionPoiType(block, null));
 
 		return PROFESSIONS.register(name, () -> {
-			Predicate<Holder<PoiType>> poiPredicate = poiTypeHolder -> (POI_TYPES.get(name).poiType != null) && (poiTypeHolder.get() == POI_TYPES.get(name).poiType.get());
-			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poiPredicate, poiPredicate, ImmutableSet.of(), ImmutableSet.of(), soundEventSupplier);
+			Predicate<PointOfInterestType> poiPredicate = poiType -> (POI_TYPES.get(name).poiType != null) && (poiType == POI_TYPES.get(name).poiType.get());
+			return new VillagerProfession(${JavaModName}.MODID + ":" + name, poiPredicate, poiPredicate, ImmutableSet.of(), ImmutableSet.of(), soundEvent.get());
 		});
 	}
 
@@ -70,43 +70,29 @@ import net.minecraft.sounds.SoundEvent;
 				Block block = entry.getValue().block.get();
 				String name = entry.getKey();
 
-				Optional<Holder<PoiType>> existingCheck = PoiTypes.forState(block.defaultBlockState());
+				Optional<PointOfInterestType> existingCheck = PointOfInterestType.forState(block.defaultBlockState());
 				if (existingCheck.isPresent()) {
 					${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block + " that is already in use by " + existingCheck);
 					continue;
 				}
-				
-				PoiType poiType = new PoiType(ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1);
+
+				PointOfInterestType poiType = new PointOfInterestType(name, ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1);
 				registerHelper.register(name, poiType);
 				entry.getValue().poiType = ForgeRegistries.POI_TYPES.getHolder(poiType).get();
 			}
 		});
 	}
-		
+
 	private static class ProfessionPoiType {
 
 		final Supplier<Block> block;
-		Holder<PoiType> poiType;
+		Holder<PointOfInterestType> poiType;
 
-		ProfessionPoiType(Supplier<Block> block, Holder<PoiType> poiType) {
+		ProfessionPoiType(Supplier<Block> block, Holder<PointOfInterestType> poiType) {
 			this.block = block;
 			this.poiType = poiType;
 		}
 
-	}
-
-	public static class RegistrySafeVillagerProfession extends VillagerProfession {
-
-		private final Supplier<SoundEvent> soundEventSupplier;
-
-		public RegistrySafeVillagerProfession(String name, PoiType pointOfInterest, Supplier<SoundEvent> soundEventSupplier) {
-			super(name, pointOfInterest, ImmutableSet.of(), ImmutableSet.of(), null);
-			this.soundEventSupplier = soundEventSupplier;
-		}
-
-		@Override public SoundEvent getWorkSound() {
-			return soundEventSupplier.get();
-		}
 	}
 
 }
