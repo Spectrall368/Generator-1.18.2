@@ -1,2 +1,3 @@
 https://github.com/MCreator/MCreator/commit/5c0b0a5a8ac5447569208168bced492946c3f2a9
 https://github.com/MCreator/MCreator/commit/9d433bf61d96f6125913f200e1bcd9d5f4640891
+https://github.com/MCreator/MCreator/commit/9d223f9a12d2d52c750914b2dfd31a71456505a6
