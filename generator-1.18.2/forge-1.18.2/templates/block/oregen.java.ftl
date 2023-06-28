@@ -120,7 +120,13 @@ public class ${name}Feature extends OreFeature {
 			if (base_blocks == null) {
 				base_blocks = List.of(
 					<#list data.blocksToReplace as replacementBlock>
-						${mappedBlockToBlock(replacementBlock)}<#sep>,
+							<#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
+								new TagMatchTest(BlockTags.create(new ResourceLocation("${replacementBlock.getUnmappedValue().replace("TAG:", "")}"))),
+							<#elseif generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
+								new TagMatchTest(BlockTags.create(new ResourceLocation("${generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "")}"))),
+							<#else>
+								${mappedBlockToBlock(replacementBlock)}<#sep>,
+							</#if>
 					</#list>
 				);
 			}
