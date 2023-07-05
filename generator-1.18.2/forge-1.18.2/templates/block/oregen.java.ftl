@@ -121,9 +121,9 @@ public class ${name}Feature extends OreFeature {
 				base_blocks = List.of(
 					<#list data.blocksToReplace as replacementBlock>
 							<#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
-								new TagMatchTest(BlockTags.create(new ResourceLocation("${replacementBlock.getUnmappedValue().replace("TAG:", "")}")))
+								BlockTags.getBlocks().getTagOrEmpty(new ResourceLocation("${replacementBlock.getUnmappedValue().replace("TAG:", "")}"))
 							<#elseif generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-								new TagMatchTest(BlockTags.create(new ResourceLocation("${generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "")}")))
+								BlockTags.getBlocks().getTagOrEmpty(new ResourceLocation("${generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "")}"))
 							<#else>
 								${mappedBlockToBlock(replacementBlock)}<#sep>,
 							</#if>
