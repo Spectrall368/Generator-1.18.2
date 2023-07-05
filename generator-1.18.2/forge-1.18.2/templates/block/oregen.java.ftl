@@ -120,17 +120,17 @@ public class ${name}Feature extends OreFeature {
 			if (base_blocks == null) {
 					<#list data.blocksToReplace as replacementBlock>
 							<#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
-								Tag<Block> tag = BlockTags.bind(new ResourceLocation("${replacementBlock.getUnmappedValue().replace("TAG:", "")}"))
+							Tag<Block> tag = new net.minecraft.tags.BlockTags.Wrapper(new ResourceLocation("${replacementBlock.getUnmappedValue().replace("TAG:", "")}"));
 							<#elseif generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-								Tag<Block> tag = BlockTags.bind(new ResourceLocation("${generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "")}"))
+							Tag<Block> tag = new net.minecraft.tags.BlockTags.Wrapper(new ResourceLocation("${generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "")}"));
 							</#if>
 					</#list>
 				base_blocks = List.of(
 					<#list data.blocksToReplace as replacementBlock>
 							<#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
-								TagMatchTest.any(tag)
+								TagMatchTest.any(tag),
 							<#elseif generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-								TagMatchTest.any(tag)
+								TagMatchTest.any(tag),
 							<#else>
 								${mappedBlockToBlock(replacementBlock)}<#sep>,
 							</#if>
