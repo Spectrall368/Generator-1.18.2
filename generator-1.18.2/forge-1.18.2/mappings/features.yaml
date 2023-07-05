@@ -1,6 +1,9 @@
 _default:
   - NoOpFeature
   - NoneFeatureConfiguration
+feature_no_op:
+  - NoOpFeature
+  - NoneFeatureConfiguration
 feature_lake:
   - LakeFeature
   - LakeFeature.Configuration
@@ -46,6 +49,9 @@ feature_bamboo:
 feature_random_patch_simple:
   - RandomPatchFeature
   - RandomPatchConfiguration
+feature_random_patch:
+  - RandomPatchFeature
+  - RandomPatchConfiguration
 feature_block_column_simple:
   - BlockColumnFeature
   - BlockColumnConfiguration
@@ -61,3 +67,6 @@ feature_scattered_ore:
 feature_replace_single_block:
   - ReplaceBlockFeature
   - ReplaceBlockConfiguration
+feature_simple_random_selector:
+  - SimpleRandomSelectorFeature
+  - SimpleRandomFeatureConfiguration
