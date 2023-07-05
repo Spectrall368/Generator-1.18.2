@@ -118,12 +118,19 @@ public class ${name}Feature extends OreFeature {
 
 		public boolean test(BlockState blockAt, Random random) {
 			if (base_blocks == null) {
+					<#list data.blocksToReplace as replacementBlock>
+							<#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
+								Tag<Block> tag = BlockTags.bind(new ResourceLocation("${replacementBlock.getUnmappedValue().replace("TAG:", "")}"))
+							<#elseif generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
+								Tag<Block> tag = BlockTags.bind(new ResourceLocation("${generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "")}"))
+							</#if>
+					</#list>
 				base_blocks = List.of(
 					<#list data.blocksToReplace as replacementBlock>
 							<#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
-								BlockTags.getBlocks().getTagOrEmpty(new ResourceLocation("${replacementBlock.getUnmappedValue().replace("TAG:", "")}"))
+								TagMatchTest.any(tag)
 							<#elseif generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-								BlockTags.getBlocks().getTagOrEmpty(new ResourceLocation("${generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "")}"))
+								TagMatchTest.any(tag)
 							<#else>
 								${mappedBlockToBlock(replacementBlock)}<#sep>,
 							</#if>
