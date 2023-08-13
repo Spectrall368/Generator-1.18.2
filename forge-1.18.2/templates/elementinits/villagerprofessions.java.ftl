@@ -58,13 +58,14 @@ import net.minecraft.sounds.SoundEvent;
 		POI_TYPES.put(name, new ProfessionPoiType(block, null));
 
 		return PROFESSIONS.register(name, () -> {
-			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poiType, soundEventSupplier);
+			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, POI_TYPES.get(name).poiType, soundEventSupplier);
 		});
 	}
 
-	@SubscribeEvent public static void registerProfessionPointsOfInterest(RegisterEvent event) {
-		event.register(ForgeRegistries.Keys.POI_TYPES, registerHelper -> {
-			for (Map.Entry<String, ProfessionPoiType> entry : POI_TYPES.entrySet()) {
+	@SubscribeEvent public static void registerProfessionPointsOfInterest(Register<PoiType> event) {
+        	event.getRegistry().registerAll(
+           	 	POI_TYPES.entrySet().stream()
+                		.map(entry -> {
 				Block block = entry.getValue().block.get();
 				String name = entry.getKey();
 
@@ -74,19 +75,20 @@ import net.minecraft.sounds.SoundEvent;
 					continue;
 				}
 
-				PoiType poiType = new poiType(ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1);
-				registerHelper.register(name, poiType);
-				entry.getValue().poiType = ForgeRegistries.POI_TYPES.getHolder(poiType).get();
-			}
-		});
-	}
+				PoiType poiType = new PoiType(name, ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1);
+                    		entry.getValue().poiType = poiType;
+                    		return poiType;
+                })
+                .toArray(PoiType[]::new)
+        );
+    }
 
 	private static class ProfessionPoiType {
 
 		final Supplier<Block> block;
 		Holder<PoiType> poiType;
 
-		ProfessionPoiType(Supplier<Block> block, Holder<PoiType> poiType) {
+		ProfessionPoiType(Supplier<Block> block, PoiType poiType) {
 			this.block = block;
 			this.poiType = poiType;
 		}
