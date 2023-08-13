@@ -1,5 +1,5 @@
 <#-- @formatter:off -->
-<#include "../mcitems.ftl">
+<#include "../../mcitems.ftl">
 <#import "multi_noise.json.ftl" as ms>
 <#import "surface_builder.json.ftl" as sb>
 {
