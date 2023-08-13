@@ -64,24 +64,24 @@ import net.minecraft.sounds.SoundEvent;
 
 	@SubscribeEvent public static void registerProfessionPointsOfInterest(Register<PoiType> event) {
         	event.getRegistry().registerAll(
-           	 	POI_TYPES.entrySet().stream()
-                		.map(entry -> {
+           		POI_TYPES.entrySet().stream()
+                	.map(entry -> {
 				Block block = entry.getValue().block.get();
 				String name = entry.getKey();
 
 				Optional<PoiType> existingCheck = PoiType.forState(block.defaultBlockState());
 				if (existingCheck.isPresent()) {
 					${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block + " that is already in use by " + existingCheck);
-					continue;
+					return null;
 				}
 
 				PoiType poiType = new PoiType(name, ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1);
                     		entry.getValue().poiType = poiType;
                     		return poiType;
-                })
-                .toArray(PoiType[]::new)
-        );
-    }
+                		})
+                		.toArray(PoiType[]::new)
+        	);
+    	}
 
 	private static class ProfessionPoiType {
 
