@@ -17,6 +17,10 @@ public-f net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator f_64318_ #s
 public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource
 </#if>
 
+<#if w.hasElementsOfType("feature")>
+public net.minecraft.world.level.levelgen.feature.ScatteredOreFeature <init>(Lcom/mojang/serialization/Codec;)V #constructor
+</#if>
+
 <#if w.hasGameRulesOfType("Number")>
 public net.minecraft.world.level.GameRules$IntegerValue m_46312_(I)Lnet/minecraft/world/level/GameRules$Type; #create
 </#if>
