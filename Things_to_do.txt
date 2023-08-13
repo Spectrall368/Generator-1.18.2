@@ -1,8 +1,0 @@
-To be added (feature):
-https://github.com/MCreator/MCreator/commit/5c0b0a5a8ac5447569208168bced492946c3f2a9
-https://github.com/MCreator/MCreator/commit/9d223f9a12d2d52c750914b2dfd31a71456505a6
-https://github.com/MCreator/MCreator/commit/4622880ed8e9569a36a4f6dd54755f515f167b5f
-To be fixed (villager profession):
-https://github.com/MCreator/MCreator/commit/9d433bf61d96f6125913f200e1bcd9d5f4640891
-Not Possible:
-https://github.com/MCreator/MCreator/commit/e3dacc80f6dedd3697b0cab0529383d515038fff
