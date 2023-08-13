@@ -80,10 +80,6 @@ package ${package}.init;
 				<#else>
 				${feature.getModElement().getName()}Feature::feature
 				</#if>);
-						new FeatureRegistration(GenerationStep.Decoration.${generator.map(feature.generationStep, "generationsteps")},
-							${feature.getModElement().getName()}Feature.GENERATE_BIOMES,
-							${feature.getModElement().getName()}Feature::placedFeature)
-				);
 		</#if>
 	</#list>
 
