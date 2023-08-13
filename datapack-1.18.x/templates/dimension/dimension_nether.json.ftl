@@ -20,7 +20,6 @@
         "min_y": 0,
         "height": 128,
         "size_horizontal": 1,
-        "size_vertical": 2
       },
       <#include "nether_noise_router.json.ftl">,
       "surface_rule": {
