@@ -58,7 +58,7 @@ import net.minecraft.sounds.SoundEvent;
 		POI_TYPES.put(name, new ProfessionPoiType(block, null));
 
 		return PROFESSIONS.register(name, () -> {
-			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poi.get(), soundEventSupplier));
+			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, ProfessionPoiType.get(), soundEventSupplier));
 		});
 	}
 
