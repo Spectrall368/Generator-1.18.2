@@ -11,7 +11,7 @@ templates:
     condition: enablePortal
     name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEPortalBlock.java"
   - template: dimension/portaltrigger.java.ftl
-    condition: enablePortal
+    condition: enableIgniter
     name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
   - template: json/dimension/dimension_type.json.ftl
     writer: json
@@ -43,9 +43,9 @@ templates:
   - template: json/item.json.ftl
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
-    condition: enablePortal
+    condition: enableIgniter
 
 localizationkeys:
   - key: item.@modid.@registryname
     mapto: igniterName
-    condition: enablePortal
+    condition: enableIgniter
