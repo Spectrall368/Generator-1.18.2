@@ -86,7 +86,7 @@ import net.minecraft.sounds.SoundEvent;
 	private static class ProfessionPoiType {
 
 		final Supplier<Block> block;
-		Holder<PoiType> poiType;
+		PoiType poiType;
 
 		ProfessionPoiType(Supplier<Block> block, PoiType poiType) {
 			this.block = block;
