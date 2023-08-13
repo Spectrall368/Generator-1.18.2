@@ -41,33 +41,6 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 
 <#compress>
 public class ${name}Feature extends ${generator.map(featuretype, "features")} {
-	public static ${name}Feature FEATURE = null;
-	public static Holder<ConfiguredFeature<${configuration}, ?>> CONFIGURED_FEATURE = null;
-	public static Holder<PlacedFeature> PLACED_FEATURE = null;
-
-	public static Feature<?> feature() {
-		FEATURE = new ${name}Feature();
-		CONFIGURED_FEATURE = FeatureUtils.register("${modid}:${registryname}", FEATURE, ${configurationcode});
-		PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE,
-			List.of(${placementcode?remove_ending(",")}));
-		return FEATURE;
-	}
-
-	public static Holder<PlacedFeature> placedFeature() {
-		return PLACED_FEATURE;
-	}
-
-	public static final Set<ResourceLocation> GENERATE_BIOMES =
-	<#if data.restrictionBiomes?has_content>
-	Set.of(
-		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-			new ResourceLocation("${restrictionBiome}")<#sep>,
-		</#list>
-	);
-	<#else>
-	null;
-	</#if>
-
 	<#if data.restrictionDimensions?has_content>
 	private final Set<ResourceKey<Level>> generateDimensions = Set.of(
 		<#list data.restrictionDimensions as dimension>
@@ -89,7 +62,6 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 		super(${configuration}.CODEC);
 	}
 
-	<#if data.hasGenerationConditions()>
 	public boolean place(FeaturePlaceContext<${configuration}> context) {
 		WorldGenLevel world = context.level();
 		<#if data.restrictionDimensions?has_content>
@@ -107,5 +79,4 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 
 		return super.place(context);
 	}
-	</#if>
 }</#compress>
