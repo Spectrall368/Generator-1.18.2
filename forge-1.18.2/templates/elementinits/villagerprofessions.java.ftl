@@ -58,7 +58,7 @@ import net.minecraft.sounds.SoundEvent;
 		POI_TYPES.put(name, new ProfessionPoiType(block, null));
 
 		return PROFESSIONS.register(name, () -> {
-			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, ProfessionPoiType.get(), soundEventSupplier));
+			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, ProfessionPoiType.get(), soundEventSupplier);
 		});
 	}
 
@@ -90,6 +90,7 @@ import net.minecraft.sounds.SoundEvent;
 			this.block = block;
 			this.poiType = poiType;
 		}
+	}
 
 	public static class RegistrySafeVillagerProfession extends VillagerProfession {
 
@@ -104,6 +105,5 @@ import net.minecraft.sounds.SoundEvent;
 			return soundEventSupplier.get();
 		}
 	}
-
 }
 <#-- @formatter:on -->
