@@ -74,7 +74,7 @@ import net.minecraft.sounds.SoundEvent;
 					continue;
 				}
 
-				PoiType poiType = PoiType(ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1);
+				PoiType poiType = new poiType(ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1);
 				registerHelper.register(name, poiType);
 				entry.getValue().poiType = ForgeRegistries.POI_TYPES.getHolder(poiType).get();
 			}
