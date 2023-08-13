@@ -208,7 +208,17 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	@Override public boolean removeWhenFarAway(double distanceToClosestPlayer) {
 		return false;
 	}
-    </#if>
+    	</#if>
+
+	<#if data.mobModelName == "Biped">
+	@Override public double getMyRidingOffset() {
+		return -0.35D;
+	}
+	<#elseif data.mobModelName == "Silverfish">
+	@Override public double getMyRidingOffset() {
+		return 0.1D;
+	}
+	</#if>
 
 	<#if data.mountedYOffset != 0>
 	@Override public double getPassengersRidingOffset() {
