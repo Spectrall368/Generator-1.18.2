@@ -60,11 +60,11 @@ import net.minecraft.sounds.SoundEvent;
 
 		return PROFESSIONS.register(name, () -> {
 			Predicate<Holder<PoiType>> poiPredicate = poiTypeHolder -> (POI_TYPES.get(name).poiType != null) && (poiTypeHolder == POI_TYPES.get(name).poiType);
-			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poi.get(), soundEventSupplier);
+			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poiType.get(), soundEvent.get());
 		});
 	}
 
-	@SubscribeEvent public static void registerProfessionPointsOfInterest(RegisterEvent event) {
+	@SubscribeEvent public static void registerProfessionPointsOfInterest(RegistryEvent.Register<VillagerProfession> event) {
 		event.register(ForgeRegistries.Keys.POI_TYPES, registerHelper -> {
 			for (Map.Entry<String, ProfessionPoiType> entry : POI_TYPES.entrySet()) {
 				Block block = entry.getValue().block.get();
@@ -76,7 +76,7 @@ import net.minecraft.sounds.SoundEvent;
 					continue;
 				}
 
-				PoiType poiType = POI.register(name, () -> new PoiType(ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1));
+				PoiType poiType = POI_TYPES.register(name, () -> new PoiType(name, ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1));
 				registerHelper.register(name, poiType);
 				entry.getValue().poiType = ForgeRegistries.POI_TYPES.getHolder(poiType).get();
 			}
