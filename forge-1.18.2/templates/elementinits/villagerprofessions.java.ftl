@@ -58,7 +58,7 @@ import net.minecraft.sounds.SoundEvent;
 		POI_TYPES.put(name, new ProfessionPoiType(block, null));
 
 		return PROFESSIONS.register(name, () -> {
-			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, ProfessionPoiType.get(), soundEventSupplier);
+			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, ProfessionPoiType, soundEventSupplier);
 		});
 	}
 
@@ -74,7 +74,7 @@ import net.minecraft.sounds.SoundEvent;
 					continue;
 				}
 
-				PoiType poiType = new PoiType(ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1);
+				PoiType poiType = PoiType(ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1);
 				registerHelper.register(name, poiType);
 				entry.getValue().poiType = ForgeRegistries.POI_TYPES.getHolder(poiType).get();
 			}
