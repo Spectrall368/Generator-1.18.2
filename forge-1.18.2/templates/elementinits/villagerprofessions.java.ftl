@@ -60,7 +60,7 @@ import net.minecraft.sounds.SoundEvent;
 
 		return PROFESSIONS.register(name, () -> {
 			Predicate<Holder<PoiType>> poiPredicate = poiTypeHolder -> (POI_TYPES.get(name).poiType != null) && (poiTypeHolder == POI_TYPES.get(name).poiType);
-			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poiPredicate, poiPredicate, ImmutableSet.of(), ImmutableSet.of(), soundEvent.get());
+			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poi.get(), soundEventSupplier);
 		});
 	}
 
