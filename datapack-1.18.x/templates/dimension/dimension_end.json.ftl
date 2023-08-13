@@ -16,13 +16,11 @@
       "ore_veins_enabled": ${data.imitateOverworldBehaviour},
       "default_block": ${mappedMCItemToBlockStateJSON(data.mainFillerBlock)},
       "default_fluid": ${mappedMCItemToBlockStateJSON(data.fluidBlock)},
-      "spawn_target": [],
       "noise": {
         "min_y": 0,
         "height": 128,
         "size_horizontal": 2,
         "size_vertical": 1,
-        "island_noise_override": true
       },
       <#include "end_noise_router.json.ftl">,
       "surface_rule": {
