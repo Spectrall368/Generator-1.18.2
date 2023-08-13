@@ -40,58 +40,30 @@ package ${package}.init;
 
 import net.minecraft.sounds.SoundEvent;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}VillagerProfessions {
+public class ${JavaModName}VillagerProfessions {
 
-	private static final Map<String, ProfessionPoiType> POI_TYPES = new HashMap<>();
+	public static final DeferredRegister<PoiType> POI = DeferredRegister.create(ForgeRegistries.POI_TYPES, ${JavaModName}.MODID);
 	public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, ${JavaModName}.MODID);
 
 	<#list villagerprofessions as villagerprofession>
 		public static final RegistryObject<VillagerProfession> ${villagerprofession.getModElement().getRegistryNameUpper()} =
 			registerProfession(
 				"${villagerprofession.getModElement().getRegistryName()}",
-				() -> ${mappedBlockToBlock(villagerprofession.pointOfInterest)},
+				${mappedBlockToBlock(villagerprofession.pointOfInterest)},
 				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${villagerprofession.actionSound}"))
 			);
 	</#list>
 
-	private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<Block> block, Supplier<SoundEvent> soundEventSupplier) {
-		POI_TYPES.put(name, new ProfessionPoiType(block, null));
+	private static RegistryObject<VillagerProfession> registerProfession(String name, Block block, Supplier<SoundEvent> soundEventSupplier) {
+		Optional<PoiType> existingCheck = PoiType.forState(block.defaultBlockState());
 
-		return PROFESSIONS.register(name, () -> {
-			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, POI_TYPES.get(name).poiType, soundEventSupplier);
-		});
-	}
-
-	@SubscribeEvent public static void registerProfessionPointsOfInterest(Register<PoiType> event) {
-        	event.getRegistry().registerAll(
-           		POI_TYPES.entrySet().stream()
-                	.map(entry -> {
-				Block block = entry.getValue().block.get();
-				String name = entry.getKey();
-
-				Optional<PoiType> existingCheck = PoiType.forState(block.defaultBlockState());
-				if (existingCheck.isPresent()) {
-					${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block + " that is already in use by " + existingCheck);
-					return null;
-				}
-
-				PoiType poiType = new PoiType(name, ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1);
-                    		entry.getValue().poiType = poiType;
-                    		return poiType;
-                		})
-                		.toArray(PoiType[]::new)
-        	);
-    	}
-
-	private static class ProfessionPoiType {
-
-		final Supplier<Block> block;
-		PoiType poiType;
-
-		ProfessionPoiType(Supplier<Block> block, PoiType poiType) {
-			this.block = block;
-			this.poiType = poiType;
+		if (existingCheck.isPresent()) {
+			${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block + " that is already in use by " + existingCheck);
+			return null;
 		}
+
+		Supplier<PoiType> poi = POI.register(name, () -> new PoiType(name, ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1));
+		return PROFESSIONS.register(name, () -> new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poi.get(), soundEventSupplier));
 	}
 
 	public static class RegistrySafeVillagerProfession extends VillagerProfession {
@@ -107,5 +79,6 @@ import net.minecraft.sounds.SoundEvent;
 			return soundEventSupplier.get();
 		}
 	}
+
 }
 <#-- @formatter:on -->
