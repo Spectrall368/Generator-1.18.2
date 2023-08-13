@@ -41,6 +41,16 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 
 <#compress>
 public class ${name}Feature extends ${generator.map(featuretype, "features")} {
+	public static final Set<ResourceLocation> GENERATE_BIOMES =
+	<#if data.restrictionBiomes?has_content>
+	Set.of(
+		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
+			new ResourceLocation("${restrictionBiome}")<#sep>,
+		</#list>
+	);
+	<#else>
+	null;
+	</#if>
 	<#if data.restrictionDimensions?has_content>
 	private final Set<ResourceKey<Level>> generateDimensions = Set.of(
 		<#list data.restrictionDimensions as dimension>
