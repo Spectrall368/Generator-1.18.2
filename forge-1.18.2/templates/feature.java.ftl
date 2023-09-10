@@ -33,6 +33,9 @@
 <#include "mcitems.ftl">
 
 package ${package}.world.features;
+
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 <#assign configuration = generator.map(featuretype, "features", 1)>
 
 <#compress>
