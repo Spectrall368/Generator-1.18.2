@@ -57,6 +57,7 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 
 	private boolean bound = false;
 	private Block ownerBlock = null;
+	private Supplier<Boolean> ownerItemMatcher = null;
 
 	public ${name}Menu(int id, Inventory inv, FriendlyByteBuf extraData) {
 		super(${JavaModName}Menus.${data.getModElement().getRegistryNameUpper()}, id);
@@ -79,11 +80,8 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 			if (pos != null) {
 				if (extraData.readableBytes() == 1) { // bound to item
 					byte hand = extraData.readByte();
-					ItemStack itemstack;
-					if(hand == 0)
-						itemstack = this.entity.getMainHandItem();
-					else
-						itemstack = this.entity.getOffhandItem();
+					ItemStack itemstack = hand == 0 ? this.entity.getMainHandItem() : this.entity.getOffhandItem();
+					this.ownerItemMatcher = () -> itemstack == (hand == 0 ? this.entity.getMainHandItem() : this.entity.getOffhandItem());
 					itemstack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> {
 						this.internal = capability;
 						this.bound = true;
@@ -186,6 +184,8 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 	@Override public boolean stillValid(Player player) {
 		if (this.bound && this.ownerBlock != null)
 			return AbstractContainerMenu.stillValid(this.access, player, this.ownerBlock);
+		else if (this.bound && this.ownerItemMatcher != null)
+			return this.ownerItemMatcher.get();
 		return true;
 	}
 
