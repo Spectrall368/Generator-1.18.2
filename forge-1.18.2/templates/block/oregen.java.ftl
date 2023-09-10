@@ -115,7 +115,7 @@ public class ${name}Feature extends OreFeature {
 		}
 
 		public boolean test(BlockState blockstate, Random random) {
-		    return ${containsAnyOfBlocks(data.blocksAffected "blockstate")};
+		    return ${containsAnyOfBlocks(data.replacementBlock "blockstate")};
 		}
 
 		protected RuleTestType<?> getType() {
