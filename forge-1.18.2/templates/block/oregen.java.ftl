@@ -31,7 +31,6 @@
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
 <#include "../mcitems.ftl">
-<#include "../itemlists.java.ftl">
 
 package ${package}.world.features.ores;
 
@@ -116,7 +115,7 @@ public class ${name}Feature extends OreFeature {
 		}
 
 		public boolean test(BlockState blockstate, Random random) {
-		    return <@blockListBasedOnDirectChecks data.blocksToReplace "blockstate"/>;
+		    return <@containsAnyOfBlocks data.blocksToReplace "blockstate"/>;
 		}
 
 		protected RuleTestType<?> getType() {
