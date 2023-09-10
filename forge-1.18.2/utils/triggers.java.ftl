@@ -378,7 +378,7 @@
 
 <#macro onAnimateTick procedure="">
 <#if hasProcedure(procedure)>
-@Override public void animateTick(BlockState blockstate, Level world, BlockPos pos, RandomSource random) {
+@Override public void animateTick(BlockState blockstate, Level world, BlockPos pos, Random random) {
 	super.animateTick(blockstate, world, pos, random);
 	<@procedureCode procedure, {
 	"x": "pos.getX()",
@@ -394,7 +394,7 @@
 
 <#macro onBlockTick procedure="" scheduleTick=false tickRate=0>
 <#if hasProcedure(procedure)>
-@Override public void tick(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {
+@Override public void tick(BlockState blockstate, ServerLevel world, BlockPos pos, Random random) {
 	super.tick(blockstate, world, pos, random);
 	<@procedureCode procedure, {
 	"x": "pos.getX()",
@@ -464,7 +464,7 @@
 	</#if>
 }
 
-@Override public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState blockstate) {
+@Override public boolean isBonemealSuccess(Level world, Random random, BlockPos pos, BlockState blockstate) {
 	<#if hasProcedure(bonemealSuccessCondition)>
 		int x = pos.getX();
 		int y = pos.getY();
@@ -475,7 +475,7 @@
 	</#if>
 }
 
-@Override public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState blockstate) {
+@Override public void performBonemeal(ServerLevel world, Random random, BlockPos pos, BlockState blockstate) {
 	<#if hasProcedure(onBonemealSuccess)>
 	<@procedureCode onBonemealSuccess, {
 	"x": "pos.getX()",
