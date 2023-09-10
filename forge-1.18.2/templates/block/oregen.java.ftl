@@ -31,6 +31,7 @@
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
 <#include "../mcitems.ftl">
+<#include "../itemlists.java.ftl">
 
 package ${package}.world.features.ores;
 
@@ -114,18 +115,8 @@ public class ${name}Feature extends OreFeature {
 			Registry.register(Registry.RULE_TEST, new ResourceLocation("${modid}:${registryname}_match"), CUSTOM_MATCH);
 		}
 
-		private List<Block> base_blocks = null;
-
-		public boolean test(BlockState blockAt, Random random) {
-			if (base_blocks == null) {
-				base_blocks = List.of(
-					<#list data.blocksToReplace as replacementBlock>
-						${mappedBlockToBlock(replacementBlock)}<#sep>,
-					</#list>
-				);
-			}
-
-			return base_blocks.contains(blockAt.getBlock());
+		public boolean test(BlockState blockstate, Random random) {
+		    return <@blockListBasedOnDirectChecks data.blocksToReplace "blockstate"/>;
 		}
 
 		protected RuleTestType<?> getType() {
