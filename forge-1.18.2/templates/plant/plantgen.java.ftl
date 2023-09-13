@@ -34,6 +34,7 @@
 
 package ${package}.world.features.plants;
 
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
 public class ${name}Feature extends RandomPatchFeature {
