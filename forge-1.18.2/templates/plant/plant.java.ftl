@@ -53,7 +53,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		implements ${interfaces?join(",")}
 	</#if>{
 	public ${name}Block() {
-		super(<#if data.plantType == "normal">${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},</#if>
+		super(<#if data.plantType == "normal">() -> ${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},</#if>
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 		BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
 		<#else>
