@@ -29,13 +29,10 @@
 -->
 
 <#-- @formatter:off -->
-
 <#include "../mcitems.ftl">
-
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
-
 package ${package}.init;
 
 import net.minecraft.sounds.SoundEvent;
@@ -59,8 +56,8 @@ import net.minecraft.sounds.SoundEvent;
 		POI_TYPES.put(name, new ProfessionPoiType(block, null));
 
 		return PROFESSIONS.register(name, () -> {
-			Predicate<Holder<PoiType>> poiPredicate = poiTypeHolder -> (POI_TYPES.get(name).poiType != null) && (poiTypeHolder.get() == POI_TYPES.get(name).poiType.get());
-			return new VillagerProfession(${JavaModName}.MODID + ":" + name, poiPredicate, poiPredicate, ImmutableSet.of(), ImmutableSet.of(), soundEvent.get());
+			Supplier<PoiType> poi = POI.register(name, () -> new PoiType(name, ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1));
+			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poi.get(), soundEvent.get());
 		});
 	}
 
@@ -70,13 +67,13 @@ import net.minecraft.sounds.SoundEvent;
 				Block block = entry.getValue().block.get();
 				String name = entry.getKey();
 
-				Optional<Holder<PoiType>> existingCheck = PoiTypes.forState(block.defaultBlockState());
+				Optional<Holder<PoiType>> existingCheck = PoiType.forState(block.defaultBlockState());
 				if (existingCheck.isPresent()) {
 					${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block + " that is already in use by " + existingCheck);
 					continue;
 				}
 
-				PoiType poiType = new PoiType(ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1);
+				PoiType poiType = new PoiType(name, ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1);
 				registerHelper.register(name, poiType);
 				entry.getValue().poiType = ForgeRegistries.POI_TYPES.getHolder(poiType).get();
 			}
@@ -92,8 +89,19 @@ import net.minecraft.sounds.SoundEvent;
 			this.block = block;
 			this.poiType = poiType;
 		}
-
 	}
 
+	public static class RegistrySafeVillagerProfession extends VillagerProfession {
+
+		private final Supplier<SoundEvent> soundEventSupplier;
+		public RegistrySafeVillagerProfession(String name, PoiType pointOfInterest, Supplier<SoundEvent> soundEventSupplier) {
+			super(name, pointOfInterest, ImmutableSet.of(), ImmutableSet.of(), null);
+			this.soundEventSupplier = soundEventSupplier;
+		}
+
+		@Override public SoundEvent getWorkSound() {
+			return soundEventSupplier.get();
+		}
+	}
 }
 <#-- @formatter:on -->
