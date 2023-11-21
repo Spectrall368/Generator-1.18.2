@@ -57,7 +57,7 @@ import net.minecraft.sounds.SoundEvent;
 
 		return PROFESSIONS.register(name, () -> {
 			Supplier<PoiType> poi = POI.register(name, () -> new PoiType(name, ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1));
-			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poi.get(), soundEvent.get());
+			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poi.get(), soundEvent);
 		});
 	}
 
