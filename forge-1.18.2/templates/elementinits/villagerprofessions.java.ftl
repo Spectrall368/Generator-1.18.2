@@ -40,7 +40,7 @@ import net.minecraft.sounds.SoundEvent;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}VillagerProfessions {
 
 	private static final Map<String, ProfessionPoiType> POI_TYPES = new HashMap<>();
-
+	public static final DeferredRegister<PoiType> POI = DeferredRegister.create(ForgeRegistries.POI_TYPES, ${JavaModName}.MODID);
 	public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, ${JavaModName}.MODID);
 
 	<#list villagerprofessions as villagerprofession>
