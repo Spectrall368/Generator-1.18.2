@@ -56,7 +56,7 @@ import net.minecraft.sounds.SoundEvent;
 		POI_TYPES.put(name, new ProfessionPoiType(block, null));
 
 		return PROFESSIONS.register(name, () -> {
-			Supplier<PoiType> poi = POI.register(name, () -> new PoiType(name, ImmutableSet.copyOf(block.getPossibleStates()), 1, 1));
+			Supplier<PoiType> poi = POI.register(name, () -> new PoiType(name, ImmutableSet.copyOf(block.get()), 1, 1));
 			return new RegistrySafeVillagerProfession(${JavaModName}.MODID + ":" + name, poi.get(), soundEvent);
 		});
 	}
@@ -67,7 +67,7 @@ import net.minecraft.sounds.SoundEvent;
 				Block block = entry.getValue().block.get();
 				String name = entry.getKey();
 
-				Holder<PoiType> existingCheck = PoiType.forState(block.defaultBlockState());
+				Optional<PoiType> existingCheck = PoiType.forState(block.defaultBlockState());
 				if (existingCheck.isPresent()) {
 					${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block + " that is already in use by " + existingCheck);
 					continue;
