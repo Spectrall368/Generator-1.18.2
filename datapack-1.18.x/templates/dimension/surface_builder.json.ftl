@@ -12,8 +12,6 @@
     <@vanillaSB biome w.itemBlock("Blocks.SAND#0") w.itemBlock("Blocks.SAND#0") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen"/>
   <#elseif biome?contains("end")>
     <@vanillaSB biome w.itemBlock("Blocks.END_STONE") w.itemBlock("Blocks.END_STONE") w.itemBlock("Blocks.END_STONE") data.worldGenType != "Normal world gen"/>
-  <#elseif biome == "deep_dark">
-    <@vanillaSB biome w.itemBlock("Blocks.SCULK") w.itemBlock("Blocks.DEEPSLATE") w.itemBlock("Blocks.DEEPSLATE") data.worldGenType != "Normal world gen"/>
   <#elseif biome?contains("mushroom_field")>
     <@vanillaSB biome w.itemBlock("Blocks.MYCELIUM") w.itemBlock("Blocks.DIRT#0") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen"/>
   <#elseif biome == "nether">
