@@ -1,0 +1,80 @@
+_default:
+  - DamageSource.GENERIC
+  - generic
+_mcreator_prefix: "CUSTOM:"
+_mcreator_map_template:
+  - "@JavaModNameDamageSources.@REGISTRYNAME"
+  - "@modid:@registryname"
+_bypass_prefix: "#"
+IN_FIRE:
+  - DamageSource.IN_FIRE
+  - in_fire
+LIGHTNING_BOLT:
+  - DamageSource.LIGHTNING_BOLT
+  - lightning_bolt
+ON_FIRE:
+  - DamageSource.ON_FIRE
+  - on_fire
+LAVA:
+  - DamageSource.LAVA
+  - lava
+HOT_FLOOR:
+  - DamageSource.HOT_FLOOR
+  - hot_floor
+IN_WALL:
+  - DamageSource.IN_WALL
+  - in_wall
+CRAMMING:
+  - DamageSource.CRAMMING
+  - cramming
+DROWN:
+  - DamageSource.DROWN
+  - drown
+STARVE:
+  - DamageSource.STARVE
+  - starve
+CACTUS:
+  - DamageSource.CACTUS
+  - cactus
+FALL:
+  - DamageSource.FALL
+  - fall
+FLY_INTO_WALL:
+  - DamageSource.FLY_INTO_WALL
+  - fly_into_wall
+OUT_OF_WORLD:
+  - DamageSource.OUT_OF_WORLD
+  - out_of_world
+GENERIC:
+  - DamageSource.GENERIC
+  - generic
+MAGIC:
+  - DamageSource.MAGIC
+  - magic
+WITHER:
+  - DamageSource.WITHER
+  - wither
+DRAGON_BREATH:
+  - DamageSource.DRAGON_BREATH
+  - dragon_breath
+DRYOUT:
+  - DamageSource.DRY_OUT
+  - dry_out
+SWEET_BERRY_BUSH:
+  - DamageSource.SWEET_BERRY_BUSH
+  - sweet_berry_bush
+FREEZE:
+  - DamageSource.FREEZE
+  - freeze
+STALAGMITE:
+  - DamageSource.STALAGMITE
+  - stalagmite
+FALLING_BLOCK:
+  - DamageSource.FALLING_BLOCK
+  - falling_block
+ANVIL:
+  - DamageSource.FALLING_ANVIL
+  - falling_anvil
+FALLING_STALACTITE:
+  - DamageSource.FALLING_STALACTITE
+  - falling_stalactite
