@@ -4,7 +4,6 @@
     "precipitation": <#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>"rain"<#else>"snow"</#if><#else>"none"</#if>,
     "temperature": ${data.temperature},
     "downfall": ${data.rainingPossibility},
-    "category": "none",
     "effects": {
     	"foliage_color": ${data.foliageColor?has_content?then(data.foliageColor.getRGB(), 10387789)},
     	"grass_color": ${data.grassColor?has_content?then(data.grassColor.getRGB(), 9470285)},
@@ -98,7 +97,7 @@
 	<#list entities as entry>
 	<#-- @formatter:off -->
     {
-		"type": "${entry.entity}",
+		"type": "${generator.map(entry.entity.getUnmappedValue(), "entities", 2)}",
 		"weight": ${entry.weight},
 		"minCount": ${entry.minGroup},
 		"maxCount": ${entry.maxGroup}
