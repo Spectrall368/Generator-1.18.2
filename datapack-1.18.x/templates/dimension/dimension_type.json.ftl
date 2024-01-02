@@ -19,19 +19,6 @@
   "height": 256,
   "logical_height": 256,
   </#if>
-  <#if data.worldGenType == "Nether like gen">
-  "monster_spawn_light_level": 11,
-  "monster_spawn_block_light_limit": 15,
-  <#else>
-  "monster_spawn_light_level": {
-    "type": "minecraft:uniform",
-    "value": {
-      "min_inclusive": 0,
-      "max_inclusive": 7
-    }
-  },
-  "monster_spawn_block_light_limit": 0,
-  </#if>
   <#if var_customeffects?? && var_customeffects == "true">
   "effects": "${modid}:${registryname}"
   <#else>
