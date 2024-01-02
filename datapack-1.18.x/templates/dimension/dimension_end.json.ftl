@@ -16,13 +16,33 @@
       "ore_veins_enabled": ${data.imitateOverworldBehaviour},
       "default_block": ${mappedMCItemToBlockStateJSON(data.mainFillerBlock)},
       "default_fluid": ${mappedMCItemToBlockStateJSON(data.fluidBlock)},
-      "spawn_target": [],
       "noise": {
         "min_y": 0,
         "height": 128,
         "size_horizontal": 2,
         "size_vertical": 1,
-        "island_noise_override": true
+        "island_noise_override": true,
+        "sampling": {
+          "xz_scale": 2,
+          "y_scale": 1,
+          "xz_factor": 80,
+          "y_factor": 160
+        },
+        "bottom_slide": {
+          "target": -0.234375,
+          "size": 7,
+          "offset": 1
+        },
+        "top_slide": {
+          "target": -23.4375,
+          "size": 64,
+          "offset": -46
+        },
+        "terrain_shaper": {
+          "offset": 0,
+          "factor": 0,
+          "jaggedness": 0
+        }
       },
       <#include "end_noise_router.json.ftl">,
       "surface_rule": {
