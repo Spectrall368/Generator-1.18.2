@@ -20,7 +20,24 @@
         "min_y": -64,
         "height": 384,
         "size_horizontal": 1,
-        "size_vertical": 2
+        "size_vertical": 2,
+        "sampling": {
+          "xz_scale": 1,
+          "y_scale": 1,
+          "xz_factor": 80,
+          "y_factor": 160
+        },
+        "bottom_slide": {
+          "target": 0.1171875,
+          "size": 3,
+          "offset": 0
+        },
+        "top_slide": {
+          "target": -0.078125,
+          "size": 2,
+          "offset": 8
+        },
+        <#include "overworld_terrain_shaper.json.ftl">
       },
       <#include "overworld_noise_router.json.ftl">,
       "surface_rule": {
