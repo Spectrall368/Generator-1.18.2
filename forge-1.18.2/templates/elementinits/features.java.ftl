@@ -74,28 +74,13 @@ package ${package}.init;
 				);
 		<#elseif feature.getModElement().getTypeString() == "feature">
 			public static final RegistryObject<Feature<?>> ${feature.getModElement().getRegistryNameUpper()} =
-				register("${feature.getModElement().getRegistryName()}", ${feature.getModElement().getName()}Feature::feature,
-						new FeatureRegistration(GenerationStep.Decoration.${generator.map(feature.generationStep, "generationsteps")},
-							${feature.getModElement().getName()}Feature.GENERATE_BIOMES,
-							${feature.getModElement().getName()}Feature::placedFeature)
-				);
+				REGISTRY.register("${feature.getModElement().getRegistryName()}",
+				<#if feature.getModElement().getTypeString() == "feature">
+				${feature.getModElement().getName()}Feature::new
+				<#else>
+				${feature.getModElement().getName()}Feature::feature
+				</#if>);
 		</#if>
 	</#list>
-
-	private static RegistryObject<Feature<?>> register(String registryname, Supplier<Feature<?>> feature, FeatureRegistration featureRegistration) {
-		FEATURE_REGISTRATIONS.add(featureRegistration);
-		return REGISTRY.register(registryname, feature);
-	}
-
-	@SubscribeEvent public static void addFeaturesToBiomes(BiomeLoadingEvent event) {
-		for (FeatureRegistration registration : FEATURE_REGISTRATIONS) {
-			if (registration.biomes() == null || registration.biomes().contains(event.getName()))
-				event.getGeneration().getFeatures(registration.stage()).add(registration.placedFeature().get());
-		}
-	}
-
-	private static record FeatureRegistration (GenerationStep.Decoration stage, Set<ResourceLocation> biomes, Supplier<Holder<PlacedFeature>> placedFeature) {}
-
 }
-
 <#-- @formatter:on -->
