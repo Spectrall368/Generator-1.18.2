@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2021, Pylo, opensource contributors
+ # Copyright (C) 2020-2022, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ package ${package}.init;
 
 	@SubscribeEvent public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
 		<#list entities as entity>
-			<#if entity.getModElement().getTypeString() == "rangeditem">
+			<#if entity.getModElement().getTypeString() == "projectile">
 				<#if entity.isCustomModel()>
 				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ${entity.getModElement().getName()}Renderer::new);
 				<#else>
