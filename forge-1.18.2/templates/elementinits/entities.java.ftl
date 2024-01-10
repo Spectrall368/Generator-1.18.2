@@ -38,7 +38,7 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Entities {
 
-	public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, ${JavaModName}.MODID);
+	public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITIES, ${JavaModName}.MODID);
 
 	<#list entities as entity>
 		<#if entity.getModElement().getTypeString() == "projectile">
