@@ -1,4 +1,4 @@
-<#if w.hasToolsOfType("Fishing rod")>
+<#if w.getGElementsOfType('tool')?filter(e -> e.Fishing rod)?size != 0>
 public net.minecraft.world.entity.projectile.FishingHook m_37136_(Lnet/minecraft/world/entity/player/Player;)Z #shouldStopFishing
 </#if>
 
@@ -21,10 +21,10 @@ public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource
 public net.minecraft.world.level.levelgen.feature.ScatteredOreFeature <init>(Lcom/mojang/serialization/Codec;)V #constructor
 </#if>
 
-<#if w.hasGameRulesOfType("Number")>
+<#if w.getGElementsOfType('gamerule')?filter(e -> e.Number)?size != 0>
 public net.minecraft.world.level.GameRules$IntegerValue m_46312_(I)Lnet/minecraft/world/level/GameRules$Type; #create
 </#if>
 
-<#if w.hasGameRulesOfType("Logic")>
+<#if w.getGElementsOfType('gamerule')?filter(e -> e.Logic)?size != 0>
 public net.minecraft.world.level.GameRules$BooleanValue m_46250_(Z)Lnet/minecraft/world/level/GameRules$Type; #create
 </#if>
