@@ -29,7 +29,7 @@
 -->
 
 <#-- @formatter:off -->
-
+<#include "../triggers.java.ftl">
 package ${package}.item;
 
 import net.minecraft.network.chat.Component;
@@ -42,13 +42,6 @@ public class ${name}Item extends BucketItem {
 			<#if data.creativeTab?has_content>.tab(${data.creativeTab})<#else>.tab(CreativeModeTab.TAB_MISC)</#if>);
 	}
 
-	<#if data.specialInfo?has_content>
-	@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-		<#list data.specialInfo as entry>
-		list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-		</#list>
-	}
-	</#if>
+	<@addSpecialInformation data.specialInformation/>
 }
 <#-- @formatter:on -->
