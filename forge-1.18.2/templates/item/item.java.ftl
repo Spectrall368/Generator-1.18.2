@@ -78,11 +78,11 @@ public class ${name}Item extends Item {
 		}
 
 		<#if data.recipeRemainder?? && !data.recipeRemainder.isEmpty()>
-			@Override public ItemStack getCraftingRemainingItem(ItemStack itemstack) {
+			@Override public ItemStack getContainerItem(ItemStack itemstack) {
 				return ${mappedMCItemToItemStackCode(data.recipeRemainder, 1)};
 			}
 		<#elseif data.damageOnCrafting && data.damageCount != 0>
-			@Override public ItemStack getCraftingRemainingItem(ItemStack itemstack) {
+			@Override public ItemStack getContainerItem(ItemStack itemstack) {
 				ItemStack retval = new ItemStack(this);
 				retval.setDamageValue(itemstack.getDamageValue() + 1);
 				if(retval.getDamageValue() >= retval.getMaxDamage()) {
@@ -95,7 +95,7 @@ public class ${name}Item extends Item {
 				return false;
 			}
 		<#else>
-			@Override public ItemStack getCraftingRemainingItem(ItemStack itemstack) {
+			@Override public ItemStack getContainerItem(ItemStack itemstack) {
 				return new ItemStack(this);
 			}
 
@@ -162,9 +162,9 @@ public class ${name}Item extends Item {
 
 		<#if data.hasInventory()>
 		if(entity instanceof ServerPlayer serverPlayer) {
-			NetworkHooks.openScreen(serverPlayer, new MenuProvider() {
+			NetworkHooks.openGui(serverPlayer, new MenuProvider() {
 				@Override public Component getDisplayName() {
-					return Component.literal("${data.name}");
+					return new TextComponent("${data.name}");
 				}
 
 				@Override public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
@@ -244,14 +244,14 @@ public class ${name}Item extends Item {
 
 	@Override public CompoundTag getShareTag(ItemStack stack) {
 		CompoundTag nbt = stack.getOrCreateTag();
-		stack.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> nbt.put("Inventory", ((ItemStackHandler) capability).serializeNBT()));
+		stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> nbt.put("Inventory", ((ItemStackHandler) capability).serializeNBT()));
 		return nbt;
 	}
 
 	@Override public void readShareTag(ItemStack stack, @Nullable CompoundTag nbt) {
 		super.readShareTag(stack, nbt);
 		if(nbt != null)
-			stack.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> ((ItemStackHandler) capability).deserializeNBT((CompoundTag) nbt.get("Inventory")));
+			stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> ((ItemStackHandler) capability).deserializeNBT((CompoundTag) nbt.get("Inventory")));
 	}
 	</#if>
 
