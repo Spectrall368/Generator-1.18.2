@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2021, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -33,14 +33,33 @@
 
 package ${package}.command;
 
-@Mod.EventBusSubscriber public class ${name}Command {
+@Mod.EventBusSubscriber<#if data.type == "CLIENTSIDE">(value = Dist.CLIENT)</#if>
+public class ${name}Command {
 
-	@SubscribeEvent public static void registerCommand(RegisterCommandsEvent event) {
-		event.getDispatcher().register(Commands.literal("${data.commandName}")
-			<#if data.permissionLevel != "No requirement">.requires(s -> s.hasPermission(${data.permissionLevel}))</#if>
-			${argscode}
-		);
-	}
+	<#if data.type == "CLIENTSIDE">
+		@SubscribeEvent public static void registerCommand(RegisterClientCommandsEvent event) {
+			<@commandRegistrationCode/>
+		}
+	<#else>
+		@SubscribeEvent public static void registerCommand(RegisterCommandsEvent event) {
+			<#if data.type == "MULTIPLAYER_ONLY">
+				if (event.getCommandSelection() == Commands.CommandSelection.DEDICATED)
+					<@commandRegistrationCode/>
+			<#elseif data.type == "SINGLEPLAYER_ONLY">
+				if (event.getCommandSelection() == Commands.CommandSelection.INTEGRATED)
+					<@commandRegistrationCode/>
+			<#else>
+				<@commandRegistrationCode/>
+			</#if>
+		}
+	</#if>
 
 }
+
+<#macro commandRegistrationCode>
+	event.getDispatcher().register(Commands.literal("${data.commandName}")
+		<#if data.permissionLevel != "No requirement">.requires(s -> s.hasPermission(${data.permissionLevel}))</#if>
+		${argscode}
+	);
+</#macro>
 <#-- @formatter:on -->
