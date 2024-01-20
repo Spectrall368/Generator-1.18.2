@@ -1,9 +1,2 @@
-{
-  "size": ${field$size},
-  "discard_chance_on_air_exposure": ${field$discardOnAirChance},
-  "targets": [
-  <#list input_list$target as target>
-    ${target}
-  <#sep>,</#list>
-  ]
-}
+new OreConfiguration(List.of(<#list input_list$target as target>${target}<#sep>,</#list>), ${field$size}
+    <#if field$discardOnAirChance != "0">, ${field$discardOnAirChance}F</#if>)

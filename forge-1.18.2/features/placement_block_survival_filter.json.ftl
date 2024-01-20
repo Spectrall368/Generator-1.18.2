@@ -1,7 +1,2 @@
-{
-  "type": "minecraft:block_predicate_filter",
-  "predicate": {
-    "type": "minecraft:would_survive",
-    "state": ${input$block}
-  }
-},
+<#include "mcitems.ftl">
+PlacementUtils.filteredByBlockSurvival(${mappedBlockToBlock(input$block)}),

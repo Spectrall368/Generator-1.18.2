@@ -1,4 +1,1 @@
-{
-  "type": "minecraft:rarity_filter",
-  "chance": ${field$rarity}
-},
+RarityFilter.onAverageOnceEvery(${field$rarity}),

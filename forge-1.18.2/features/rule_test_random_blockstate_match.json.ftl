@@ -1,5 +1,2 @@
-{
-  "predicate_type": "random_blockstate_match",
-  "block_state": ${input$blockstate},
-  "probability": ${field$probability}
-}
+<#include "mcitems.ftl">
+new RandomBlockStateMatchTest(${mappedBlockToBlockStateCode(input$blockstate)}, ${field$probability}F)

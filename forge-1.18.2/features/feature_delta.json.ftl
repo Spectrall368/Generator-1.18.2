@@ -1,6 +1,2 @@
-{
-  "contents": ${input$contents},
-  "rim": ${input$rim},
-  "size": ${input$size},
-  "rim_size": ${input$rimSize}
-}
+<#include "mcitems.ftl">
+new DeltaFeatureConfiguration(${mappedBlockToBlockStateCode(input$contents)}, ${mappedBlockToBlockStateCode(input$rim)}, ${input$size}, ${input$rimSize})

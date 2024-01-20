@@ -1,4 +1,1 @@
-{
-  "type": "minecraft:block_predicate_filter",
-  "predicate": ${input$condition}
-},
+BlockPredicateFilter.forPredicate(${input$condition}),

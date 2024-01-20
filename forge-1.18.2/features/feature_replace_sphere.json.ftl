@@ -1,5 +1,2 @@
-{
-  "target": ${input$targetState},
-  "state": ${input$newState},
-  "radius": ${input$radius}
-}
+<#include "mcitems.ftl">
+new ReplaceSphereConfiguration(${mappedBlockToBlockStateCode(input$targetState)}, ${mappedBlockToBlockStateCode(input$newState)}, ${input$radius})

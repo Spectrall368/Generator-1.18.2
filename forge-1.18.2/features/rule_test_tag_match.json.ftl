@@ -1,4 +1,1 @@
-{
-  "predicate_type": "tag_match",
-  "tag": "${field$tag}"
-}
+new TagMatchTest(BlockTags.create(new ResourceLocation("${field$tag}")))

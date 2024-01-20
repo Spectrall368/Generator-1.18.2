@@ -1,8 +1,1 @@
-{
-  "type": "clamped",
-  "value": {
-    "min_inclusive": ${field$min},
-    "max_inclusive": ${field$max},
-    "source": ${input$toClamp}
-  }
-}
+ClampedInt.of(${input$toClamp}, ${field$min}, ${field$max})

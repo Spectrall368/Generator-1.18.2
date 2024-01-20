@@ -1,4 +1,1 @@
-{
-  "type": "minecraft:count",
-  "count": ${input$count}
-},
+CountPlacement.of(${input$count}),

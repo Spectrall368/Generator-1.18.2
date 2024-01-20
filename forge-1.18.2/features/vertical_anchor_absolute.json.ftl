@@ -1,3 +1,1 @@
-{
-  "absolute": ${field$value}
-}
+VerticalAnchor.absolute(${field$value})

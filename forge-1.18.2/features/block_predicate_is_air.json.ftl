@@ -1,4 +1,1 @@
-{
-  "type": "minecraft:matching_blocks",
-  "blocks": "minecraft:air"
-}
+BlockPredicate.ONLY_IN_AIR_PREDICATE

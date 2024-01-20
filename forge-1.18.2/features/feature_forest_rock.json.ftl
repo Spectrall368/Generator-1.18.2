@@ -1,3 +1,2 @@
-{
-  "state": ${input$block}
-}
+<#include "mcitems.ftl">
+new BlockStateConfiguration(${mappedBlockToBlockStateCode(input$block)})

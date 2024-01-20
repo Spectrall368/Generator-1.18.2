@@ -1,7 +1,1 @@
-{
-  "type": "minecraft:matching_blocks",
-  "blocks": [
-    "minecraft:air",
-    "minecraft:water"
-  ]
-}
+BlockPredicate.ONLY_IN_AIR_OR_WATER_PREDICATE

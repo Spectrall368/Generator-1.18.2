@@ -1,3 +1,1 @@
-{
-  "type": "minecraft:true"
-}
+BlockPredicate.alwaysTrue()

@@ -1,3 +1,1 @@
-{
-  "type": "minecraft:biome"
-},
+BiomeFilter.biome(),

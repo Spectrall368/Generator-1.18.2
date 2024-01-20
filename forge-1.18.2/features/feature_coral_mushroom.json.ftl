@@ -1,1 +1,1 @@
-{}
+NoneFeatureConfiguration.INSTANCE

@@ -1,4 +1,1 @@
-{
-  "type": "minecraft:height_range",
-  "height": ${input$height}
-},
+HeightRangePlacement.of(${input$height}),

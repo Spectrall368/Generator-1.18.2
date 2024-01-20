@@ -1,3 +1,1 @@
-{
-  "type": "minecraft:in_square"
-},
+InSquarePlacement.spread(),

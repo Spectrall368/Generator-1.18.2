@@ -1,3 +1,1 @@
-{
-  "probability": ${field$probability}
-}
+new ProbabilityFeatureConfiguration(${field$probability})

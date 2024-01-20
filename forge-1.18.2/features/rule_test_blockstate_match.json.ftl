@@ -1,4 +1,2 @@
-{
-  "predicate_type": "blockstate_match",
-  "block_state": ${input$blockstate}
-}
+<#include "mcitems.ftl">
+new BlockStateMatchTest(${mappedBlockToBlockStateCode(input$blockstate)})

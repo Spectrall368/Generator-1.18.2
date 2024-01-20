@@ -1,7 +1,1 @@
-{
-  "targets": [
-  <#list input_list$target as target>
-    ${target}
-  <#sep>,</#list>
-  ]
-}
+new ReplaceBlockConfiguration(List.of(<#list input_list$target as target>${target}<#sep>,</#list>))

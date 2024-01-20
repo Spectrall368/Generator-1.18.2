@@ -1,4 +1,1 @@
-{
-  "type": "minecraft:not",
-  "predicate": ${input$condition}
-}
+BlockPredicate.not(${input$condition})

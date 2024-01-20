@@ -1,3 +1,1 @@
-{
-  "above_bottom": ${field$value}
-}
+VerticalAnchor.<#if field$value == "0">bottom()<#else>aboveBottom(${field$value})</#if>

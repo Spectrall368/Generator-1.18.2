@@ -1,4 +1,1 @@
-{
-  "type": "minecraft:heightmap",
-  "heightmap": "${field$heightmap}"
-},
+HeightmapPlacement.onHeightmap(Heightmap.Types.${field$heightmap}),

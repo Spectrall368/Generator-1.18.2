@@ -1,4 +1,1 @@
-{
-  "type": "minecraft:constant",
-  "value": ${input$value}
-}
+ConstantHeight.of(${input$value})

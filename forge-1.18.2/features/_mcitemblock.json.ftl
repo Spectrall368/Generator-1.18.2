@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-${mappedMCItemToBlockStateJSON(block)}
+${mappedBlockToBlock(w.itemBlock(block))}

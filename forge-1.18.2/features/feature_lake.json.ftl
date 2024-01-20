@@ -1,5 +1,2 @@
 <#include "mcitems.ftl">
-{
-  "fluid": ${mappedBlockToBlockStateProvider(input$fluid)},
-  "barrier": ${mappedBlockToBlockStateProvider(input$border)}
-}
+new LakeFeature.Configuration(${mappedBlockToBlockStateProvider(input$fluid)}, ${mappedBlockToBlockStateProvider(input$border)})

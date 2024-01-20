@@ -1,4 +1,1 @@
-{
-  "type": "minecraft:carving_mask",
-  "step": "${field$carver}"
-},
+CarvingMaskPlacement.forStep(GenerationStep.Carving.${field$carver?upper_case})
