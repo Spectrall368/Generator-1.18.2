@@ -31,9 +31,9 @@
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
 <#include "../procedures.java.ftl">
-
 package ${package}.world.dimension;
 
+<#compress>
 @Mod.EventBusSubscriber public class ${name}Dimension {
 
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public static class Fixers {
@@ -60,8 +60,10 @@ package ${package}.world.dimension;
 		}
 
 		@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void registerDimensionSpecialEffects(FMLClientSetupEvent event) {
-			DimensionSpecialEffects customEffect = new DimensionSpecialEffects(<#if data.imitateOverworldBehaviour>128<#else>Float.NaN</#if>,
-					true, <#if data.imitateOverworldBehaviour>DimensionSpecialEffects.SkyType.NORMAL<#else>DimensionSpecialEffects.SkyType.NONE</#if>, false, false) {
+			DimensionSpecialEffects customEffect = new DimensionSpecialEffects(
+				<#if data.imitateOverworldBehaviour>DimensionSpecialEffects.OverworldEffects.CLOUD_LEVEL<#else>Float.NaN</#if>,
+				true,
+				<#if data.imitateOverworldBehaviour>DimensionSpecialEffects.SkyType.NORMAL<#else>DimensionSpecialEffects.SkyType.NONE</#if>, false, false) {
 
 				@Override public Vec3 getBrightnessDependentFogColor(Vec3 color, float sunHeight) {
 					<#if data.airColor?has_content>
@@ -107,5 +109,5 @@ package ${package}.world.dimension;
         </#if>
 	}
     </#if>
-
 }
+</#compress>
