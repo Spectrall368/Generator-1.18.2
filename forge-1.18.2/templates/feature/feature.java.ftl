@@ -31,7 +31,6 @@
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
 <#include "mcitems.ftl">
-
 package ${package}.world.features;
 
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
@@ -67,36 +66,15 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 	null;
 	</#if>
 
-	<#if data.restrictionDimensions?has_content>
-	private final Set<ResourceKey<Level>> generateDimensions = Set.of(
-		<#list data.restrictionDimensions as dimension>
-			<#if dimension == "Surface">
-				Level.OVERWORLD
-			<#elseif dimension == "Nether">
-				Level.NETHER
-			<#elseif dimension == "End">
-				Level.END
-			<#else>
-				ResourceKey.create(Registry.DIMENSION_REGISTRY,
-						new ResourceLocation("${generator.getResourceLocationForModElement(dimension.toString().replace("CUSTOM:", ""))}"))
-			</#if><#sep>,
-		</#list>
-	);
-	</#if>
-
 	public ${name}Feature() {
 		super(${configuration}.CODEC);
 	}
 
 	<#if data.hasGenerationConditions()>
 	public boolean place(FeaturePlaceContext<${configuration}> context) {
-		WorldGenLevel world = context.level();
-		<#if data.restrictionDimensions?has_content>
-		if (!generateDimensions.contains(world.getLevel().dimension()))
-			return false;
-		</#if>
 
 		<#if hasProcedure(data.generateCondition)>
+		WorldGenLevel world = context.level();
 		int x = context.origin().getX();
 		int y = context.origin().getY();
 		int z = context.origin().getZ();
