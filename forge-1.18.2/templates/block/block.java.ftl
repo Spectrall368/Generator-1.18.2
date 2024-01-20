@@ -92,7 +92,8 @@ public class ${name}Block extends
 			() -> new SoundEvent(new ResourceLocation("${data.stepSound}")),
 			() -> new SoundEvent(new ResourceLocation("${data.placeSound}")),
 			() -> new SoundEvent(new ResourceLocation("${data.hitSound}")),
-			() -> new SoundEvent(new ResourceLocation("${data.fallSound}"))))
+			() -> new SoundEvent(new ResourceLocation("${data.fallSound}"))
+			))
 		<#else>
 			.sound(SoundType.${data.soundOnStep})
 		</#if>
@@ -188,14 +189,7 @@ public class ${name}Block extends
    	}
 	</#if>
 
-	<#if data.specialInfo?has_content>
-	@Override public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-		<#list data.specialInfo as entry>
-		list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-	    </#list>
-	}
-	</#if>
+	<@addSpecialInformation data.specialInformation, true/>
 
 	<#if data.displayFluidOverlay>
 	@Override public boolean shouldDisplayFluidOverlay(BlockState state, BlockAndTintGetter world, BlockPos pos, FluidState fluidstate) {
