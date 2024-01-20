@@ -29,7 +29,7 @@
 
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
-
+<#include "../triggers.java.ftl">
 package ${package}.item;
 
 public class ${name}Item extends Item {
@@ -38,14 +38,7 @@ public class ${name}Item extends Item {
 		super(new Item.Properties().tab(${data.igniterTab}).durability(64));
 	}
 
-	<#if data.specialInfo?has_content>
-	@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-		<#list data.specialInfo as entry>
-		list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-		</#list>
-	}
-	</#if>
+	<@addSpecialInformation data.specialInformation/>
 
 	@Override public InteractionResult useOn(UseOnContext context) {
 		Player entity = context.getPlayer();
@@ -80,5 +73,4 @@ public class ${name}Item extends Item {
 		}
 	}
 }
-
 <#-- @formatter:on -->
