@@ -31,7 +31,6 @@
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
-
 package ${package}.world.features;
 
 public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
@@ -77,7 +76,7 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 		</#list>
 	);
 
-	<#if data.restrictionBlocks?has_content>
+	<#if data.ignoredBlocks?has_content>
 	private final List<Block> base_blocks;
 	</#if>
 
@@ -86,10 +85,10 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 	public ${name}Feature() {
 		super(NoneFeatureConfiguration.CODEC);
 
-		<#if data.restrictionBlocks?has_content>
+		<#if data.ignoredBlocks?has_content>
 			base_blocks = List.of(
-				<#list data.restrictionBlocks as restrictionBlock>
-					${mappedBlockToBlock(restrictionBlock)}<#sep>,
+				<#list data.ignoredBlocks as block>
+					${mappedBlockToBlock(block)}<#sep>,
 				</#list>
 			);
 		</#if>
@@ -123,24 +122,12 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 					j = Mth.nextInt(context.random(), 8 + context.level().getMinBuildHeight(), Math.max(j, 9 + context.level().getMinBuildHeight()));
 				</#if>
 
-				<#if data.restrictionBlocks?has_content>
+				<#if data.ignoredBlocks?has_content>
 				if (!base_blocks.contains(context.level().getBlockState(new BlockPos(i, j, k)).getBlock()))
 					continue;
 				</#if>
 
 				BlockPos spawnTo = new BlockPos(i + ${data.spawnXOffset}, j + ${data.spawnHeightOffset}, k + ${data.spawnZOffset});
-
-				<#if hasProcedure(data.generateCondition) || hasProcedure(data.onStructureGenerated)>
-				WorldGenLevel world = context.level();
-				int x = spawnTo.getX();
-				int y = spawnTo.getY();
-				int z = spawnTo.getZ();
-				</#if>
-
-				<#if hasProcedure(data.generateCondition)>
-				if (!<@procedureOBJToConditionCode data.generateCondition/>)
-					continue;
-				</#if>
 
 				if (template.placeInWorld(context.level(), spawnTo, spawnTo, new StructurePlaceSettings()
 						.setMirror(Mirror.<#if data.randomlyRotateStructure>values()[context.random().nextInt(2)]<#else>NONE</#if>)
@@ -148,17 +135,12 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 						.setRandom(context.random())
 						.addProcessor(BlockIgnoreProcessor.${data.ignoreBlocks?replace("AIR_AND_STRUCTURE_BLOCK", "STRUCTURE_AND_AIR")})
 						.setIgnoreEntities(false), context.random(), 2)) {
-					<#if hasProcedure(data.onStructureGenerated)>
-						<@procedureOBJToCode data.onStructureGenerated/>
-					</#if>
 
 					anyPlaced = true;
 				}
 			}
 		}
-
 		return anyPlaced;
 	}
-
 }
 <#-- @formatter:on -->
