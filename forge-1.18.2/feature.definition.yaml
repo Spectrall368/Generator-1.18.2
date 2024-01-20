@@ -1,5 +1,5 @@
 templates:
-  - template: feature.java.ftl
+  - template: feature/feature.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/features/@NAMEFeature.java"
 
 # Templates for custom structure feature
