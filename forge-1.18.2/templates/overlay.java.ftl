@@ -119,9 +119,7 @@ package ${package}.client.gui;
             RenderSystem.disableBlend();
             RenderSystem.setShaderColor(1, 1, 1, 1);
         </#if>
-    <#if generator.map(data.overlayTarget, "screens") != "Ingame">
         }
-    </#if>
 	}
 }
 <#macro calculatePosition component x_offset=0 y_offset=0>
