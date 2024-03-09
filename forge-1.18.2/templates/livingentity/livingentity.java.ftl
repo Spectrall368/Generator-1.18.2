@@ -31,7 +31,6 @@
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
 <#include "../procedures.java.ftl">
-
 package ${package}.entity;
 
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -58,9 +57,29 @@ import javax.annotation.Nullable;
 <#if (data.tameable && data.breedable)>
 	<#assign extendsClass = "TamableAnimal">
 </#if>
-
+<#if data.spawnThisMob>@Mod.EventBusSubscriber</#if>
 public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements RangedAttackMob</#if> {
 
+	<#if data.spawnThisMob>
+		<#assign spawnBiomes = w.filterBrokenReferences(data.restrictionBiomes)>
+
+		<#if spawnBiomes?has_content>
+		private static final Set<ResourceLocation> SPAWN_BIOMES = Set.of(
+			<#list spawnBiomes as restrictionBiome>
+				new ResourceLocation("${restrictionBiome}")<#if restrictionBiome?has_next>,</#if>
+			</#list>
+		);
+		</#if>
+
+		@SubscribeEvent public static void addLivingEntityToBiomes(BiomeLoadingEvent event) {
+			<#if spawnBiomes?has_content>
+			if (SPAWN_BIOMES.contains(event.getName()))
+			</#if>
+				event.getSpawns().getSpawner(${generator.map(data.mobSpawningType, "mobspawntypes")})
+						.add(new MobSpawnSettings.SpawnerData(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
+							${data.spawningProbability}, ${data.minNumberOfMobsPerGroup}, ${data.maxNumberOfMobsPerGroup}));
+		}
+	</#if>
 	<#list data.entityDataEntries as entry>
 		<#if entry.value().getClass().getSimpleName() == "Integer">
 			public static final EntityDataAccessor<Integer> DATA_${entry.property().getName()} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.INT);
@@ -87,7 +106,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		setNoAi(${(!data.hasAI)});
 
 		<#if data.mobLabel?has_content >
-        	setCustomName(Component.literal("${data.mobLabel}"));
+        	setCustomName(new TextComponent("${data.mobLabel}"));
         	setCustomNameVisible(true);
         </#if>
 
@@ -418,7 +437,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	private final CombinedInvWrapper combined = new CombinedInvWrapper(inventory, new EntityHandsInvWrapper(this), new EntityArmorInvWrapper(this));
 
 	@Override public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction side) {
-		if (this.isAlive() && capability == ForgeCapabilities.ITEM_HANDLER && side == null)
+		if (this.isAlive() && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && side == null)
 			return LazyOptional.of(() -> combined).cast();
 
 		return super.getCapability(capability, side);
@@ -481,10 +500,10 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				if (sourceentity.isSecondaryUseActive()) {
 			</#if>
 				if(sourceentity instanceof ServerPlayer serverPlayer) {
-					NetworkHooks.openScreen(serverPlayer, new MenuProvider() {
+					NetworkHooks.openGui(serverPlayer, new MenuProvider() {
 
 						@Override public Component getDisplayName() {
-							return Component.literal("${data.mobName}");
+							return new TextComponent("${data.mobName}");
 						}
 
 						@Override public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
