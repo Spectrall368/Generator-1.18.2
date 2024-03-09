@@ -61,20 +61,7 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 	null;
 	</#if>
 
-	private final Set<ResourceKey<Level>> generate_dimensions = Set.of(
-		<#list data.spawnWorldTypes as worldType>
-			<#if worldType == "Surface">
-				Level.OVERWORLD
-			<#elseif worldType == "Nether">
-				Level.NETHER
-			<#elseif worldType == "End">
-				Level.END
-			<#else>
-				ResourceKey.create(Registry.DIMENSION_REGISTRY,
-					new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}"))
-			</#if><#sep>,
-		</#list>
-	);
+	private final Set<ResourceKey<Level>> generate_dimensions = Set.of();
 
 	<#if data.ignoredBlocks?has_content>
 	private final List<Block> base_blocks;
@@ -95,9 +82,6 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 	}
 
 	@Override public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-		if (!generate_dimensions.contains(context.level().getLevel().dimension()))
-			return false;
-
 		if (template == null)
 			template = context.level().getLevel().getStructureManager()
 					.getOrCreate(new ResourceLocation("${modid}", "${data.structure}"));
@@ -113,7 +97,7 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 				int k = context.origin().getZ() + context.random().nextInt(16);
 
 				int j = context.level().getHeight(
-						Heightmap.Types.<#if data.surfaceDetectionType == "First block">WORLD_SURFACE_WG<#else>OCEAN_FLOOR_WG</#if>, i, k
+						Heightmap.Types.<#if data.generationStep == "First block">WORLD_SURFACE_WG<#else>OCEAN_FLOOR_WG</#if>, i, k
 					)<#if data.spawnLocation == "Ground"> - 1</#if>;
 
 				<#if data.spawnLocation == "Air">
