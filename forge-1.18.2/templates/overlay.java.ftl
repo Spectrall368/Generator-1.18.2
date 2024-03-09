@@ -30,20 +30,23 @@
 
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
-
-<#assign stackMethodName = "getPoseStack">
-
-package ${package}.client.screens;
+package ${package}.client.gui;
+<#if generator.map(data.overlayTarget, "screens") == "Ingame">
+	<#assign stackMethodName = "getMatrixStack">
+<#else>
+	<#assign stackMethodName = "getPoseStack">
+</#if>
 
 @Mod.EventBusSubscriber({Dist.CLIENT}) public class ${name}Overlay {
 
 	@SubscribeEvent(priority = EventPriority.${data.priority})
 	<#if generator.map(data.overlayTarget, "screens") == "Ingame">
-        public static void eventHandler(RenderGuiEvent.Pre event) {
+        public static void eventHandler(RenderGameOverlayEvent.Pre event) {
+	    if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
             int w = event.getWindow().getGuiScaledWidth();
             int h = event.getWindow().getGuiScaledHeight();
 	<#else>
-        public static void eventHandler(ScreenEvent.Render.Post event) {
+        public static void eventHandler(ScreenEvent.DrawScreenEvent.Post event) {
             if (event.getScreen() instanceof ${generator.map(data.overlayTarget, "screens")}) {
                 int w = event.getScreen().width;
                 int h = event.getScreen().height;
@@ -75,7 +78,7 @@ package ${package}.client.screens;
         if (<@procedureOBJToConditionCode data.displayCondition/>) {
             <#if data.baseTexture?has_content>
                 RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${data.baseTexture}"));
-                Minecraft.getInstance().gui.blit(event.getPoseStack(), 0, 0, 0, 0, w, h, w, h);
+                Minecraft.getInstance().gui.blit(event.{stackMethodName}(), 0, 0, 0, 0, w, h, w, h);
             </#if>
 
             <#list data.getComponentsOfType("Image") as component>
@@ -83,7 +86,7 @@ package ${package}.client.screens;
                         if (<@procedureOBJToConditionCode component.displayCondition/>) {
                 </#if>
                     RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.image}"));
-                    Minecraft.getInstance().gui.blit(event.getPoseStack(), <@calculatePosition component/>, 0, 0,
+                    Minecraft.getInstance().gui.blit(event.{stackMethodName}(), <@calculatePosition component/>, 0, 0,
                         ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
                         ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
                 <#if hasProcedure(component.displayCondition)>}</#if>
@@ -93,8 +96,8 @@ package ${package}.client.screens;
                 <#if hasProcedure(component.displayCondition)>
                     if (<@procedureOBJToConditionCode component.displayCondition/>)
                 </#if>
-                Minecraft.getInstance().font.draw(event.getPoseStack(),
-                    <#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>,
+                Minecraft.getInstance().font.draw(event.{stackMethodName}(),
+                    <#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}")</#if>,
                     <@calculatePosition component/>, ${component.color.getRGB()});
             </#list>
 
@@ -103,7 +106,7 @@ package ${package}.client.screens;
 			    	<#if hasProcedure(component.displayCondition)>
                         if (<@procedureOBJToConditionCode component.displayCondition/>)
                     </#if>
-					InventoryScreen.renderEntityInInventoryRaw(<@calculatePosition component=component x_offset=10 y_offset=20/>,
+					InventoryScreen.renderEntityInInventory(<@calculatePosition component=component x_offset=10 y_offset=20/>,
                         ${component.scale}, ${component.rotationX / 20.0}f, 0, livingEntity);
 			    }
 			</#list>
@@ -120,9 +123,7 @@ package ${package}.client.screens;
         }
     </#if>
 	}
-
 }
-
 <#macro calculatePosition component x_offset=0 y_offset=0>
 	<#if component.anchorPoint.name() == "TOP_LEFT">
 		${component.x + x_offset}, ${component.y + y_offset}
