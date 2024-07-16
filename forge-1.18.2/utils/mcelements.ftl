@@ -38,8 +38,8 @@
 
 <#function toPlacedFeature featureType featureConfig placement="">
 	<#if featureType == "placed_feature_inline">
-        <#return "PlacementUtils.inlinePlaced(" + generator.map(featureType, "features", 2) + ", " + featureConfig + ", List.of(" + placement?remove_ending(",") + "))">
+		<#return featureConfig>
 	<#else>
-        <#return "PlacementUtils.inlinePlaced(" + generator.map(featureType, "features", 2) + ", " + featureConfig + ", List.of())">
+        	<#return "PlacementUtils.inlinePlaced(" + generator.map(featureType, "features", 2) + ", " + featureConfig + ", List.of(" + placement?remove_ending(",") + "))">
 	</#if>
 </#function>
