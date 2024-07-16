@@ -66,7 +66,7 @@ import net.minecraft.sounds.SoundEvent;
 				Block block = entry.getValue().block.get();
 				String name = entry.getKey();
 
-				Optional<PoiType> existingCheck = PoiTypes.forState(block.defaultBlockState());
+				Optional<PoiType> existingCheck = PoiType.forState(block.defaultBlockState());
 				if (existingCheck.isPresent()) {
 					${JavaModName}.LOGGER.error("Skipping villager profession " + name + " that uses POI block " + block + " that is already in use by " + existingCheck);
 					continue;
