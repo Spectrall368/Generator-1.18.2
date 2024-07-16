@@ -41,7 +41,7 @@
 		<#return featureConfig>
 	<#else>
 		<#if placement == "">
-		        <#return "PlacementUtils.inlinePlaced(" + generator.map(featureType, "features", 2) + ", " + featureConfig>
+		        <#return "PlacementUtils.inlinePlaced(" + generator.map(featureType, "features", 2) + ", " + featureConfig + ")">
 		<#else>
 		        <#return "PlacementUtils.inlinePlaced(" + generator.map(featureType, "features", 2) + ", " + featureConfig + ", " + placement?remove_ending(",") + ")">
 		</#if>
