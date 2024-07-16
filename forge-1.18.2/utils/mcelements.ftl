@@ -35,3 +35,11 @@
 <#function toBlockPos x y z>
     <#return "new BlockPos(" + opt.removeParentheses(x) + "," + opt.removeParentheses(y) + "," + opt.removeParentheses(z) +")">
 </#function>
+
+<#function toPlacedFeature featureType featureConfig placement="">
+	<#if featureType == "placed_feature_inline">
+        <#return "PlacementUtils.inlinePlaced(" + generator.map(featureType, "features") + ", " + featureConfig + ", List.of(" + placement?remove_ending(",") + "))">
+	<#else>
+        <#return "PlacementUtils.inlinePlaced(" + generator.map(featureType, "features") + ", " + featureConfig + ", List.of())">
+	</#if>
+</#function>
