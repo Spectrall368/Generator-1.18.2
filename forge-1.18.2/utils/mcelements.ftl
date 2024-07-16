@@ -40,6 +40,10 @@
 	<#if featureType == "placed_feature_inline">
 		<#return featureConfig>
 	<#else>
-        	<#return "PlacementUtils.inlinePlaced(" + generator.map(featureType, "features", 2) + ", " + featureConfig + ", List.of(" + placement?remove_ending(",") + "))">
+		<#if placement == "">
+		        <#return "PlacementUtils.inlinePlaced(" + generator.map(featureType, "features", 2) + ", " + featureConfig>
+		<#else>
+		        <#return "PlacementUtils.inlinePlaced(" + generator.map(featureType, "features", 2) + ", " + featureConfig + ", " + placement?remove_ending(",") + ")">
+		</#if>
 	</#if>
 </#function>
