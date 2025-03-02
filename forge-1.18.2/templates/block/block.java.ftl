@@ -88,11 +88,13 @@ public class ${name}Block extends
 			BlockBehaviour.Properties.of(Material.${data.material})
 		</#if>
 		<#if data.isCustomSoundType>
-			.sound(new ForgeSoundType(1.0f, 1.0f, () -> new SoundEvent(new ResourceLocation("${data.breakSound}")),
-			() -> new SoundEvent(new ResourceLocation("${data.stepSound}")),
-			() -> new SoundEvent(new ResourceLocation("${data.placeSound}")),
-			() -> new SoundEvent(new ResourceLocation("${data.hitSound}")),
-			() -> new SoundEvent(new ResourceLocation("${data.fallSound}"))))
+			.sound(new ForgeSoundType(1.0f, 1.0f,
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.breakSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.stepSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.placeSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hitSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.fallSound}"))
+			))
 		<#else>
 			.sound(SoundType.${data.soundOnStep})
 		</#if>
@@ -135,8 +137,7 @@ public class ${name}Block extends
 		<#if data.hasTransparency>
 			.isRedstoneConductor((bs, br, bp) -> false)
 		</#if>
-		<#if (data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube() && data.offsetType != "NONE")
-				|| (data.blockBase?has_content && data.blockBase == "Stairs")>
+		<#if (!data.isNotColidable && data.offsetType != "NONE")>
 			.dynamicShape()
 		</#if>
 		<#if !data.useLootTableForDrops && (data.dropAmount == 0)>
@@ -188,14 +189,7 @@ public class ${name}Block extends
    	}
 	</#if>
 
-	<#if data.specialInfo?has_content>
-	@Override public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-		<#list data.specialInfo as entry>
-		list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-	    </#list>
-	}
-	</#if>
+	<@addSpecialInformation data.specialInformation, true/>
 
 	<#if data.displayFluidOverlay>
 	@Override public boolean shouldDisplayFluidOverlay(BlockState state, BlockAndTintGetter world, BlockPos pos, FluidState fluidstate) {

@@ -31,8 +31,17 @@
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
 <#include "../mcitems.ftl">
-
 package ${package}.world.features.ores;
+<#assign cond = false>
+<#if data.restrictionBiomes?has_content>
+	<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
+		<#if restrictionBiome?contains(":is_")>
+			<#assign cond = true>
+			 <#break>
+		</#if>
+		<#break>
+	</#list>
+</#if>
 
 public class ${name}Feature extends OreFeature {
 
@@ -57,8 +66,9 @@ public class ${name}Feature extends OreFeature {
 		return PLACED_FEATURE;
 	}
 
+
 	public static final Set<ResourceLocation> GENERATE_BIOMES =
-	<#if data.restrictionBiomes?has_content>
+    <#if data.restrictionBiomes?has_content && !cond>
 	Set.of(
 		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
 			new ResourceLocation("${restrictionBiome}")<#sep>,
@@ -68,20 +78,22 @@ public class ${name}Feature extends OreFeature {
 	null;
 	</#if>
 
+    <#if data.restrictionBiomes?has_content && cond>
 	private final Set<ResourceKey<Level>> generate_dimensions = Set.of(
-		<#list data.spawnWorldTypes as worldType>
-			<#if worldType == "Surface">
+		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
+			<#if restrictionBiome == "#minecraft:is_overworld">
 				Level.OVERWORLD
-			<#elseif worldType == "Nether">
+			<#elseif restrictionBiome == "#minecraft:is_nether">
 				Level.NETHER
-			<#elseif worldType == "End">
+			<#elseif restrictionBiome == "#minecraft:is_end">
 				Level.END
 			<#else>
 				ResourceKey.create(Registry.DIMENSION_REGISTRY,
-						new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}"))
+						new ResourceLocation("${modid}:${restrictionBiome?keep_after("is_")}"))
 			</#if><#sep>,
 		</#list>
 	);
+	</#if>
 
 	public ${name}Feature() {
 		super(OreConfiguration.CODEC);
@@ -89,16 +101,10 @@ public class ${name}Feature extends OreFeature {
 
 	public boolean place(FeaturePlaceContext<OreConfiguration> context) {
 		WorldGenLevel world = context.level();
+		<#if data.restrictionBiomes?has_content && cond>
 		if (!generate_dimensions.contains(world.getLevel().dimension()))
 			return false;
-
-		<#if hasProcedure(data.generateCondition)>
-		int x = context.origin().getX();
-		int y = context.origin().getY();
-		int z = context.origin().getZ();
-		if (!<@procedureOBJToConditionCode data.generateCondition/>)
-			return false;
-		</#if>
+        </#if>
 
 		return super.place(context);
 	}

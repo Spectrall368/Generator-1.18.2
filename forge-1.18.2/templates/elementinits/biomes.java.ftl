@@ -30,11 +30,9 @@
 
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
-
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
-
 package ${package}.init;
 
 import com.mojang.datafixers.util.Pair;
@@ -42,7 +40,6 @@ import com.mojang.datafixers.util.Pair;
 <#assign spawn_overworld = []>
 <#assign spawn_overworld_caves = []>
 <#assign spawn_nether = []>
-
 <#list biomes as biome>
 	<#if biome.spawnBiome>
 		<#assign spawn_overworld += [biome]>
@@ -68,7 +65,6 @@ public class ${JavaModName}Biomes {
     </#list>
 
 	<#if spawn_overworld?has_content || spawn_overworld_caves?has_content || spawn_nether?has_content>
-
 		@SubscribeEvent public static void onServerAboutToStart(ServerAboutToStartEvent event) {
 			MinecraftServer server = event.getServer();
 			Registry<DimensionType> dimensionTypeRegistry = server.registryAccess().registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY);
@@ -247,7 +243,5 @@ public class ${JavaModName}Biomes {
 		</#if>
 
 	</#if>
-
 }
-
 <#-- @formatter:on -->

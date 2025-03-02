@@ -19,5 +19,9 @@
   "height": 256,
   "logical_height": 256,
   </#if>
+  <#if var_customeffects?? && var_customeffects == "true">
+  "effects": "${modid}:${registryname}"
+  <#else>
   "effects": "<#if data.hasFog>minecraft:the_nether<#else>minecraft:overworld</#if>"
+  </#if>
 }

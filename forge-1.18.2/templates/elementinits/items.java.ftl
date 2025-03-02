@@ -30,17 +30,16 @@
 
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
-
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
-
 package ${package}.init;
-
 <#assign hasBlocks = false>
 <#assign hasDoubleBlocks = false>
+<#assign hasItemsWithProperties = w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0
+	|| w.getGElementsOfType("tool")?filter(e -> e.toolType == "Shield")?size != 0>
 
-<#if w.hasItemsWithCustomProperties()>
+<#if hasItemsWithProperties>
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 </#if>
 public class ${JavaModName}Items {
@@ -68,18 +67,16 @@ public class ${JavaModName}Items {
         <#elseif item.getModElement().getTypeString() == "dimension" && item.hasIgniter()>
             public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
                 REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
-        <#elseif item.getModElement().getTypeString() == "fluid" && item.generateBucket>
-            public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_BUCKET =
-                REGISTRY.register("${item.getModElement().getRegistryName()}_bucket", () -> new ${item.getModElement().getName()}Item());
-        <#elseif item.getModElement().getType().getBaseType()?string == "BLOCK">
-            <#if (item.getModElement().getTypeString() == "block" && item.isDoubleBlock()) || (item.getModElement().getTypeString() == "plant" && item.isDoubleBlock())>
+		<#elseif item.getModElement().getTypeString() == "fluid" && item.generateBucket>
+			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_BUCKET =
+				REGISTRY.register("${item.getModElement().getRegistryName()}_bucket", () -> new ${item.getModElement().getName()}Item());
+		<#elseif item.getModElement().getTypeString() == "block" || item.getModElement().getTypeString() == "plant">
+			<#if item.isDoubleBlock()>
                 <#assign hasDoubleBlocks = true>
-                public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
-                    doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${item.creativeTab});
+				public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} = doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${item.creativeTab});
             <#else>
                 <#assign hasBlocks = true>
-                public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
-                    block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${item.creativeTab});
+				public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} = block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${item.creativeTab});
             </#if>
         <#elseif item.getModElement().getTypeString() == "livingentity">
             public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_SPAWN_EGG =
@@ -92,7 +89,7 @@ public class ${JavaModName}Items {
         </#if>
     </#list>
 
-	<#if w.hasItemsWithCustomProperties()>
+	<#if hasItemsWithProperties>
 	<#compress>
 	@SubscribeEvent public static void clientLoad(FMLClientSetupEvent event) {
 		event.enqueueWork(() -> {
@@ -114,6 +111,9 @@ public class ${JavaModName}Items {
 						<#else>0</#if>
 				);
 				</#list>
+			<#elseif item.getModElement().getTypeString() == "tool" && item.toolType == "Shield">
+				ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(), new ResourceLocation("blocking"),
+					ItemProperties.getProperty(Items.SHIELD, new ResourceLocation("blocking")));
 			</#if>
 		</#list>
 		});

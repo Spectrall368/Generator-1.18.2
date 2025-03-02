@@ -1,36 +1,40 @@
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
 {
-  <#if data.group?has_content>"group": "${data.group}",</#if>
     <#if data.recipeShapeless>
         "type": "minecraft:crafting_shapeless",
+    <#else>
+        "type": "minecraft:crafting_shaped",
+    </#if>
+    <#if data.group?has_content>"group": "${data.group}",</#if>
+    "category": "${data.craftingBookCategory?lower_case}",
+    <#if data.recipeShapeless>
         "ingredients": [
           <#assign ingredients = "">
           <#list data.recipeSlots as element>
               <#if !element.isEmpty()>
-                  <#assign ingredients += "{${mappedMCItemToIngameItemName(element)}},">
+                  <#assign ingredients += "{${mappedMCItemToItemObjectJSON(element)}},">
               </#if>
           </#list>
-            ${ingredients[0..(ingredients?last_index_of(',') - 1)]}
+          ${ingredients[0..(ingredients?last_index_of(',') - 1)]}
         ],
     <#else>
-        "type": "minecraft:crafting_shaped",
         <#assign recipeArray = data.getOptimisedRecipe()>
-        <#assign rm = [], i = 0>
+        <#assign patternKeys = data.getPatternKeys()>
         "pattern": [
         <#list recipeArray as rl>
-        		"<#list rl as re><#if !re.isEmpty()><#assign rm+=["\"${i}\": {${mappedMCItemToIngameItemName(re)}}"]/>${i}<#else> </#if><#assign i+=1></#list>"<#if rl?has_next>,</#if>
+            "<#list rl as re><#if !re.isEmpty()>${patternKeys.get(re)}<#else> </#if></#list>"<#sep>,
         </#list>
         ],
         "key": {
-        <#list rm as recipeMapping>
-            ${recipeMapping}<#if recipeMapping?has_next>,</#if>
+        <#list patternKeys.keySet() as item>
+            "${patternKeys.get(item)}": {${mappedMCItemToItemObjectJSON(item)}}<#sep>,
         </#list>
         },
     </#if>
     "result": {
-      ${mappedMCItemToIngameItemName(data.recipeReturnStack)},
-      "count": ${data.recipeRetstackSize}
+        ${mappedMCItemToItemObjectJSON(data.recipeReturnStack)},
+        "count": ${data.recipeRetstackSize}
     }
 }
 <#-- @formatter:on -->

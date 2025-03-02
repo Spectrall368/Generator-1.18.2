@@ -29,19 +29,16 @@
 -->
 
 <#-- @formatter:off -->
-
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
-
 package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Entities {
-
 	public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITIES, ${JavaModName}.MODID);
 
 	<#list entities as entity>
-		<#if entity.getModElement().getTypeString() == "rangeditem">
+		<#if entity.getModElement().getTypeString() == "projectile">
 			public static final RegistryObject<EntityType<${entity.getModElement().getName()}Entity>> ${entity.getModElement().getRegistryNameUpper()} =
 				register("projectile_${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}Entity>
 					of(${entity.getModElement().getName()}Entity::new, MobCategory.MISC).setCustomClientFactory(${entity.getModElement().getName()}Entity::new)
@@ -85,6 +82,5 @@ package ${package}.init;
 			</#if>
 		</#list>
 	}
-
 }
 <#-- @formatter:on -->

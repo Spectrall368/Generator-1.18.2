@@ -1,0 +1,1 @@
+new CocoaDecorator(${field$probability}f)

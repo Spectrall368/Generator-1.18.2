@@ -63,11 +63,12 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		.randomTicks()
 		</#if>
 		<#if data.isCustomSoundType>
-			.sound(new ForgeSoundType(1.0f, 1.0f, () -> new SoundEvent(new ResourceLocation("${data.breakSound}")),
-			() -> new SoundEvent(new ResourceLocation("${data.stepSound}")),
-			() -> new SoundEvent(new ResourceLocation("${data.placeSound}")),
-			() -> new SoundEvent(new ResourceLocation("${data.hitSound}")),
-			() -> new SoundEvent(new ResourceLocation("${data.fallSound}"))))
+			.sound(new ForgeSoundType(1.0f, 1.0f,
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.breakSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.stepSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.placeSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hitSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.fallSound}"))
 		<#else>
 			.sound(SoundType.${data.soundOnStep})
 		</#if>
@@ -145,14 +146,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	}
 	</#if>
 
-	<#if data.specialInfo?has_content>
-	@Override public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-		<#list data.specialInfo as entry>
-		list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-		</#list>
-	}
-	</#if>
+	<@addSpecialInformation data.specialInformation, true/>
 
 	<#if data.fireSpreadSpeed != 0>
 	@Override public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
@@ -233,7 +227,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 			BlockPos blockpos = pos.below();
 			BlockState groundState = worldIn.getBlockState(blockpos);
 
-			<#if data.plantType = "normal">
+			<#if data.plantType == "normal">
 				return this.mayPlaceOn(groundState, worldIn, blockpos)
 			<#elseif data.plantType == "growapable">
 				<#if hasProcedure(data.placingCondition)>

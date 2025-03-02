@@ -29,13 +29,10 @@
 -->
 
 <#-- @formatter:off -->
-
 <#include "../mcitems.ftl">
-
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
-
 package ${package}.init;
 
 public class ${JavaModName}Tabs {
@@ -57,7 +54,5 @@ public class ${JavaModName}Tabs {
         }<#if tab.showSearch>.setBackgroundSuffix("item_search.png")</#if>;
         </#list>
     }
-
 }
-
 <#-- @formatter:on -->

@@ -38,29 +38,17 @@ import net.minecraft.network.chat.Component;
 public class ${name}Item extends RecordItem {
 
 	public ${name}Item() {
+		super(${data.analogOutput},
 		<#if data.music.getUnmappedValue().startsWith("CUSTOM:")>
-		super(${data.analogOutput}, ${JavaModName}Sounds.REGISTRY.get(new ResourceLocation("${data.music}")),
-				new Item.Properties().tab(${data.creativeTab}).stacksTo(1).rarity(Rarity.RARE));
+		${JavaModName}Sounds.REGISTRY.get(new ResourceLocation("${data.music}"))
 		<#else>
-		super(${data.analogOutput}, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}")),
-				new Item.Properties().tab(${data.creativeTab}).stacksTo(1).rarity(Rarity.RARE));
-		</#if>
+		ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}"))
+		</#if>, new Item.Properties().tab(${data.creativeTab}).stacksTo(1).rarity(Rarity.${data.rarity}));
 	}
 
-	<#if data.hasGlow>
-	@Override @OnlyIn(Dist.CLIENT) public boolean isFoil(ItemStack itemstack) {
-		return true;
-	}
-	</#if>
+	<@hasGlow data.glowCondition/>
 
-	<#if data.specialInfo?has_content>
-	@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-		<#list data.specialInfo as entry>
-		list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
-		</#list>
-	}
-	</#if>
+	<@addSpecialInformation data.specialInformation/>
 
 	<@onRightClickedInAir data.onRightClickedInAir/>
 

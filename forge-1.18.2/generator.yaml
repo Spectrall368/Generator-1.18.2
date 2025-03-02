@@ -1,11 +1,14 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 status: deprecated
-buildfileversion: 40.2.21
+buildfileversion: 40.3.6
 subversion: 1.0.1
+
+import:
+  - datapack-1.18.x
 
 java_models:
   key: mojmap-1.18.x
-  compatible: [mojmap-1.17.x, mojmap-1.19.x, mojmap-1.20.x]
+  compatible: [mojmap-1.17.x, mojmap-1.19.x, mojmap-1.20.x, mojmap-1.21.x]
   requested_key_words: [ModelPart, ~ModelRenderer]
 
 # gradle task definitions
@@ -60,9 +63,9 @@ base_templates:
     writer: file
     name: "@RESROOT/META-INF/accesstransformer.cfg"
     condition_any:
-      - ${w.hasGameRulesOfType('Number') || w.hasGameRulesOfType('Logic')}
+      - "${w.getGElementsOfType('gamerule')?filter(e -> e.type.equals('Number') || e.type.equals('Logic'))?size != 0}"
       - ${w.hasElementsOfType('dimension') || w.hasElementsOfType('biome')}
-      - ${w.hasToolsOfType('Fishing rod')}
+      - "${w.getGElementsOfType('tool')?filter(e -> e.toolType.equals('Fishing rod'))?size != 0}"
       - ${w.hasElementsOfType('feature')}
 
 sources_setup_tasks:
