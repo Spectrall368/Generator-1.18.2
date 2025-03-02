@@ -29,8 +29,8 @@
 -->
 
 <#-- @formatter:off -->
-<#include "procedures.java.ftl">
-<#include "mcitems.ftl">
+<#include "../procedures.java.ftl">
+<#include "../mcitems.ftl">
 package ${package}.world.features;
 <#assign configuration = generator.map(featuretype, "features", 1)>
 
