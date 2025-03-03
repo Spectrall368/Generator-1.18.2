@@ -35,12 +35,8 @@ package ${package}.entity;
 
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.sounds.SoundEvent;
-
-import javax.annotation.Nullable;
 
 <#assign extendsClass = "PathfinderMob">
 <#if data.aiBase != "(none)" >
@@ -382,14 +378,24 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				return false;
 		</#if>
 		<#if data.immuneToWither>
-			if (damagesource == DamageSource.WITHER)
-				return false;
-			if (damagesource.getMsgId().equals("witherSkull"))
+			if (damagesource == DamageSource.WITHER || damagesource.getMsgId().equals("witherSkull"))
 				return false;
 		</#if>
 		return super.hurt(damagesource, amount);
 	}
     </#if>
+
+	<#if data.immuneToExplosion>
+	@Override public boolean ignoreExplosion() {
+		return true;
+	}
+	</#if>
+
+	<#if data.immuneToFire>
+	@Override public boolean fireImmune() {
+		return true;
+	}
+	</#if>
 
 	<#if hasProcedure(data.whenMobDies)>
 	@Override public void die(DamageSource source) {

@@ -129,7 +129,5 @@ public class ${name}Feature extends OreFeature {
 		}
 
 	}
-
 }
-
 <#-- @formatter:on -->

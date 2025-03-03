@@ -30,7 +30,6 @@
 
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
-
 package ${package}.client.particle;
 
 @OnlyIn(Dist.CLIENT) public class ${name}Particle extends TextureSheetParticle {

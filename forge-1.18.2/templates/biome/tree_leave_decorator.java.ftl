@@ -46,33 +46,58 @@ public class ${name}LeaveDecorator extends LeaveVineDecorator {
             ForgeRegistries.TREE_DECORATOR_TYPES.register(tdt);
         }
 
-        @Override
-        protected TreeDecoratorType<?> type() {
+        @Override protected TreeDecoratorType<?> type() {
             return tdt;
         }
 
-        @Override
-        public void place(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> biConsumer, Random random, List<BlockPos> listBlockPos, List<BlockPos> listBlockPos2) {
+        @Override public void place(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> biConsumer, Random random, List<BlockPos> listBlockPos, List<BlockPos> listBlockPos2) {
             listBlockPos2.forEach((blockpos) -> {
                 if (random.nextInt(4) == 0) {
-                    BlockPos bp = blockpos.below();
+                    BlockPos bp = blockpos.west();
                     if (Feature.isAir(level, bp)) {
-                        addVine(level, bp, biConsumer);
+                        addVine(level, Direction.WEST, bp, biConsumer);
                     }
                 }
 
+                if (random.nextInt(4) == 0) {
+                    BlockPos bp = blockpos.east();
+                    if (Feature.isAir(level, bp)) {
+                        addVine(level, Direction.EAST, bp, biConsumer);
+                    }
+                }
+
+                if (random.nextInt(4) == 0) {
+                    BlockPos bp = blockpos.north();
+                    if (Feature.isAir(level, bp)) {
+                        addVine(level, Direction.NORTH, bp, biConsumer);
+                    }
+                }
+
+                if (random.nextInt(4) == 0) {
+                    BlockPos bp = blockpos.south();
+                    if (Feature.isAir(level, bp)) {
+                        addVine(level, Direction.SOUTH, bp, biConsumer);
+                    }
+                }
             });
         }
 
-        private static void addVine(LevelSimulatedReader levelReader, BlockPos blockPos, BiConsumer<BlockPos, BlockState> biConsumer) {
-            biConsumer.accept(blockPos, ${mappedBlockToBlockStateCode(data.treeVines)});
-            int i = 4;
-            for(BlockPos blockpos = blockPos.below(); Feature.isAir(levelReader, blockpos) && i > 0; --i) {
-                biConsumer.accept(blockpos, ${mappedBlockToBlockStateCode(data.treeVines)});
-                blockpos = blockpos.below();
-            }
-
+	private static void addVine(LevelSimulatedReader levelReader, Direction direction, BlockPos blockPos, BiConsumer<BlockPos, BlockState> biConsumer) {
+        biConsumer.accept(blockPos, ${mappedBlockToBlockStateCode(data.treeVines)});
+        int i = 4;
+        for(BlockPos blockpos = blockPos.below(); Feature.isAir(levelReader, blockpos) && i > 0; --i) {
+            biConsumer.accept(blockpos, oriented(${mappedBlockToBlockStateCode(data.treeVines)}, direction));
+            blockpos = blockpos.below();
         }
+	}
 
+	private static BlockState oriented(BlockState blockstate, Direction direction) {
+		return switch (direction) {
+			case SOUTH -> blockstate.getBlock().rotate(blockstate, Rotation.CLOCKWISE_180);
+			case EAST -> blockstate.getBlock().rotate(blockstate, Rotation.CLOCKWISE_90);
+			case WEST -> blockstate.getBlock().rotate(blockstate, Rotation.COUNTERCLOCKWISE_90);
+			default -> blockstate;
+		};
+	}
 }
 <#-- @formatter:on -->

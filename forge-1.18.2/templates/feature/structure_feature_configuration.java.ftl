@@ -31,9 +31,6 @@
 <#-- @formatter:off -->
 package ${package}.world.features.configurations;
 
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.mojang.serialization.Codec;
-
 public record StructureFeatureConfiguration(ResourceLocation structure, boolean randomRotation, boolean randomMirror, HolderSet<Block> ignoredBlocks, Vec3i offset) implements FeatureConfiguration {
     public StructureFeatureConfiguration(ResourceLocation structure, boolean randomRotation, boolean randomMirror, TagKey<Block> ignoredBlocks, Vec3i offset) {
         this(structure, randomRotation, randomMirror, Minecraft.getInstance().level.registryAccess()

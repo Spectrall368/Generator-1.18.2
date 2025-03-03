@@ -62,9 +62,9 @@
 
 <#function mappedMCItemToIngredient mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("TAG:")>
-        <#return "Ingredient.of(ItemTags.create(new ResourceLocation(\"" + mappedBlock.getUnmappedValue().replace("TAG:", "") + "\")))">
-    <#elseif generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-        <#return "Ingredient.of(ItemTags.create(new ResourceLocation(\"" + generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "") + "\")))">
+        <#return "Ingredient.of(ItemTags.create(new ResourceLocation(\"" + mappedBlock.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":") + "\")))">
+    <#elseif mappedBlock.getMappedValue(1).startsWith("#")>
+        <#return "Ingredient.of(ItemTags.create(new ResourceLocation(\"" + mappedBlock.getMappedValue(1).replace("#", "") + "\")))">
     <#else>
         <#return "Ingredient.of(" + mappedMCItemToItemStackCode(mappedBlock, 1) + ")">
     </#if>
@@ -79,7 +79,7 @@
         <#assign itemsOnly = true>
 
         <#list mappedBlocks as mappedBlock>
-            <#if mappedBlock.getUnmappedValue().startsWith("TAG:") || generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
+            <#if mappedBlock.getUnmappedValue().startsWith("TAG:") || mappedBlock.getMappedValue(1).startsWith("#")>
                 <#assign itemsOnly = false>
                 <#break>
             </#if>
@@ -116,9 +116,9 @@
 
     <#list elements as block>
         <#if block.getUnmappedValue().startsWith("TAG:")>
-            <#assign tags += [block.getUnmappedValue().replace("TAG:", "")]>
-        <#elseif generator.map(block.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-            <#assign tags += [generator.map(block.getUnmappedValue(), "blocksitems", 1).replace("#", "")]>
+            <#assign tags += [block.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":")]>
+        <#elseif block.getMappedValue(1).startsWith("#")>
+            <#assign tags += [block.getMappedValue(1).replace("#", "")]>
         <#else>
             <#assign blocks += [mappedBlockToBlock(block)]>
         </#if>
@@ -180,9 +180,9 @@
             <#return "\"item\": \"minecraft:air\"">
         </#if>
     <#elseif mappedBlock.getUnmappedValue().startsWith("TAG:")>
-        <#return "\"tag\": \"" + mappedBlock.getUnmappedValue().replace("TAG:", "")?lower_case + "\"">
+        <#return "\"tag\": \"" + mappedBlock.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":")?lower_case + "\"">
     <#else>
-        <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1) />
+        <#assign mapped = mappedBlock.getMappedValue(1) />
         <#if mapped.startsWith("#")>
             <#return "\"tag\": \"" + mapped.replace("#", "") + "\"">
         <#elseif mapped.contains(":")>
@@ -203,12 +203,12 @@
         </#if>
     <#elseif mappedBlock.getUnmappedValue().startsWith("TAG:")>
         <#if acceptTags>
-            <#return "#" + mappedBlock.getUnmappedValue().replace("TAG:", "")?lower_case>
+            <#return "#" + mappedBlock.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":")?lower_case>
         <#else>
             <#return "minecraft:air">
         </#if>
     <#else>
-        <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1) />
+        <#assign mapped = mappedBlock.getMappedValue(1) />
         <#if mapped.startsWith("#")>
             <#if acceptTags>
                 <#return mapped>
@@ -335,7 +335,7 @@
             </#if>
         </#if>
     <#elseif !mappedBlock.getUnmappedValue().startsWith("TAG:")>
-        <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1) />
+        <#assign mapped = mappedBlock.getMappedValue(1) />
         <#if !mapped.startsWith("#")>
             <#if !mapped.contains(":")>
                 <#assign mapped = "minecraft:" + mapped />

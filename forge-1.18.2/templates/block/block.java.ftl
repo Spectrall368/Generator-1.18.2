@@ -33,12 +33,9 @@
 <#include "../mcitems.ftl">
 <#include "../procedures.java.ftl">
 <#include "../triggers.java.ftl">
-
 package ${package}.block;
 
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-import net.minecraft.world.level.material.Material;
 
 <#compress>
 public class ${name}Block extends
@@ -139,9 +136,6 @@ public class ${name}Block extends
 		</#if>
 		<#if (!data.isNotColidable && data.offsetType != "NONE")>
 			.dynamicShape()
-		</#if>
-		<#if !data.useLootTableForDrops && (data.dropAmount == 0)>
-			.noDrops()
 		</#if>
 	</#macro>
 
@@ -450,8 +444,10 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if data.requiresCorrectTool>
+	<#-- For harvest levels <= 3, we use vanilla tags (netherite already does need custom handing) -->
+	<#if data.requiresCorrectTool && (data.breakHarvestLevel > 3)>
 	@Override public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
+		<#-- If item is TieredItem, we check by level to be compatible with int harvest levels -->
 		if(player.getInventory().getSelected().getItem() instanceof
 				<#if data.destroyTool == "pickaxe">PickaxeItem
 				<#elseif data.destroyTool == "axe">AxeItem
@@ -459,55 +455,10 @@ public class ${name}Block extends
 				<#elseif data.destroyTool == "hoe">HoeItem
 				<#else>TieredItem</#if> tieredItem)
 			return tieredItem.getTier().getLevel() >= ${data.breakHarvestLevel};
-		return false;
+		<#-- in other cases (not TieredItem), we resort to default tier sorting and checking using tags -->
+		else
+			return super.canHarvestBlock(state, world, pos, player);
 	}
-	</#if>
-
-	<#if !(data.useLootTableForDrops || (data.dropAmount == 0))>
-		<#if data.dropAmount != 1 && !(data.customDrop?? && !data.customDrop.isEmpty())>
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-			<#if data.blockBase?has_content && data.blockBase == "Door">
-			if(state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
-				return Collections.emptyList();
-			</#if>
-
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-			if(!dropsOriginal.isEmpty())
-				return dropsOriginal;
-			return Collections.singletonList(new ItemStack(this, ${data.dropAmount}));
-		}
-		<#elseif data.customDrop?? && !data.customDrop.isEmpty()>
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-			<#if data.blockBase?has_content && data.blockBase == "Door">
-			if(state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
-				return Collections.emptyList();
-			</#if>
-
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-			if(!dropsOriginal.isEmpty())
-				return dropsOriginal;
-			return Collections.singletonList(${mappedMCItemToItemStackCode(data.customDrop, data.dropAmount)});
-		}
-		<#elseif data.blockBase?has_content && data.blockBase == "Slab">
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-			if(!dropsOriginal.isEmpty())
-				return dropsOriginal;
-			return Collections.singletonList(new ItemStack(this, state.getValue(TYPE) == SlabType.DOUBLE ? 2 : 1));
-		}
-		<#else>
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-			<#if data.blockBase?has_content && data.blockBase == "Door">
-			if(state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
-				return Collections.emptyList();
-			</#if>
-
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-			if(!dropsOriginal.isEmpty())
-				return dropsOriginal;
-			return Collections.singletonList(new ItemStack(this, 1));
-		}
-		</#if>
 	</#if>
 
 	<@onBlockAdded data.onBlockAdded, hasProcedure(data.onTickUpdate) && data.shouldScheduleTick(), data.tickRate/>
@@ -531,8 +482,7 @@ public class ${name}Block extends
 	</#if>
 
 	<#if hasProcedure(data.onRandomUpdateEvent)>
-	@OnlyIn(Dist.CLIENT) @Override
-	public void animateTick(BlockState blockstate, Level world, BlockPos pos, Random random) {
+	@OnlyIn(Dist.CLIENT) @Override public void animateTick(BlockState blockstate, Level world, BlockPos pos, Random random) {
 		super.animateTick(blockstate, world, pos, random);
 		Player entity = Minecraft.getInstance().player;
 		int x = pos.getX();
@@ -716,7 +666,6 @@ public class ${name}Block extends
 		}
 		</#if>
 	</#if>
-
 }
 </#compress>
 <#-- @formatter:on -->

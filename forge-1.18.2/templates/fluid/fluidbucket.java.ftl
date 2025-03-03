@@ -32,8 +32,6 @@
 <#include "../triggers.java.ftl">
 package ${package}.item;
 
-import net.minecraft.network.chat.Component;
-
 public class ${name}Item extends BucketItem {
 
 	public ${name}Item() {

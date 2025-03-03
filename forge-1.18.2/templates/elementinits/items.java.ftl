@@ -121,6 +121,9 @@ public class ${JavaModName}Items {
 	</#compress>
 	</#if>
 
+	// Start of user code block custom items
+	// End of user code block custom items
+
     <#if hasBlocks>
 	private static RegistryObject<Item> block(RegistryObject<Block> block, CreativeModeTab tab) {
 		return REGISTRY.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties().tab(tab)));

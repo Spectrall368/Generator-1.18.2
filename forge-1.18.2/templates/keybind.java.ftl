@@ -30,7 +30,6 @@
 
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
-
 package ${package}.network;
 
 import ${package}.${JavaModName};

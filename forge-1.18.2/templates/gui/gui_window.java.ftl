@@ -144,8 +144,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		}
 
 		<#list data.getComponentsOfType("TextField") as component>
-		    if(${component.getName()}.isFocused())
-		    	return ${component.getName()}.keyPressed(key, b, c);
+			if(${component.getName()}.isFocused())
+				return ${component.getName()}.keyPressed(key, b, c);
 		</#list>
 
 		return super.keyPressed(key, b, c);
@@ -169,15 +169,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		</#list>
 	}
 
-	@Override public void onClose() {
-		super.onClose();
-		Minecraft.getInstance().keyboardHandler.setSendRepeatsToGui(false);
-	}
-
 	@Override public void init() {
 		super.init();
-
-		this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
 		<#list data.getComponentsOfType("TextField") as component>
 			${component.getName()} = new EditBox(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},

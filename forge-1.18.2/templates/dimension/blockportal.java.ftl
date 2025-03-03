@@ -28,12 +28,9 @@
 -->
 
 <#-- @formatter:off -->
-
 <#include "../procedures.java.ftl">
-
 package ${package}.block;
 
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class ${name}PortalBlock extends NetherPortalBlock {
@@ -43,20 +40,17 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 				.strength(-1.0F).sound(SoundType.GLASS).lightLevel(s -> ${data.portalLuminance}).noDrops());
 	}
 
-	<#if hasProcedure(data.onPortalTickUpdate)>
-	@Override public void tick(BlockState blockstate, ServerLevel world, BlockPos pos, Random random) {
-		<@procedureCode data.onPortalTickUpdate, {
-			"x": "pos.getX()",
-			"y": "pos.getY()",
-			"z": "pos.getZ()",
-			"world": "world",
-			"blockstate": "blockstate"
-		}/>
-	}
-	</#if>
-
-	<#-- Prevent ZOMBIFIED_PIGLINs from spawning -->
-	@Override public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
+	@Override public void randomTick(BlockState blockstate, ServerLevel world, BlockPos pos, Random random) {
+		<#-- Do not call super to prevent ZOMBIFIED_PIGLINs from spawning -->
+		<#if hasProcedure(data.onPortalTickUpdate)>
+			<@procedureCode data.onPortalTickUpdate, {
+				"x": "pos.getX()",
+				"y": "pos.getY()",
+				"z": "pos.getZ()",
+				"world": "world",
+				"blockstate": "blockstate"
+			}/>
+		</#if>
 	}
 
 	public static void portalSpawn(Level world, BlockPos pos) {

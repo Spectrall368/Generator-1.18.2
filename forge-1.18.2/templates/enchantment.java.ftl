@@ -30,7 +30,6 @@
 
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
-
 package ${package}.enchantment;
 
 public class ${name}Enchantment extends Enchantment {

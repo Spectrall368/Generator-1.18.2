@@ -55,13 +55,42 @@ public class ${name}TrunkDecorator extends TrunkVineDecorator {
         public void place(LevelSimulatedReader levelReader, BiConsumer<BlockPos, BlockState> biConsumer, Random random, List<BlockPos> listBlockPos, List<BlockPos> listBlockPos2) {
             listBlockPos.forEach(blockpos -> {
                 if (random.nextInt(3) > 0) {
-                    BlockPos bp = blockpos.below();
+                    BlockPos bp = blockpos.west();
                     if (Feature.isAir(levelReader, bp)) {
-                        biConsumer.accept(blockpos, ${mappedBlockToBlockStateCode(data.treeVines)});
+                        biConsumer.accept(blockpos, oriented(${mappedBlockToBlockStateCode(data.treeVines)}, Direction.EAST));
                     }
                 }
 
+                if (random.nextInt(3) > 0) {
+                    BlockPos bp = blockpos.east();
+                    if (Feature.isAir(levelReader, bp)) {
+                        biConsumer.accept(blockpos, oriented(${mappedBlockToBlockStateCode(data.treeVines)}, Direction.WEST));
+                    }
+                }
+
+                if (random.nextInt(3) > 0) {
+                    BlockPos bp = blockpos.north();
+                    if (Feature.isAir(levelReader, bp)) {
+                        biConsumer.accept(blockpos, oriented(${mappedBlockToBlockStateCode(data.treeVines)}, Direction.SOUTH));
+                    }
+                }
+
+                if (random.nextInt(3) > 0) {
+                    BlockPos bp = blockpos.south();
+                    if (Feature.isAir(levelReader, bp)) {
+                        biConsumer.accept(blockpos, oriented(${mappedBlockToBlockStateCode(data.treeVines)}, Direction.NORTH));
+                    }
+                }
             });
         }
+
+	private static BlockState oriented(BlockState blockstate, Direction direction) {
+		return switch (direction) {
+			case SOUTH -> blockstate.getBlock().rotate(blockstate, Rotation.CLOCKWISE_180);
+			case EAST -> blockstate.getBlock().rotate(blockstate, Rotation.CLOCKWISE_90);
+			case WEST -> blockstate.getBlock().rotate(blockstate, Rotation.COUNTERCLOCKWISE_90);
+			default -> blockstate;
+		};
+	}
 }
 <#-- @formatter:on -->

@@ -99,6 +99,7 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 
 	<#if (data.restrictionBiomes?has_content && cond) || data.hasGenerationConditions()>
 	public boolean place(FeaturePlaceContext<${configuration}> context) {
+		<#-- #4781 - we need to use WorldGenLevel instead of Level, or one can run incompatible procedures in condition -->
 		WorldGenLevel world = context.level();
 		<#if data.restrictionBiomes?has_content && cond>
 		if (!generateDimensions.contains(world.getLevel().dimension()))

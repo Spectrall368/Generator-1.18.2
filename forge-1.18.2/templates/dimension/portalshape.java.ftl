@@ -29,10 +29,7 @@
 
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
-
 package ${package}.world.teleporter;
-
-import javax.annotation.Nullable;
 
 public class ${name}PortalShape ${mcc.getClassBody("net.minecraft.world.level.portal.PortalShape")
         .replace("class PortalShape", "class " + name + "PortalShape")

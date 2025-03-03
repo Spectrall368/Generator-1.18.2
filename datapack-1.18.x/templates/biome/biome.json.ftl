@@ -89,7 +89,7 @@
 	  	<#if data.spawnParticles>
 		"particle": {
 			"options": {
-				"type": "${generator.map(data.particleToSpawn.getUnmappedValue(), "particles", 1)}"
+				"type": "${data.particleToSpawn.getMappedValue(1)}"
 			},
 			"probability": ${data.particlesProbability / 100}
         },
@@ -145,7 +145,7 @@
 	<#list entities as entry>
 	<#-- @formatter:off -->
     {
-		"type": "${generator.map(entry.entity.getUnmappedValue(), "entities", 2)}",
+		"type": "${entry.entity.getMappedValue(2)}",
 		"weight": ${entry.weight},
 		"minCount": ${entry.minGroup},
 		"maxCount": ${entry.maxGroup}

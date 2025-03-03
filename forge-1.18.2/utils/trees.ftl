@@ -30,6 +30,10 @@ new MegaJungleFoliagePlacer(ConstantInt.of(${radius}), ConstantInt.of(${offset})
 </#if>
 </#macro>
 
+<#macro randomSpreadFoliagePlacer radius offset foliage_height density>
+new RandomSpreadFoliagePlacer(ConstantInt.of(${radius}), ConstantInt.of(${offset}), ConstantInt.of(${foliage_height}), ${density})
+</#macro>
+
 <#macro twoLayersFeatureSize limit lower_size upper_size min_clipped_height=-1>
 new TwoLayersFeatureSize(${limit}, ${lower_size}, ${upper_size}<#if min_clipped_height != -1>, ${min_clipped_height}</#if>)
 </#macro>

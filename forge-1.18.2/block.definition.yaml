@@ -10,6 +10,12 @@ templates:
     condition: generateFeature
     name: "@SRCROOT/@BASEPACKAGEPATH/world/features/ores/@NAMEFeature.java"
 
+  # Loot table
+  - template: json/block_loot_table.json.ftl
+    writer: json
+    condition: generateLootTable()
+    name: "@MODDATAROOT/loot_tables/blocks/@registryname.json"
+
   # Block item templates
   - template: json/block_item.json.ftl
     condition: "renderType() #?= 10,11,12,14,110,120,2"
@@ -360,28 +366,32 @@ localizationkeys:
   - key: block.@modid.@registryname
     mapto: name
 
-global_templates:
-  - template: block/mineable_tag.json.ftl
-    writer: json
-    variables: "type=pickaxe"
-    name: "@RESROOT/data/minecraft/tags/blocks/mineable/pickaxe.json"
-    condition: "${w.getGElementsOfType('block')?filter(e -> e.destroyTool.equals('pickaxe'))?size != 0}"
-    hidden: true
-  - template: block/mineable_tag.json.ftl
-    writer: json
-    variables: "type=axe"
-    name: "@RESROOT/data/minecraft/tags/blocks/mineable/axe.json"
-    condition: "${w.getGElementsOfType('block')?filter(e -> e.destroyTool.equals('axe'))?size != 0}"
-    hidden: true
-  - template: block/mineable_tag.json.ftl
-    writer: json
-    variables: "type=shovel"
-    name: "@RESROOT/data/minecraft/tags/blocks/mineable/shovel.json"
-    condition: "${w.getGElementsOfType('block')?filter(e -> e.destroyTool.equals('shovel'))?size != 0}"
-    hidden: true
-  - template: block/mineable_tag.json.ftl
-    writer: json
-    variables: "type=hoe"
-    name: "@RESROOT/data/minecraft/tags/blocks/mineable/hoe.json"
-    condition: "${w.getGElementsOfType('block')?filter(e -> e.destroyTool.equals('hoe'))?size != 0}"
-    hidden: true
+tags:
+  - tag: BLOCKS:minecraft:mineable/pickaxe
+    condition: "${data.destroyTool == 'pickaxe'}"
+  - tag: BLOCKS:minecraft:mineable/axe
+    condition: "${data.destroyTool == 'axe'}"
+  - tag: BLOCKS:minecraft:mineable/shovel
+    condition: "${data.destroyTool == 'shovel'}"
+  - tag: BLOCKS:minecraft:mineable/hoe
+    condition: "${data.destroyTool == 'hoe'}"
+
+  - tag: BLOCKS:minecraft:needs_stone_tool
+    condition: "${data.requiresCorrectTool && data.breakHarvestLevel == 1}"
+  - tag: BLOCKS:minecraft:needs_iron_tool
+    condition: "${data.requiresCorrectTool && data.breakHarvestLevel == 2}"
+  - tag: BLOCKS:minecraft:needs_diamond_tool
+    condition: "${data.requiresCorrectTool && data.breakHarvestLevel == 3}"
+  - tag: BLOCKS:forge:needs_netherite_tool
+    condition: "${data.requiresCorrectTool && data.breakHarvestLevel == 4}"
+
+  - tag: BLOCKS:minecraft:stairs
+    condition: "${data.blockBase! == 'Stairs'}"
+  - tag: BLOCKS:minecraft:slabs
+    condition: "${data.blockBase! == 'Slab'}"
+  - tag: BLOCKS:minecraft:fences
+    condition: "${data.blockBase! == 'Fence'}"
+  - tag: BLOCKS:minecraft:walls
+    condition: "${data.blockBase! == 'Wall'}"
+  - tag: BLOCKS:minecraft:leaves
+    condition: "${data.blockBase! == 'Leaves'}"

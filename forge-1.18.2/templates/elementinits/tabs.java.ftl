@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2021, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -30,29 +30,35 @@
 
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
+<#assign tabMap = w.getCreativeTabMap()>
+<#assign customTabs = tabMap.keySet()?filter(e -> e?starts_with('CUSTOM:'))>
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
 package ${package}.init;
 
+<#compress>
 public class ${JavaModName}Tabs {
 
-    <#list tabs as tab>
+    <#list customTabs as customTab>
+    <#assign tab = w.getWorkspace().getModElementByName(customTab.replace("CUSTOM:", "")).getGeneratableElement()>
     public static CreativeModeTab TAB_${tab.getModElement().getRegistryNameUpper()};
     </#list>
 
 	public static void load() {
-        <#list tabs as tab>
-        TAB_${tab.getModElement().getRegistryNameUpper()} = new CreativeModeTab("tab${tab.getModElement().getRegistryName()}") {
-			@Override public ItemStack makeIcon() {
+    	<#list customTabs as customTab>
+    	<#assign tab = w.getWorkspace().getModElementByName(customTab.replace("CUSTOM:", "")).getGeneratableElement()>
+        TAB_${tab.getModElement().getRegistryNameUpper()} = new CreativeModeTab("${modid}.${tab.getModElement().getRegistryName()}") {
+			@Override @OnlyIn(Dist.CLIENT) public ItemStack makeIcon() {
 				return ${mappedMCItemToItemStackCode(tab.icon, 1)};
 			}
 
-			@OnlyIn(Dist.CLIENT) public boolean hasSearchBar() {
+			@Override @OnlyIn(Dist.CLIENT) public boolean hasSearchBar() {
 				return ${tab.showSearch};
 			}
         }<#if tab.showSearch>.setBackgroundSuffix("item_search.png")</#if>;
         </#list>
     }
 }
+</#compress>
 <#-- @formatter:on -->

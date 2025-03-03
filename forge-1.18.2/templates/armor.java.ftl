@@ -32,10 +32,7 @@
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
 <#include "triggers.java.ftl">
-
 package ${package}.item;
-
-import net.minecraft.sounds.SoundEvent;
 
 public abstract class ${name}Item extends ArmorItem {
 

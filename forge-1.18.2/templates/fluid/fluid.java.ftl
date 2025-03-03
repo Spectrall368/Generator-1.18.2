@@ -29,7 +29,6 @@
 
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
-
 package ${package}.fluid;
 
 public abstract class ${name}Fluid extends ForgeFlowingFluid {

@@ -33,11 +33,8 @@
 <#include "../procedures.java.ftl">
 <#include "../triggers.java.ftl">
 <#include "../mcitems.ftl">
-
 package ${package}.block;
 
-import net.minecraft.world.level.material.Material;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 <#compress>
@@ -90,9 +87,6 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		</#if>
 		<#if data.luminance != 0>
 		.lightLevel(s -> ${data.luminance})
-		</#if>
-		<#if !data.useLootTableForDrops && (data.dropAmount == 0)>
-		.noDrops()
 		</#if>
 		<#if data.isSolid>
 		.noOcclusion()
@@ -160,46 +154,6 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	}
 	</#if>
 
-	<#if !(data.useLootTableForDrops || (data.dropAmount == 0))>
-		<#if data.dropAmount != 1 && !(data.customDrop?? && !data.customDrop.isEmpty())>
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-			<#if data.plantType == "double">
-			if(state.getValue(HALF) != DoubleBlockHalf.LOWER)
-				return Collections.emptyList();
-			</#if>
-
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-			if(!dropsOriginal.isEmpty())
-				return dropsOriginal;
-			return Collections.singletonList(new ItemStack(this, ${data.dropAmount}));
-		}
-		<#elseif data.customDrop?? && !data.customDrop.isEmpty()>
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-			<#if data.plantType == "double">
-			if(state.getValue(HALF) != DoubleBlockHalf.LOWER)
-				return Collections.emptyList();
-			</#if>
-
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-			if(!dropsOriginal.isEmpty())
-				return dropsOriginal;
-			return Collections.singletonList(${mappedMCItemToItemStackCode(data.customDrop, data.dropAmount)});
-		}
-		<#else>
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-			<#if data.plantType == "double">
-			if(state.getValue(HALF) != DoubleBlockHalf.LOWER)
-				return Collections.emptyList();
-			</#if>
-
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-			if(!dropsOriginal.isEmpty())
-				return dropsOriginal;
-			return Collections.singletonList(new ItemStack(this, 1));
-		}
-		</#if>
-	</#if>
-
 	<#if (data.canBePlacedOn?size > 0) || hasProcedure(data.placingCondition)>
 		<#if data.plantType != "growapable">
 		@Override public boolean mayPlaceOn(BlockState groundState, BlockGetter worldIn, BlockPos pos) {
@@ -263,24 +217,35 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 
 	<@onBlockAdded data.onBlockAdded, false, 0/>
 
-	<@onBlockTick data.onTickUpdate, false, 0/>
-
-	<#if data.plantType == "growapable">
-	@Override public void randomTick(BlockState blockstate, ServerLevel world, BlockPos blockpos, Random random) {
-		if (world.isEmptyBlock(blockpos.above())) {
+	<#if data.plantType == "growapable" || hasProcedure(data.onTickUpdate)>
+	@Override public void randomTick(BlockState blockstate, ServerLevel world, BlockPos pos, Random random) {
+		<#if data.plantType == "growapable">
+		if (world.isEmptyBlock(pos.above())) {
 			int i = 1;
-			for(;world.getBlockState(blockpos.below(i)).is(this); ++i);
+			for(;world.getBlockState(pos.below(i)).is(this); ++i);
 			if (i < ${data.growapableMaxHeight}) {
 				int j = blockstate.getValue(AGE);
-				if (ForgeHooks.onCropsGrowPre(world, blockpos, blockstate, true)) {
+				if (ForgeHooks.onCropsGrowPre(world, pos, blockstate, true)) {
 					if (j == 15) {
-						world.setBlockAndUpdate(blockpos.above(), defaultBlockState());
-						world.setBlock(blockpos, blockstate.setValue(AGE, 0), 4);
-					} else
-						world.setBlock(blockpos, blockstate.setValue(AGE, j + 1), 4);
+						world.setBlockAndUpdate(pos.above(), defaultBlockState());
+						world.setBlock(pos, blockstate.setValue(AGE, 0), 4);
+					} else {
+						world.setBlock(pos, blockstate.setValue(AGE, j + 1), 4);
+					}
 				}
 			}
 		}
+		</#if>
+
+		<#if hasProcedure(data.onTickUpdate)>
+			<@procedureCode data.onTickUpdate, {
+			"x": "pos.getX()",
+			"y": "pos.getY()",
+			"z": "pos.getZ()",
+			"world": "world",
+			"blockstate": "blockstate"
+			}/>
+		</#if>
 	}
 	</#if>
 

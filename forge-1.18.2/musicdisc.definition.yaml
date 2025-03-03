@@ -5,6 +5,9 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
 
+tags:
+  - tag: ITEMS:minecraft:music_discs
+
 localizationkeys:
   - key: item.@modid.@registryname
     mapto: name

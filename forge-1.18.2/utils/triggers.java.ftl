@@ -2,15 +2,19 @@
 
 <#-- Item-related triggers -->
 <#macro addSpecialInformation procedure="" isBlock=false>
-	<#if procedure?has_content || hasProcedure(procedure)>
-		@Override public void appendHoverText(ItemStack itemstack, <#if isBlock>BlockGetter<#else>Level</#if> world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
+	<#if procedure?has_content && (hasProcedure(procedure) || !procedure.getFixedValue().isEmpty())>
+		@Override public void appendHoverText(ItemStack itemstack, <#if isBlock>BlockGetter<#else>Level</#if> level, List<Component> list, TooltipFlag flag) {
+		super.appendHoverText(itemstack, level, list, flag);
 		<#if hasProcedure(procedure)>
 			Entity entity = itemstack.getEntityRepresentation();
-			double x = entity != null ? entity.getX() : 0.0;
-			double y = entity != null ? entity.getY() : 0.0;
-			double z = entity != null ? entity.getZ() : 0.0;
-			list.add(new TextComponent(<@procedureOBJToStringCode procedure/>));
+			list.add(Component.literal(<@procedureCode procedure, {
+				"x": "entity != null ? entity.getX() : 0.0",
+				"y": "entity != null ? entity.getY() : 0.0",
+				"z": "entity != null ? entity.getZ() : 0.0",
+				"entity": "entity",
+				"world": "level instanceof Level ? (LevelAccessor) level : null",
+				"itemstack": "itemstack"
+			}, false/>));
 		<#else>
 			<#list procedure.getFixedValue() as entry>
 				list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));
@@ -53,11 +57,11 @@
 </#if>
 </#macro>
 
-<#macro onEntityHitWith procedure="" hurtStack=false>
+<#macro onEntityHitWith procedure="" hurtStack=false hurtStackAmount=2>
 <#if hasProcedure(procedure) || hurtStack>
 @Override public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
 	<#if hurtStack>
-		itemstack.hurtAndBreak(2, entity, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+		itemstack.hurtAndBreak(${hurtStackAmount}, entity, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
 	<#else>
 		boolean retval = super.hurtEnemy(itemstack, entity, sourceentity);
 	</#if>
@@ -223,15 +227,20 @@
 </#macro>
 
 <#macro piglinNeutral procedure="">
-<#if procedure?has_content || hasProcedure(procedure)>
+<#if procedure?has_content && (hasProcedure(procedure) || procedure.getFixedValue())>
 @Override public boolean makesPiglinsNeutral(ItemStack itemstack, LivingEntity entity) {
 	<#if hasProcedure(procedure)>
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
-		Level world = entity.level;
+		return <@procedureCode procedure, {
+			"x": "entity.getX()",
+			"y": "entity.getY()",
+			"z": "entity.getZ()",
+			"world": "entity.level",
+			"entity": "entity",
+			"itemstack": "itemstack"
+		}/>
+	<#else>
+		return true;
 	</#if>
-	return <@procedureOBJToConditionCode procedure procedure.getFixedValue() false/>;
 }
 </#if>
 </#macro>
@@ -397,7 +406,7 @@
 
 <#macro onAnimateTick procedure="">
 <#if hasProcedure(procedure)>
-@Override public void animateTick(BlockState blockstate, Level world, BlockPos pos, Random random) {
+@Override @OnlyIn(Dist.CLIENT) public void animateTick(BlockState blockstate, Level world, BlockPos pos, Random random) {
 	super.animateTick(blockstate, world, pos, random);
 	<@procedureCode procedure, {
 	"x": "pos.getX()",
@@ -472,10 +481,14 @@
 @Override public boolean isValidBonemealTarget(BlockGetter worldIn, BlockPos pos, BlockState blockstate, boolean clientSide) {
 	<#if hasProcedure(isBonemealTargetCondition)>
 	if (worldIn instanceof LevelAccessor world) {
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		return <@procedureOBJToConditionCode isBonemealTargetCondition/>;
+		return <@procedureCode isBonemealTargetCondition, {
+			"x": "pos.getX()",
+			"y": "pos.getY()",
+			"z": "pos.getZ()",
+			"world": "world",
+			"blockstate": "blockstate",
+			"clientSide": "clientSide"
+		}/>
 	}
 	return false;
 	<#else>
@@ -485,10 +498,13 @@
 
 @Override public boolean isBonemealSuccess(Level world, Random random, BlockPos pos, BlockState blockstate) {
 	<#if hasProcedure(bonemealSuccessCondition)>
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		return <@procedureOBJToConditionCode bonemealSuccessCondition/>;
+	return <@procedureCode bonemealSuccessCondition, {
+		"x": "pos.getX()",
+		"y": "pos.getY()",
+		"z": "pos.getZ()",
+		"world": "world",
+		"blockstate": "blockstate"
+	}/>
 	<#else>
 	return true;
 	</#if>

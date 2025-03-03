@@ -30,13 +30,11 @@
 
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
-
 <#if generator.map(data.overlayTarget, "screens") == "Ingame">
 	<#assign stackMethodName = "getMatrixStack">
 <#else>
 	<#assign stackMethodName = "getPoseStack">
 </#if>
-
 package ${package}.client.gui;
 
 @Mod.EventBusSubscriber({Dist.CLIENT}) public class ${name}Overlay {

@@ -28,7 +28,6 @@
 -->
 
 <#-- @formatter:off -->
-
 package ${package}.fluid.attributes;
 
 public class ${name}FluidAttributes extends FluidAttributes {
