@@ -30,7 +30,6 @@
 
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
-
 package ${package}.world.biome;
 
 import net.minecraftforge.common.BiomeManager;
@@ -50,28 +49,28 @@ public class ${name}Biome {
 	        Climate.Parameter.span(${data.genWeirdness.min}f, ${data.genWeirdness.max}f),
 	        0 <#-- offset -->
 	    ),
-	    new Climate.ParameterPoint(
-	        Climate.Parameter.span(${data.genTemperature.min}f, ${data.genTemperature.max}f),
-	        Climate.Parameter.span(${data.genHumidity.min}f, ${data.genHumidity.max}f),
-	        Climate.Parameter.span(${data.genContinentalness.min}f, ${data.genContinentalness.max}f),
-	        Climate.Parameter.span(${data.genErosion.min}f, ${data.genErosion.max}f),
-	        Climate.Parameter.point(1.0f),
-	        Climate.Parameter.span(${data.genWeirdness.min}f, ${data.genWeirdness.max}f),
-	        0 <#-- offset -->
-	    )
-	);
-    </#if>
+        new Climate.ParameterPoint(
+			Climate.Parameter.span(${data.genTemperature.min}f, ${data.genTemperature.max}f),
+			Climate.Parameter.span(${data.genHumidity.min}f, ${data.genHumidity.max}f),
+			Climate.Parameter.span(${data.genContinentalness.min}f, ${data.genContinentalness.max}f),
+			Climate.Parameter.span(${data.genErosion.min}f, ${data.genErosion.max}f),
+            Climate.Parameter.point(1.0f),
+			Climate.Parameter.span(${data.genWeirdness.min}f, ${data.genWeirdness.max}f),
+            0 <#-- offset -->
+        )
+    );
+	</#if>
 
 	<#if data.spawnInCaves>
 	public static final List<Climate.ParameterPoint> UNDERGROUND_PARAMETER_POINTS = List.of(
-	    new Climate.ParameterPoint(
-	        Climate.Parameter.span(${data.genTemperature.min}f, ${data.genTemperature.max}f),
-	        Climate.Parameter.span(${data.genHumidity.min}f, ${data.genHumidity.max}f),
-	        Climate.Parameter.span(${data.genContinentalness.min}f, ${data.genContinentalness.max}f),
-	        Climate.Parameter.span(${data.genErosion.min}f, ${data.genErosion.max}f),
-	        Climate.Parameter.span(0.2f, 0.9f),
-	        Climate.Parameter.span(${data.genWeirdness.min}f, ${data.genWeirdness.max}f),
-	        0 <#-- offset -->
+        new Climate.ParameterPoint(
+			Climate.Parameter.span(${data.genTemperature.min}f, ${data.genTemperature.max}f),
+			Climate.Parameter.span(${data.genHumidity.min}f, ${data.genHumidity.max}f),
+			Climate.Parameter.span(${data.genContinentalness.min}f, ${data.genContinentalness.max}f),
+			Climate.Parameter.span(${data.genErosion.min}f, ${data.genErosion.max}f),
+			Climate.Parameter.span(0.2f, 0.9f),
+			Climate.Parameter.span(${data.genWeirdness.min}f, ${data.genWeirdness.max}f),
+			0 <#-- offset -->
 	    )
 	);
     </#if>
