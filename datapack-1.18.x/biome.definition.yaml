@@ -190,14 +190,7 @@ global_templates:
     condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_nether'))?size != 0}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_nether.json"
 
-field_inclusions: [heightVariation, baseHeight, rainingPossibility, temperature,
-  foliageColor, grassColor, airColor, waterColor, waterFogColor, spawnEntries,
-  defaultFeatures, name, groundBlock, undergroundBlock, spawnStronghold, spawnMineshaft,
-  spawnMineshaftMesa, spawnPillagerOutpost, villageType, spawnWoodlandMansion,
-  spawnJungleTemple, spawnDesertPyramid, spawnSwampHut, spawnIgloo, spawnOceanMonument,
-  spawnShipwreck, spawnShipwreckBeached, spawnBuriedTreasure, oceanRuinType,
-  spawnNetherBridge, spawnNetherFossil, spawnBastionRemnant, spawnEndCity, spawnRuinedPortal
-    genTemperature, genHumidity, genContinentalness, genErosion, genWeirdness]
+field_exclusions: [name, coverageEstimate, treeVines, treeFruits, treeBranch, treeStem, minHeight, treeType, vanillaTreeType, treesPerChunk, spawnBiome, spawnInCaves, spawnBiomeNether]
 
 localizationkeys:
   - key: biome.@modid.@registryname

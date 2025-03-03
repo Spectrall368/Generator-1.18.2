@@ -35,6 +35,14 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mojang.serialization.Codec;
 
 public record StructureFeatureConfiguration(ResourceLocation structure, boolean randomRotation, boolean randomMirror, HolderSet<Block> ignoredBlocks, Vec3i offset) implements FeatureConfiguration {
+    public StructureFeatureConfiguration(ResourceLocation structure, boolean randomRotation, boolean randomMirror, TagKey<Block> ignoredBlocks, Vec3i offset) {
+        this(structure, randomRotation, randomMirror, Minecraft.getInstance().level.registryAccess()
+                                                          .registryOrThrow(Registry.BLOCK_REGISTRY)
+                                                          .getTag(ignoredBlocks)
+                                                          .<HolderSet<Block>>map(tag -> tag)
+                                                          .orElseGet(() -> HolderSet.<Block>direct()), offset);
+    }
+
 	public static final Codec<StructureFeatureConfiguration> CODEC = RecordCodecBuilder.create(builder -> {
 		return builder.group(ResourceLocation.CODEC.fieldOf("structure").forGetter(config -> {
 			return config.structure;

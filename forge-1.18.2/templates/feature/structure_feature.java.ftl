@@ -43,17 +43,17 @@ import com.mojang.serialization.Codec;
 	}
 
 	public boolean place(FeaturePlaceContext<StructureFeatureConfiguration> context) {
-		RandomSource random = context.random();
+		Random random = context.random();
 		WorldGenLevel worldGenLevel = context.level();
 		StructureFeatureConfiguration config = context.config();
 		Rotation rotation = config.randomRotation() ? Rotation.getRandom(random) : Rotation.NONE;
 		Mirror mirror = config.randomMirror() ? Mirror.values()[random.nextInt(2)] : Mirror.NONE;
 		BlockPos placePos = context.origin().offset(config.offset());
 		// Load the structure template
-		StructureTemplateManager structureManager = worldGenLevel.getLevel().getServer().getStructureManager();
+		StructureManager structureManager = worldGenLevel.getLevel().getServer().getStructureManager();
 		StructureTemplate template = structureManager.getOrCreate(config.structure());
 		StructurePlaceSettings placeSettings = (new StructurePlaceSettings()).setRotation(rotation).setMirror(mirror).setRandom(random).setIgnoreEntities(false)
-				.addProcessor(new BlockIgnoreProcessor(config.ignoredBlocks().stream().map(Holder::get).toList()));
+				.addProcessor(new BlockIgnoreProcessor(config.ignoredBlocks().stream().map(Holder::value).toList()));
 		template.placeInWorld(worldGenLevel, placePos, placePos, placeSettings, random, 4);
 		return true;
 	}

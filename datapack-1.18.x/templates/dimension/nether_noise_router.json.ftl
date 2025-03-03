@@ -21,25 +21,11 @@
     "shift_y": 0,
     "shift_z": "minecraft:shift_z"
   },
-  "ridges": "minecraft:overworld/ridges",
-  "continents": "minecraft:overworld/continents",
-  "erosion": "minecraft:overworld/erosion",
-  "depth": "minecraft:overworld/depth",
-  "initial_density_without_jaggedness": {
-    "type": "minecraft:mul",
-    "argument1": 4,
-    "argument2": {
-      "type": "minecraft:quarter_negative",
-      "argument": {
-        "type": "minecraft:mul",
-        "argument1": "minecraft:overworld/depth",
-        "argument2": {
-          "type": "minecraft:cache_2d",
-          "argument": "minecraft:overworld/factor"
-        }
-      }
-    }
-  },
+  "continents": 0,
+  "erosion": 0,
+  "depth": 0,
+  "ridges": 0,
+  "initial_density_without_jaggedness": 0,
   "final_density": {
     "type": "minecraft:squeeze",
     "argument": {
@@ -50,8 +36,41 @@
         "argument": {
           "type": "minecraft:blend_density",
           "argument": {
-            "type": "minecraft:slide",
-            "argument": "minecraft:overworld/sloped_cheese"
+            "type": "minecraft:add",
+            "argument1": 2.5,
+            "argument2": {
+              "type": "minecraft:mul",
+              "argument1": {
+                "type": "minecraft:y_clamped_gradient",
+                "from_y": -8,
+                "to_y": 24,
+                "from_value": 0,
+                "to_value": 1
+              },
+              "argument2": {
+                "type": "minecraft:add",
+                "argument1": -2.5,
+                "argument2": {
+                  "type": "minecraft:add",
+                  "argument1": 0.9375,
+                  "argument2": {
+                    "type": "minecraft:mul",
+                    "argument1": {
+                      "type": "minecraft:y_clamped_gradient",
+                      "from_y": 104,
+                      "to_y": 128,
+                      "from_value": 1,
+                      "to_value": 0
+                    },
+                    "argument2": {
+                      "type": "minecraft:add",
+                      "argument1": -0.9375,
+                      "argument2": "minecraft:nether/base_3d_noise"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }

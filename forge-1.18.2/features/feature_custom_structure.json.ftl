@@ -1,2 +1,2 @@
-new StructureFeature(new ResourceLocation("${modid}:${field$structure}", ${field$random_rotation?lower_case}, ${field$random_mirror?lower_case},
-HolderSet.direct(List.of(${input$ignored_blocks})), new Vec3i(${field$x}, ${field$y}, ${field$z}))
+new StructureFeatureConfiguration(new ResourceLocation("${modid}:${field$structure}"), ${field$random_rotation?lower_case}, ${field$random_mirror?lower_case},
+<#if !input$ignored_blocks?contains("/*@Tag*/")>HolderSet.direct(Block::builtInRegistryHolder, ${input$ignored_blocks})<#else>${input$ignored_blocks}</#if>, new Vec3i(${field$x}, ${field$y}, ${field$z}))

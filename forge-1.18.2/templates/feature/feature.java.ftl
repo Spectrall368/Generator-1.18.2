@@ -34,6 +34,8 @@
 package ${package}.world.features;
 <#assign configuration = generator.map(featuretype, "features", 1)>
 
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
 <#assign cond = false>
 <#if data.restrictionBiomes?has_content>
@@ -95,7 +97,7 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 		super(${configuration}.CODEC);
 	}
 
-	<#if data.hasGenerationConditions()>
+	<#if (data.restrictionBiomes?has_content && cond) || data.hasGenerationConditions()>
 	public boolean place(FeaturePlaceContext<${configuration}> context) {
 		WorldGenLevel world = context.level();
 		<#if data.restrictionBiomes?has_content && cond>
@@ -115,3 +117,4 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 	}
 	</#if>
 }</#compress>
+<#-- @formatter:on -->
