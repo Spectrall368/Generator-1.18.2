@@ -1,14 +1,6 @@
-{
-  "type": "minecraft:matching_fluids",
-  <#if field$fluid?starts_with("CUSTOM:")>
-    "fluids": "${modid}:${field$fluid?ends_with(":Flowing")?then("flowing_","")}${generator.getRegistryNameFromFullName(field$fluid)}"
-  <#else>
-    "fluids": "${generator.map(field$fluid, "fluids", 1)}"
-  </#if>
-  <#if (field$x != "0")||(field$y != "0")||(field$z != "0")>,
-  "offset": [
-    ${field$x},
-    ${field$y},
-    ${field$z}
-  ]</#if>
-}
+BlockPredicate.matchesFluids(#if field$fluid?starts_with("CUSTOM:")>
+${JavaModName}Fluids.${field$fluid?ends_with(":Flowing")?then("FLOWING_","")}${generator.getRegistryNameForModElement(field$fluid?remove_ending(":Flowing"))?upper_case}.get()
+<#else>
+Fluids.${generator.map(field$fluid, "fluids")}
+</#if>,
+new Vec3i(${field$x}, ${field$y}, ${field$z}))
