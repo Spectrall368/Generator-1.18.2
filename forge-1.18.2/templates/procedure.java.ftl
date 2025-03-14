@@ -85,9 +85,6 @@ public class ${name}Procedure {
 
 		${procedurecode}
 	}
-
 }
-
 </#compress>
-
 <#-- @formatter:on -->

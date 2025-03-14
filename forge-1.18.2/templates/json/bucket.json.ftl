@@ -2,7 +2,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "${modid}:items/${data.textureBucket}"
+    "layer0": "${data.textureBucket.format("%s:item/%s")}"
   }
 }
 <#else>

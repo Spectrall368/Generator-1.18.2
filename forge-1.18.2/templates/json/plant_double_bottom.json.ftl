@@ -1,7 +1,11 @@
 {
-    "parent": "block/${var_model}",
-    "textures": {
-        "cross": "${modid}:blocks/${data.textureBottom?has_content?then(data.textureBottom, data.texture)}",
-        "particle": "${modid}:blocks/<#if data.particleTexture?has_content>${data.particleTexture}<#else>${data.textureBottom?has_content?then(data.textureBottom, data.texture)}</#if>"
-    }
+  "parent": "block/${var_model}",
+  "textures": {
+    "cross": "${data.textureBottom().format("%s:block/%s")}",
+    <#if data.particleTexture?has_content>
+    "particle": "${data.particleTexture.format("%s:block/%s")}"
+    <#else>
+    "particle": "${data.textureBottom().format("%s:block/%s")}"
+    </#if>
+  }
 }

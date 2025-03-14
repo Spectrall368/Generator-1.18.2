@@ -37,7 +37,7 @@ public class ${name}Item extends BucketItem {
 	public ${name}Item() {
 		super(${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()},
 			new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).rarity(Rarity.${data.rarity})
-			<#if data.creativeTab?has_content>.tab(${data.creativeTab})<#else>.tab(CreativeModeTab.TAB_MISC)</#if>);
+			<#if data.creativeTab?has_content>.tab(<@CreativeTabs data.creativeTab/>)<#else>.tab(CreativeModeTab.TAB_MISC)</#if>);
 	}
 
 	<@addSpecialInformation data.specialInformation/>

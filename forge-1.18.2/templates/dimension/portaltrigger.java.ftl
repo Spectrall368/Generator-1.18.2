@@ -35,7 +35,7 @@ package ${package}.item;
 public class ${name}Item extends Item {
 
 	public ${name}Item() {
-		super(new Item.Properties().tab(${data.igniterTab}).rarity(Rarity.${data.igniterRarity}).durability(64));
+		super(new Item.Properties().tab(<@CreativeTabs data.igniterTab/>).rarity(Rarity.${data.igniterRarity}).durability(64));
 	}
 
 	<@addSpecialInformation data.specialInformation/>

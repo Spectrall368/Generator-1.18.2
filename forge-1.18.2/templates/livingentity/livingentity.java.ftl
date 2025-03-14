@@ -39,16 +39,14 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 
 <#assign extendsClass = "PathfinderMob">
-<#if data.aiBase != "(none)" >
+
+<#if data.aiBase != "(none)">
 	<#assign extendsClass = data.aiBase?replace("Enderman", "EnderMan")>
 <#else>
 	<#assign extendsClass = data.mobBehaviourType?replace("Mob", "Monster")?replace("Creature", "PathfinderMob")>
 </#if>
 <#if data.breedable>
-	<#assign extendsClass = "Animal">
-</#if>
-<#if (data.tameable && data.breedable)>
-	<#assign extendsClass = "TamableAnimal">
+	<#assign extendsClass = data.tameable?then("TamableAnimal", "Animal")>
 </#if>
 <#if data.spawnThisMob>@Mod.EventBusSubscriber</#if>
 public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements RangedAttackMob</#if> {
@@ -86,7 +84,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	<#if data.isBoss>
 	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(),
-			ServerBossEvent.BossBarColor.${data.bossBarColor}, ServerBossEvent.BossBarOverlay.${data.bossBarType});
+		ServerBossEvent.BossBarColor.${data.bossBarColor}, ServerBossEvent.BossBarOverlay.${data.bossBarType});
 	</#if>
 
 	public ${name}Entity(PlayMessages.SpawnEntity packet, Level world) {
@@ -99,7 +97,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		xpReward = ${data.xpAmount};
 		setNoAi(${(!data.hasAI)});
 
-		<#if data.mobLabel?has_content >
+		<#if data.mobLabel?has_content>
         	setCustomName(new TextComponent("${data.mobLabel}"));
         	setCustomNameVisible(true);
         </#if>
@@ -108,7 +106,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			setPersistenceRequired();
         </#if>
 
-	<#if !data.equipmentMainHand.isEmpty()>
+		<#if !data.equipmentMainHand.isEmpty()>
         this.setItemSlot(EquipmentSlot.MAINHAND, ${mappedMCItemToItemStackCode(data.equipmentMainHand, 1)});
         </#if>
         <#if !data.equipmentOffHand.isEmpty()>
@@ -213,8 +211,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				this.getNavigation().getNodeEvaluator().setCanOpenDoors(true);
 			</#if>
 
-            ${aicode}
-        </#if>
+			${aicode}
+		</#if>
 
         <#if data.ranged>
             this.goalSelector.addGoal(1, new RangedAttackGoal(this, 1.25, ${data.rangedAttackInterval}, ${data.rangedAttackRadius}f) {
@@ -234,7 +232,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	@Override public boolean removeWhenFarAway(double distanceToClosestPlayer) {
 		return false;
 	}
-    	</#if>
+    </#if>
 
 	<#if data.mobModelName == "Biped">
 	@Override public double getMyRidingOffset() {
@@ -259,7 +257,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
    	}
 	</#if>
 
-   	<#if data.livingSound.getMappedValue()?has_content>
+   	<#if data.livingSound?has_content && data.livingSound.getMappedValue()?has_content>
 	@Override public SoundEvent getAmbientSound() {
 		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.livingSound}"));
 	}
@@ -271,13 +269,27 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
 	</#if>
 
+	<#if data.hurtSound?has_content && data.hurtSound.getMappedValue()?has_content>
 	@Override public SoundEvent getHurtSound(DamageSource ds) {
 		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hurtSound}"));
 	}
+	</#if>
 
+	<#if data.deathSound?has_content && data.deathSound.getMappedValue()?has_content>
 	@Override public SoundEvent getDeathSound() {
 		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.deathSound}"));
 	}
+	</#if>
+
+	<#if data.mobBehaviourType == "Raider">
+	@Override public SoundEvent getCelebrateSound() {
+		<#if data.raidCelebrationSound?has_content && data.raidCelebrationSound.getMappedValue()?has_content>
+		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.raidCelebrationSound}"));
+		<#else>
+		return SoundEvents.EMPTY;
+		</#if>
+	}
+	</#if>
 
 	<#if hasProcedure(data.onStruckByLightning)>
 	@Override public void thunderHit(ServerLevel serverWorld, LightningBolt lightningBolt) {
@@ -305,7 +317,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			}/>
 		</#if>
 
-		<#if data.flyingMob >
+		<#if data.flyingMob>
 			return false;
 		<#else>
 			return super.causeFallDamage(l, d, source);
@@ -476,13 +488,13 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		super.readAdditionalSaveData(compound);
 		<#list data.entityDataEntries as entry>
 			if (compound.contains("Data${entry.property().getName()}"))
-			<#if entry.value().getClass().getSimpleName() == "Integer">
+				<#if entry.value().getClass().getSimpleName() == "Integer">
 				this.entityData.set(DATA_${entry.property().getName()}, compound.getInt("Data${entry.property().getName()}"));
-			<#elseif entry.value().getClass().getSimpleName() == "Boolean">
+				<#elseif entry.value().getClass().getSimpleName() == "Boolean">
 				this.entityData.set(DATA_${entry.property().getName()}, compound.getBoolean("Data${entry.property().getName()}"));
-			<#elseif entry.value().getClass().getSimpleName() == "String">
+				<#elseif entry.value().getClass().getSimpleName() == "String">
 				this.entityData.set(DATA_${entry.property().getName()}, compound.getString("Data${entry.property().getName()}"));
-			</#if>
+				</#if>
 		</#list>
 		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
 		if (compound.get("InventoryCustom") instanceof CompoundTag inventoryTag)
@@ -500,7 +512,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			<#if data.ridable>
 				if (sourceentity.isSecondaryUseActive()) {
 			</#if>
-				if(sourceentity instanceof ServerPlayer serverPlayer) {
+				if (sourceentity instanceof ServerPlayer serverPlayer) {
 					NetworkHooks.openGui(serverPlayer, new MenuProvider() {
 
 						@Override public Component getDisplayName() {
@@ -652,7 +664,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				double d1 = target.getX() - this.getX();
 				double d3 = target.getZ() - this.getZ();
 				entityarrow.shoot(d1, d0 - entityarrow.getY() + Math.sqrt(d1 * d1 + d3 * d3) * 0.2F, d3, 1.6F, 12.0F);
-				level.addFreshEntity(entityarrow);
+				this.level.addFreshEntity(entityarrow);
 			<#else>
 				${data.rangedItemType}Entity.shoot(this, target);
 			</#if>
@@ -672,7 +684,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     </#if>
 
 	<#if data.waterMob>
-    @Override public boolean checkSpawnObstruction(LevelReader world) {
+	@Override public boolean checkSpawnObstruction(LevelReader world) {
 		return world.isUnobstructed(this);
 	}
 	</#if>
@@ -844,7 +856,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					}
 				<#else>
 					(entityType, world, reason, pos, random) ->
-							(world.getBlockState(pos.below()).getMaterial() == Material.GRASS && world.getRawBrightness(pos, 0) > 8)
+							(world.getBlockState(pos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON) && world.getRawBrightness(pos, 0) > 8)
 				</#if>
 			);
 			<#elseif data.mobSpawningType == "ambient" || data.mobSpawningType == "misc">
@@ -914,7 +926,15 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		<#if data.spawnInDungeons>
 			DungeonHooks.addDungeonMob(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), 180);
 		</#if>
+
+		<#if data.mobBehaviourType == "Raider">
+		Raid.RaiderType.create("${registryname}", ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), new int[]{0, ${data.raidSpawnsCount[0]}, ${data.raidSpawnsCount[1]}, ${data.raidSpawnsCount[2]}, ${data.raidSpawnsCount[3]}, ${data.raidSpawnsCount[4]}, ${data.raidSpawnsCount[5]}, ${data.raidSpawnsCount[6]}});
+		</#if>
 	}
+
+	<#if data.mobBehaviourType == "Raider">
+   	@Override public void applyRaidBuffs(int num, boolean logic) {}
+   	</#if>
 
 	public static AttributeSupplier.Builder createAttributes() {
 		AttributeSupplier.Builder builder = Mob.createMobAttributes();
@@ -946,6 +966,5 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 		return builder;
 	}
-
 }
 <#-- @formatter:on -->

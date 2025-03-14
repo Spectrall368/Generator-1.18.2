@@ -41,19 +41,19 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 	private final Player entity;
 
 	<#list data.getComponentsOfType("TextField") as component>
-	    EditBox ${component.getName()};
+	EditBox ${component.getName()};
 	</#list>
 
 	<#list data.getComponentsOfType("Checkbox") as component>
-	    Checkbox ${component.getName()};
+	Checkbox ${component.getName()};
 	</#list>
 
 	<#list data.getComponentsOfType("Button") as component>
-		Button ${component.getName()};
+	Button ${component.getName()};
 	</#list>
 
 	<#list data.getComponentsOfType("ImageButton") as component>
-		ImageButton ${component.getName()};
+	ImageButton ${component.getName()};
 	</#list>
 
 	public ${name}Screen(${name}Menu container, Inventory inventory, Component text) {
@@ -68,13 +68,13 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 	}
 
 	<#if data.doesPauseGame>
-	@Override public boolean isPauseScreen() {
-		return true;
-	}
+		@Override public boolean isPauseScreen() {
+			return true;
+		}
 	</#if>
 
 	<#if data.renderBgLayer>
-	private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/screens/${registryname}.png" );
+		private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/screens/${registryname}.png" );
 	</#if>
 
 	@Override public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
@@ -121,14 +121,14 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		RenderSystem.defaultBlendFunc();
 
 		<#if data.renderBgLayer>
-		RenderSystem.setShaderTexture(0, texture);
-		this.blit(ms, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
+            RenderSystem.setShaderTexture(0, texture);
+            this.blit(ms, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
 		</#if>
 
 		<#list data.getComponentsOfType("Image") as component>
 			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
 				RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.image}"));
-				this.blit(ms, this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)}, 0, 0,
+					this.blit(ms, this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)}, 0, 0,
 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
 			<#if hasProcedure(component.displayCondition)>}</#if>
@@ -151,12 +151,24 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		return super.keyPressed(key, b, c);
 	}
 
+	<#if data.getComponentsOfType("TextField")?has_content>
 	@Override public void containerTick() {
 		super.containerTick();
 		<#list data.getComponentsOfType("TextField") as component>
-				${component.getName()}.tick();
+		${component.getName()}.tick();
 		</#list>
 	}
+
+	@Override public void resize(Minecraft minecraft, int width, int height) {
+ 		<#list data.getComponentsOfType("TextField") as component>
+ 		String ${component.getName()}Value = ${component.getName()}.getValue();
+ 		</#list>
+ 		super.resize(minecraft, width, height);
+ 		<#list data.getComponentsOfType("TextField") as component>
+ 		${component.getName()}.setValue(${component.getName()}Value);
+ 		</#list>
+ 	}
+	</#if>
 
 	@Override protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
 		<#list data.getComponentsOfType("Label") as component>

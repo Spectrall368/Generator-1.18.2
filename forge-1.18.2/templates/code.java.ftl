@@ -57,7 +57,7 @@ public class ${name} {
 	}
 
     @Mod.EventBusSubscriber
-	private static class ForgeBusEvents {
+	private static class ${name}ForgeBusEvents {
 
 		// Example Forge bus event registration
 		@SubscribeEvent public static void addFeatureToBiomes(BiomeLoadingEvent event) {

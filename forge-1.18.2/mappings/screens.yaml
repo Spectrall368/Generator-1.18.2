@@ -93,5 +93,4 @@ ChatSelection: ChatSelectionScreen
 ReportReasonSelection: ReportReasonSelectionScreen
 SocialInteractions: SocialInteractionsScreen
 Realms: RealmsScreen
-Realms32bitWarning: Realms32bitWarningScreen
 DisconnectedRealms: DisconnectedRealmsScreen

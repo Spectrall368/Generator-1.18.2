@@ -76,7 +76,7 @@ public class ${JavaModName}Blocks {
 	// End of user code block custom blocks
 
 	<#if hasTransparentBlocks || hasTintedBlocks || hasTintedBlockItems>
-	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ClientSideHandler {
+	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class BlocksClientSideHandler {
         <#if hasTransparentBlocks>
 	    @SubscribeEvent public static void clientSetup(FMLClientSetupEvent event) {
 	    	<#list blocks as block>

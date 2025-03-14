@@ -3,15 +3,15 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "${modid}:items/${data.itemTexture}"
+    "layer0": "${data.itemTexture.format("%s:item/%s")}"
   }
 }
 <#else>
 {
-    "parent": "item/generated",
-    "textures": {
-      "layer0": "${modid}:blocks/${data.texture}"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "${data.texture.format("%s:block/%s")}"
+  }
 }
 </#if>
 <#-- @formatter:on -->
