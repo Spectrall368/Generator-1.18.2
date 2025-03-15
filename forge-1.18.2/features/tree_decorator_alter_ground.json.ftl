@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-new AlterGroundDecorator(${mappedBlockToBlockStateProvider(input$provider)})
+new AlterGroundDecorator(${mappedBlockToBlockStateProvider(input$provider)?contains(".setValue")?then(mappedBlockToBlockStateProvider(input$provider)?substring(0,mappedBlockToBlockStateProvider(input$provider)?last_index_of(".defaultBlockState()"))+mappedBlockToBlockStateProvider(input$provider)?substring(mappedBlockToBlockStateProvider(input$provider)?last_index_of(".defaultBlockState()")+20),mappedBlockToBlockStateProvider(input$provider))})

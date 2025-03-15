@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-OreConfiguration.target(${input$target}, ${mappedBlockToBlockStateCode(input$state)})
+OreConfiguration.target(${input$target}, ${mappedBlockToBlockStateCode(input$state)?contains(".setValue")?then(mappedBlockToBlockStateCode(input$state)?substring(0,mappedBlockToBlockStateCode(input$state)?last_index_of(".defaultBlockState()"))+mappedBlockToBlockStateCode(input$state)?substring(mappedBlockToBlockStateCode(input$state)?last_index_of(".defaultBlockState()")+20),mappedBlockToBlockStateCode(input$state))})

@@ -41,7 +41,7 @@ public class ${name}Item extends Item {
 
 	public ${name}Item() {
 		super(new Item.Properties()
-				.tab(<@CreativeTabs data.creativeTab/>)
+				.tab(<@CreativeTabs data.creativeTabs/>)
 				<#if data.hasInventory()>
 				.stacksTo(1)
 				<#elseif data.damageCount != 0>

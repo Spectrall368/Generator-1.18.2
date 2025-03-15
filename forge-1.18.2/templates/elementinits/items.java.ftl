@@ -35,6 +35,7 @@
  *    MCreator note: This file will be REGENERATED on each build.
  */
 package ${package}.init;
+<#compress>
 <#assign tabMap = w.getCreativeTabMap()>
 <#assign vanillaTabs = tabMap.keySet()?filter(e -> !e?starts_with('CUSTOM:'))>
 <#assign customTabs = tabMap.keySet()?filter(e -> e?starts_with('CUSTOM:'))>
@@ -107,6 +108,7 @@ public class ${JavaModName}Items {
 	}
     </#if>
 }
+</#compress>
 <#-- @formatter:on -->
 <#macro setItems item>
         <#if item.getModElement().getTypeString() == "armor">
@@ -135,15 +137,15 @@ public class ${JavaModName}Items {
 		<#elseif item.getModElement().getTypeString() == "block" || item.getModElement().getTypeString() == "plant">
 			<#if item.isDoubleBlock()>
                 <#assign hasDoubleBlocks = true>
-				public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} = doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, <@CreativeTabs item.creativeTab/>);
+				public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} = doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, <@CreativeTabs item.creativeTabs/>);
             <#else>
                 <#assign hasBlocks = true>
-				public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} = block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, <@CreativeTabs item.creativeTab/>);
+				public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} = block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, <@CreativeTabs item.creativeTabs/>);
             </#if>
         <#elseif item.getModElement().getTypeString() == "livingentity">
             public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_SPAWN_EGG =
                 REGISTRY.register("${item.getModElement().getRegistryName()}_spawn_egg", () -> new ForgeSpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
-                    ${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties().tab(<@CreativeTabs item.creativeTab/>)));
+                    ${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties().tab(<@CreativeTabs item.creativeTabs/>)));
         <#else>
             public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
                 REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());

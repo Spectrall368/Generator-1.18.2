@@ -8,7 +8,7 @@
 	<#elseif tabs?contains(CustomTabs)>
 	${CustomTabs}${tabs?keep_after_last(CustomTabs)?replace("]", "")}
 	<#else>
-	CreativeModeTab{tabs?keep_after_last("CreativeModeTab")?replace("]", "")}
+	CreativeModeTab${tabs?keep_after_last("CreativeModeTab")?replace("]", "")}
 	</#if>
 </#macro>
 
