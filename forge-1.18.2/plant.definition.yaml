@@ -74,6 +74,11 @@ templates:
     condition: "plantType %= double"
     name: "@MODASSETSROOT/blockstates/@registryname.json"
 
+global_templates:
+  - template: elementinits/features.java.ftl
+    condition: generateFeature
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameFeatures.java"
+
 localizationkeys:
   - key: block.@modid.@registryname
     mapto: name

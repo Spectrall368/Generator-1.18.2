@@ -39,14 +39,16 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 
 <#assign extendsClass = "PathfinderMob">
-
 <#if data.aiBase != "(none)">
 	<#assign extendsClass = data.aiBase?replace("Enderman", "EnderMan")>
 <#else>
 	<#assign extendsClass = data.mobBehaviourType?replace("Mob", "Monster")?replace("Creature", "PathfinderMob")>
 </#if>
 <#if data.breedable>
-	<#assign extendsClass = data.tameable?then("TamableAnimal", "Animal")>
+	<#assign extendsClass = "Animal">
+</#if>
+<#if (data.tameable && data.breedable)>
+	<#assign extendsClass = "TamableAnimal">
 </#if>
 <#if data.spawnThisMob>@Mod.EventBusSubscriber</#if>
 public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements RangedAttackMob</#if> {
@@ -286,7 +288,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		<#if data.raidCelebrationSound?has_content && data.raidCelebrationSound.getMappedValue()?has_content>
 		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.raidCelebrationSound}"));
 		<#else>
-		return SoundEvents.EMPTY;
+		return null;
 		</#if>
 	}
 	</#if>

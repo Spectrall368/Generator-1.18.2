@@ -29,11 +29,9 @@
 -->
 
 <#-- @formatter:off -->
-
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
-
 package ${package}.init;
 
 @Mod.EventBusSubscriber public class ${JavaModName}Features {
@@ -50,25 +48,10 @@ package ${package}.init;
 							${feature.getModElement().getName()}Feature.GENERATE_BIOMES,
 							${feature.getModElement().getName()}Feature::placedFeature)
 				);
-		<#elseif feature.getModElement().getTypeString() == "fluid">
-			public static final RegistryObject<Feature<?>> ${feature.getModElement().getRegistryNameUpper()} =
-				register("${feature.getModElement().getRegistryName()}", ${feature.getModElement().getName()}Feature::feature,
-						new FeatureRegistration(GenerationStep.Decoration.LAKES,
-							${feature.getModElement().getName()}Feature.GENERATE_BIOMES,
-							${feature.getModElement().getName()}Feature::placedFeature)
-				);
 		<#elseif feature.getModElement().getTypeString() == "plant">
 			public static final RegistryObject<Feature<?>> ${feature.getModElement().getRegistryNameUpper()} =
 				register("${feature.getModElement().getRegistryName()}", ${feature.getModElement().getName()}Feature::feature,
 						new FeatureRegistration(GenerationStep.Decoration.VEGETAL_DECORATION,
-							${feature.getModElement().getName()}Feature.GENERATE_BIOMES,
-							${feature.getModElement().getName()}Feature::placedFeature)
-				);
-		<#elseif feature.getModElement().getTypeString() == "structure">
-			public static final RegistryObject<Feature<?>> ${feature.getModElement().getRegistryNameUpper()} =
-				register("${feature.getModElement().getRegistryName()}", ${feature.getModElement().getName()}Feature::feature,
-						new FeatureRegistration(GenerationStep.Decoration.
-						<#if feature.spawnLocation == "Air">RAW_GENERATION<#elseif feature.spawnLocation == "Underground">UNDERGROUND_STRUCTURES<#else>SURFACE_STRUCTURES</#if>,
 							${feature.getModElement().getName()}Feature.GENERATE_BIOMES,
 							${feature.getModElement().getName()}Feature::placedFeature)
 				);
@@ -95,7 +78,5 @@ package ${package}.init;
 	}
 
 	private static record FeatureRegistration (GenerationStep.Decoration stage, Set<ResourceLocation> biomes, Supplier<Holder<PlacedFeature>> placedFeature) {}
-
 }
-
 <#-- @formatter:on -->
