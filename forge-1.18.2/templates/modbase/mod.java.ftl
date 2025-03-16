@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 		// Start of user code block mod constructor
 		// End of user code block mod constructor
 	    MinecraftForge.EVENT_BUS.register(this);
-		<#if w.hasElementsOfType("tab")>${JavaModName}Tabs.load();</#if>
+		<#if w.hasItemsInTabs()>${JavaModName}Tabs.load();</#if>
 
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		<#if w.hasSounds()>${JavaModName}Sounds.REGISTRY.register(bus);</#if>
@@ -22,7 +22,7 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfBaseType("item")>${JavaModName}Items.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfBaseType("entity")>${JavaModName}Entities.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfBaseType("blockentity")>${JavaModName}BlockEntities.REGISTRY.register(bus);</#if>
-		<#if w.getElementsOfType("block")?filter(e -> e.generateFeature )?size != 0 || w.getElementsOfType("plant")?filter(e -> e.generateFeature )?size != 0 || w.hasElementsOfType("feature")>${JavaModName}Features.REGISTRY.register(bus);</#if>
+		<#if features?has_content>${JavaModName}Features.REGISTRY.register(bus);</#if>
 		<#if w.getElementsOfType("feature")?filter(e -> e.getMetadata("has_nbt_structure")??)?size != 0>StructureFeature.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("enchantment")>${JavaModName}Enchantments.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("potioneffect")>${JavaModName}MobEffects.REGISTRY.register(bus);</#if>
@@ -31,9 +31,7 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfType("biome")>${JavaModName}Biomes.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("particle")>${JavaModName}ParticleTypes.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("villagerprofession")>${JavaModName}VillagerProfessions.PROFESSIONS.register(bus);</#if>
-		<#if w.hasElementsOfType("fluid")>
-			${JavaModName}Fluids.REGISTRY.register(bus);
-		</#if>
+		<#if w.hasElementsOfType("fluid")>${JavaModName}Fluids.REGISTRY.register(bus);</#if>
 
 		// Start of user code block mod init
 		// End of user code block mod init
