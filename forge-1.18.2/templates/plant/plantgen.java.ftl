@@ -35,7 +35,7 @@ package ${package}.world.features.plants;
 <#assign cond = false>
 <#if data.restrictionBiomes?has_content>
 	<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-		<#if restrictionBiome?contains(":is_")>
+		<#if restrictionBiome == "#minecraft:is_overworld" || restrictionBiome == "#minecraft:is_end">
 			<#assign cond = true>
 			 <#break>
 		</#if>
@@ -93,7 +93,7 @@ public class ${name}Feature extends RandomPatchFeature {
 	<#if data.restrictionBiomes?has_content && !cond>
 	Set.of(
 		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-			new ResourceLocation("${restrictionBiome}")<#sep>,
+			new ResourceLocation("${restrictionBiome?replace("#", "")}")<#sep>,
 		</#list>
 	);
 	<#else>
@@ -105,13 +105,8 @@ public class ${name}Feature extends RandomPatchFeature {
 		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
 			<#if restrictionBiome == "#minecraft:is_overworld">
 				Level.OVERWORLD
-			<#elseif restrictionBiome == "#minecraft:is_nether">
-				Level.NETHER
 			<#elseif restrictionBiome == "#minecraft:is_end">
 				Level.END
-			<#else>
-				ResourceKey.create(Registry.DIMENSION_REGISTRY,
-						new ResourceLocation("${modid}:${restrictionBiome?keep_after("is_")}"))
 			</#if><#sep>,
 		</#list>
 	);

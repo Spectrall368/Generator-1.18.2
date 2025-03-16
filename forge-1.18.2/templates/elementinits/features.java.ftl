@@ -40,30 +40,32 @@ package ${package}.init;
 
 	private static final List<FeatureRegistration> FEATURE_REGISTRATIONS = new ArrayList<>();
 
-	<#list features as feature>
-		<#if feature.getModElement().getTypeString() == "block">
-			public static final RegistryObject<Feature<?>> ${feature.getModElement().getRegistryNameUpper()} =
-				register("${feature.getModElement().getRegistryName()}", ${feature.getModElement().getName()}Feature::feature,
-						new FeatureRegistration(GenerationStep.Decoration.UNDERGROUND_ORES,
-							${feature.getModElement().getName()}Feature.GENERATE_BIOMES,
-							${feature.getModElement().getName()}Feature::placedFeature)
-				);
-		<#elseif feature.getModElement().getTypeString() == "plant">
-			public static final RegistryObject<Feature<?>> ${feature.getModElement().getRegistryNameUpper()} =
-				register("${feature.getModElement().getRegistryName()}", ${feature.getModElement().getName()}Feature::feature,
-						new FeatureRegistration(GenerationStep.Decoration.VEGETAL_DECORATION,
-							${feature.getModElement().getName()}Feature.GENERATE_BIOMES,
-							${feature.getModElement().getName()}Feature::placedFeature)
-				);
-		<#elseif feature.getModElement().getTypeString() == "feature">
+	<#list w.getGElementsOfType("feature") as feature>
 			public static final RegistryObject<Feature<?>> ${feature.getModElement().getRegistryNameUpper()} =
 				register("${feature.getModElement().getRegistryName()}", ${feature.getModElement().getName()}Feature::feature,
 						new FeatureRegistration(GenerationStep.Decoration.${generator.map(feature.generationStep, "generationsteps")},
 							${feature.getModElement().getName()}Feature.GENERATE_BIOMES,
 							${feature.getModElement().getName()}Feature::placedFeature)
 				);
-		</#if>
-	</#list>
+    </#list>
+
+	<#list w.getGElementsOfType("block")?filter(e -> e.generateFeature) as feature>
+			public static final RegistryObject<Feature<?>> ${feature.getModElement().getRegistryNameUpper()} =
+				register("${feature.getModElement().getRegistryName()}", ${feature.getModElement().getName()}Feature::feature,
+						new FeatureRegistration(GenerationStep.Decoration.UNDERGROUND_ORES,
+							${feature.getModElement().getName()}Feature.GENERATE_BIOMES,
+							${feature.getModElement().getName()}Feature::placedFeature)
+				);
+    </#list>
+
+	<#list w.getGElementsOfType("plant")?filter(e -> e.generateFeature) as feature>
+			public static final RegistryObject<Feature<?>> ${feature.getModElement().getRegistryNameUpper()} =
+				register("${feature.getModElement().getRegistryName()}", ${feature.getModElement().getName()}Feature::feature,
+						new FeatureRegistration(GenerationStep.Decoration.VEGETAL_DECORATION,
+							${feature.getModElement().getName()}Feature.GENERATE_BIOMES,
+							${feature.getModElement().getName()}Feature::placedFeature)
+				);
+    </#list>
 
 	private static RegistryObject<Feature<?>> register(String registryname, Supplier<Feature<?>> feature, FeatureRegistration featureRegistration) {
 		FEATURE_REGISTRATIONS.add(featureRegistration);
