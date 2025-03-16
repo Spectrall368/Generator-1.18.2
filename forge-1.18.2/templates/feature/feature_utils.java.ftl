@@ -32,34 +32,21 @@
 package ${package}.world.features;
 
 public final class ${JavaModName}FeatureUtils {
-    public static BlockState addProperty(BlockState block, String propr, boolean bool) {
+    protected static BlockState addProperty(BlockState block, String propr, boolean bool) {
     	if (block.getBlock().getStateDefinition().getProperty(propr) instanceof BooleanProperty _booleanProp)
     		block.setValue(_booleanProp, bool);
 
         return block;
     }
 
-    public static BlockState addProperty(BlockState block, String propr, Direction dir) {
-        Property<?> _property = block.getBlock().getStateDefinition().getProperty(propr);
-        if (_property instanceof DirectionProperty _dp && _dp.getPossibleValues().contains(dir)) {
-            block.setValue(_dp, dir);
-        } else {
-            _property = _bs.getBlock().getStateDefinition().getProperty(propr);
-            if (_property instanceof EnumProperty _ap && _ap.getPossibleValues().contains(dir.getAxis()))
-                block.setValue(_ap, dir.getAxis());
-        }
-
-        return block;
-    }
-
-    public static BlockState addProperty(BlockState block, String propr, int num) {
+    protected static BlockState addProperty(BlockState block, String propr, int num) {
         if (block.getBlock().getStateDefinition().getProperty(propr) instanceof IntegerProperty _integerProp && _integerProp.getPossibleValues().contains(num))
             block.setValue(_integerProp, num);
 
         return block;
     }
 
-    public static BlockState addProperty(BlockState block, String propr, String str) {
+    protected static BlockState addProperty(BlockState block, String propr, String str) {
         if (block.getBlock().getStateDefinition().getProperty(propr) instanceof EnumProperty _enumProp && _enumProp.getValue(str).isPresent())
             block.setValue(_enumProp, (Enum) _enumProp.getValue(str).get());
 
