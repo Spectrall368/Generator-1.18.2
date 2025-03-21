@@ -2,7 +2,7 @@
 <#-- @formatter:off -->
 if(${input$entity} instanceof ServerPlayer _ent) {
 	BlockPos _bpos = ${toBlockPos(input$x,input$y,input$z)};
-	NetworkHooks.openScreen((ServerPlayer) _ent, new MenuProvider() {
+	NetworkHooks.openGui((ServerPlayer) _ent, new MenuProvider() {
 		@Override public Component getDisplayName() {
 			return new TextComponent("${field$guiname}");
 		}
