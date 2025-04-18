@@ -1,559 +1,745 @@
 _mcreator_prefix: "CUSTOM:"
 _mcreator_map_template:
   - "@modid:@registryname"
+  - "@NAMEFeature.FEATURE"
   - "@NAMEFeature.CONFIGURED_FEATURE"
 acacia:
   - acacia
   - TreeFeatures.ACACIA
+  - TreeConfiguration
 amethyst_geode:
   - amethyst_geode
   - CaveFeatures.AMETHYST_GEODE
+  - GeodeConfiguration
 azalea_tree:
   - azalea_tree
   - TreeFeatures.AZALEA_TREE
+  - TreeConfiguration
 bamboo_no_podzol:
   - bamboo_no_podzol
   - VegetationFeatures.BAMBOO_NO_PODZOL
+  - ProbabilityFeatureConfiguration
 bamboo_some_podzol:
   - bamboo_some_podzol
   - VegetationFeatures.BAMBOO_SOME_PODZOL
+  - ProbabilityFeatureConfiguration
 bamboo_vegetation:
   - bamboo_vegetation
   - VegetationFeatures.BAMBOO_VEGETATION
+  - RandomFeatureConfiguration
 basalt_blobs:
   - basalt_blobs
   - NetherFeatures.BASALT_BLOBS
+  - ReplaceSphereConfiguration
 basalt_pillar:
   - basalt_pillar
   - NetherFeatures.BASALT_PILLAR
+  - ColumnFeatureConfiguration
 birch:
   - birch
   - TreeFeatures.BIRCH
+  - TreeConfiguration
 birch_bees_0002:
   - birch_bees_0002
   - TreeFeatures.BIRCH_BEES_0002
+  - TreeConfiguration
 birch_bees_002:
   - birch_bees_002
   - TreeFeatures.BIRCH_BEES_002
+  - TreeConfiguration
 birch_bees_005:
   - birch_bees_005
   - TreeFeatures.BIRCH_BEES_005
+  - TreeConfiguration
 birch_tall:
   - birch_tall
   - VegetationFeatures.BIRCH_TALL
+  - RandomFeatureConfiguration
 blackstone_blobs:
   - blackstone_blobs
   - NetherFeatures.BLACKSTONE_BLOBS
+  - ReplaceSphereConfiguration
 blue_ice:
   - blue_ice
   - MiscOverworldFeatures.BLUE_ICE
+  - NoneFeatureConfiguration
 bonus_chest:
   - bonus_chest
   - MiscOverworldFeatures.BONUS_CHEST
+  - NoneFeatureConfiguration
 cave_vine:
   - cave_vine
   - CaveFeatures.CAVE_VINE
+  - BlockColumnConfiguration
 cave_vine_in_moss:
   - cave_vine_in_moss
   - CaveFeatures.CAVE_VINE_IN_MOSS
+  - BlockColumnConfiguration
 chorus_plant:
   - chorus_plant
   - EndFeatures.CHORUS_PLANT
+  - NoneFeatureConfiguration
 clay_pool_with_dripleaves:
   - clay_pool_with_dripleaves
   - CaveFeatures.CLAY_POOL_WITH_DRIPLEAVES
+  - VegetationPatchConfiguration
 clay_with_dripleaves:
   - clay_with_dripleaves
   - CaveFeatures.CLAY_WITH_DRIPLEAVES
+  - VegetationPatchConfiguration
 crimson_forest_vegetation:
   - crimson_forest_vegetation
   - NetherFeatures.CRIMSON_FOREST_VEGETATION
+  - NetherForestVegetationConfig
 crimson_forest_vegetation_bonemeal:
   - crimson_forest_vegetation_bonemeal
   - NetherFeatures.CRIMSON_FOREST_VEGETATION_BONEMEAL
+  - NetherForestVegetationConfig
 crimson_fungus:
   - crimson_fungus
   - TreeFeatures.CRIMSON_FUNGUS
+  - HugeFungusConfiguration
 crimson_fungus_planted:
   - crimson_fungus_planted
   - TreeFeatures.CRIMSON_FUNGUS_PLANTED
+  - HugeFungusConfiguration
 dark_forest_vegetation:
   - dark_forest_vegetation
   - VegetationFeatures.DARK_FOREST_VEGETATION
+  - RandomFeatureConfiguration
 dark_oak:
   - dark_oak
   - TreeFeatures.DARK_OAK
+  - TreeConfiguration
 delta:
   - delta
   - NetherFeatures.DELTA
+  - DeltaFeatureConfiguration
 desert_well:
   - desert_well
   - MiscOverworldFeatures.DESERT_WELL
+  - NoneFeatureConfiguration
 disk_clay:
   - disk_clay
   - MiscOverworldFeatures.DISK_CLAY
+  - DiskConfiguration
 disk_grass:
   - disk_grass
   - VegetationFeatures.PATCH_GRASS
+  - RandomPatchConfiguration
 disk_gravel:
   - disk_gravel
   - MiscOverworldFeatures.DISK_GRAVEL
+  - DiskConfiguration
 disk_sand:
   - disk_sand
   - MiscOverworldFeatures.DISK_SAND
+  - DiskConfiguration
 dripleaf:
   - dripleaf
   - CaveFeatures.DRIPLEAF
+  - SimpleRandomFeatureConfiguration
 dripstone_cluster:
   - dripstone_cluster
   - CaveFeatures.DRIPSTONE_CLUSTER
+  - DripstoneClusterConfiguration
 end_gateway_delayed:
   - end_gateway_delayed
   - EndFeatures.END_GATEWAY_DELAYED
+  - EndGatewayConfiguration
 end_gateway_return:
   - end_gateway_return
   - EndFeatures.END_GATEWAY_RETURN
+  - EndGatewayConfiguration
 end_island:
   - end_island
   - EndFeatures.END_ISLAND
+  - NoneFeatureConfiguration
 end_spike:
   - end_spike
   - EndFeatures.END_SPIKE
+  - SpikeConfiguration
 fancy_oak:
   - fancy_oak
   - TreeFeatures.FANCY_OAK
+  - TreeConfiguration
 fancy_oak_bees:
   - fancy_oak_bees
   - TreeFeatures.FANCY_OAK_BEES
+  - TreeConfiguration
 fancy_oak_bees_0002:
   - fancy_oak_bees_0002
   - TreeFeatures.FANCY_OAK_BEES_0002
+  - TreeConfiguration
 fancy_oak_bees_002:
   - fancy_oak_bees_002
   - TreeFeatures.FANCY_OAK_BEES_002
+  - TreeConfiguration
 fancy_oak_bees_005:
   - fancy_oak_bees_005
   - TreeFeatures.FANCY_OAK_BEES_005
+  - TreeConfiguration
 flower_default:
   - flower_default
   - VegetationFeatures.FLOWER_DEFAULT
+  - RandomPatchConfiguration
 flower_flower_forest:
   - flower_flower_forest
   - VegetationFeatures.FLOWER_FLOWER_FOREST
+  - NoiseProviderConfiguration
 flower_meadow:
   - flower_meadow
   - VegetationFeatures.FLOWER_MEADOW
+  - DualNoiseProviderConfiguration
 flower_plain:
   - flower_plain
   - VegetationFeatures.FLOWER_PLAIN
+  - NoiseThresholdProviderConfiguration
 flower_swamp:
   - flower_swamp
   - VegetationFeatures.FLOWER_SWAMP
+  - RandomPatchConfiguration
 forest_flowers:
   - forest_flowers
   - VegetationFeatures.FOREST_FLOWERS
+  - SimpleRandomFeatureConfiguration
 forest_rock:
   - forest_rock
   - MiscOverworldFeatures.FOREST_ROCK
+  - BlockStateConfiguration
 fossil_coal:
   - fossil_coal
   - CaveFeatures.FOSSIL_COAL
+  - FossilFeatureConfiguration
 fossil_diamonds:
   - fossil_diamonds
   - CaveFeatures.FOSSIL_DIAMONDS
+  - FossilFeatureConfiguration
 freeze_top_layer:
   - freeze_top_layer
   - MiscOverworldFeatures.FREEZE_TOP_LAYER
+  - NoneFeatureConfiguration
 glow_lichen:
   - glow_lichen
   - CaveFeatures.GLOW_LICHEN
+  - GlowLichenConfiguration
 glowstone_extra:
   - glowstone_extra
   - NetherFeatures.GLOWSTONE_EXTRA
+  - NoneFeatureConfiguration
 huge_brown_mushroom:
   - huge_brown_mushroom
   - TreeFeatures.HUGE_BROWN_MUSHROOM
+  - HugeMushroomFeatureConfiguration
 huge_red_mushroom:
   - huge_red_mushroom
   - TreeFeatures.HUGE_RED_MUSHROOM
+  - HugeMushroomFeatureConfiguration
 ice_patch:
   - ice_patch
   - MiscOverworldFeatures.ICE_PATCH
+  - DiskConfiguration
 ice_spike:
   - ice_spike
   - MiscOverworldFeatures.ICE_SPIKE
+  - NoneFeatureConfiguration
 iceberg_blue:
   - iceberg_blue
   - MiscOverworldFeatures.ICEBERG_BLUE
+  - BlockStateConfiguration
 iceberg_packed:
   - iceberg_packed
   - MiscOverworldFeatures.ICEBERG_PACKED
+  - BlockStateConfiguration
 jungle_bush:
   - jungle_bush
   - TreeFeatures.JUNGLE_BUSH
+  - TreeConfiguration
 jungle_tree:
   - jungle_tree
   - TreeFeatures.JUNGLE_TREE
+  - TreeConfiguration
 jungle_tree_no_vine:
   - jungle_tree_no_vine
   - TreeFeatures.JUNGLE_TREE_NO_VINE
+  - TreeConfiguration
 kelp:
   - kelp
   - AquaticFeatures.KELP
+  - NoneFeatureConfiguration
 lake_lava:
   - lake_lava
   - MiscOverworldFeatures.LAKE_LAVA
+  - LakeFeature.Configuration
 large_basalt_columns:
   - large_basalt_columns
   - NetherFeatures.LARGE_BASALT_COLUMNS
+  - ColumnFeatureConfiguration
 large_dripstone:
   - large_dripstone
   - CaveFeatures.LARGE_DRIPSTONE
+  - LargeDripstoneConfiguration
 lush_caves_clay:
   - lush_caves_clay
   - CaveFeatures.LUSH_CAVES_CLAY
+  - RandomBooleanFeatureConfiguration
 meadow_trees:
   - meadow_trees
   - VegetationFeatures.MEADOW_TREES
+  - RandomFeatureConfiguration
 mega_jungle_tree:
   - mega_jungle_tree
   - TreeFeatures.MEGA_JUNGLE_TREE
+  - TreeConfiguration
 mega_pine:
   - mega_pine
   - TreeFeatures.MEGA_PINE
+  - TreeConfiguration
 mega_spruce:
   - mega_spruce
   - TreeFeatures.MEGA_SPRUCE
+  - TreeConfiguration
 monster_room:
   - monster_room
   - CaveFeatures.MONSTER_ROOM
+  - NoneFeatureConfiguration
 moss_patch:
   - moss_patch
   - CaveFeatures.MOSS_PATCH
+  - VegetationPatchConfiguration
 moss_patch_bonemeal:
   - moss_patch_bonemeal
   - CaveFeatures.MOSS_PATCH_BONEMEAL
+  - VegetationPatchConfiguration
 moss_patch_ceiling:
   - moss_patch_ceiling
   - CaveFeatures.MOSS_PATCH_CEILING
+  - VegetationPatchConfiguration
 moss_vegetation:
   - moss_vegetation
   - CaveFeatures.MOSS_VEGETATION
+  - SimpleBlockConfiguration
 mushroom_island_vegetation:
   - mushroom_island_vegetation
   - VegetationFeatures.MUSHROOM_ISLAND_VEGETATION
+  - RandomBooleanFeatureConfiguration
 nether_sprouts:
   - nether_sprouts
   - NetherFeatures.NETHER_SPROUTS
+  - NetherForestVegetationConfig
 nether_sprouts_bonemeal:
   - nether_sprouts_bonemeal
   - NetherFeatures.NETHER_SPROUTS_BONEMEAL
+  - NetherForestVegetationConfig
 oak:
   - oak
   - TreeFeatures.OAK
+  - TreeConfiguration
 oak_bees_0002:
   - oak_bees_0002
   - TreeFeatures.OAK_BEES_0002
+  - TreeConfiguration
 oak_bees_002:
   - oak_bees_002
   - TreeFeatures.OAK_BEES_002
+  - TreeConfiguration
 oak_bees_005:
   - oak_bees_005
   - TreeFeatures.OAK_BEES_005
+  - TreeConfiguration
 ore_ancient_debris_large:
   - ore_ancient_debris_large
   - OreFeatures.ORE_ANCIENT_DEBRIS_LARGE
+  - OreConfiguration
 ore_ancient_debris_small:
   - ore_ancient_debris_small
   - OreFeatures.ORE_ANCIENT_DEBRIS_SMALL
+  - OreConfiguration
 ore_andesite:
   - ore_andesite
   - OreFeatures.ORE_ANDESITE
+  - OreConfiguration
 ore_blackstone:
   - ore_blackstone
   - OreFeatures.ORE_BLACKSTONE
+  - OreConfiguration
 ore_clay:
   - ore_clay
   - OreFeatures.ORE_CLAY
+  - OreConfiguration
 ore_coal:
   - ore_coal
   - OreFeatures.ORE_COAL
+  - OreConfiguration
 ore_coal_buried:
   - ore_coal_buried
   - OreFeatures.ORE_COAL_BURIED
+  - OreConfiguration
 ore_copper_large:
   - ore_copper_large
   - OreFeatures.ORE_COPPER_LARGE
+  - OreConfiguration
 ore_copper_small:
   - ore_copper_small
   - OreFeatures.ORE_COPPER_SMALL
+  - OreConfiguration
 ore_diamond_buried:
   - ore_diamond_buried
   - OreFeatures.ORE_DIAMOND_BURIED
+  - OreConfiguration
 ore_diamond_large:
   - ore_diamond_large
   - OreFeatures.ORE_DIAMOND_LARGE
+  - OreConfiguration
 ore_diamond_small:
   - ore_diamond_small
   - OreFeatures.ORE_DIAMOND_SMALL
+  - OreConfiguration
 ore_diorite:
   - ore_diorite
   - OreFeatures.ORE_DIORITE
+  - OreConfiguration
 ore_dirt:
   - ore_dirt
   - OreFeatures.ORE_DIRT
+  - OreConfiguration
 ore_emerald:
   - ore_emerald
   - OreFeatures.ORE_EMERALD
+  - OreConfiguration
 ore_gold:
   - ore_gold
   - OreFeatures.ORE_GOLD
+  - OreConfiguration
 ore_gold_buried:
   - ore_gold_buried
   - OreFeatures.ORE_GOLD_BURIED
+  - OreConfiguration
 ore_granite:
   - ore_granite
   - OreFeatures.ORE_GRANITE
+  - OreConfiguration
 ore_gravel:
   - ore_gravel
   - OreFeatures.ORE_GRAVEL
+  - OreConfiguration
 ore_gravel_nether:
   - ore_gravel_nether
   - OreFeatures.ORE_GRAVEL_NETHER
+  - OreConfiguration
 ore_infested:
   - ore_infested
   - OreFeatures.ORE_INFESTED
+  - OreConfiguration
 ore_iron:
   - ore_iron
   - OreFeatures.ORE_IRON
+  - OreConfiguration
 ore_iron_small:
   - ore_iron_small
   - OreFeatures.ORE_IRON_SMALL
+  - OreConfiguration
 ore_lapis:
   - ore_lapis
   - OreFeatures.ORE_LAPIS
+  - OreConfiguration
 ore_lapis_buried:
   - ore_lapis_buried
   - OreFeatures.ORE_LAPIS_BURIED
+  - OreConfiguration
 ore_magma:
   - ore_magma
   - OreFeatures.ORE_MAGMA
+  - OreConfiguration
 ore_nether_gold:
   - ore_nether_gold
   - OreFeatures.ORE_NETHER_GOLD
+  - OreConfiguration
 ore_quartz:
   - ore_quartz
   - OreFeatures.ORE_QUARTZ
+  - OreConfiguration
 ore_redstone:
   - ore_redstone
   - OreFeatures.ORE_REDSTONE
+  - OreConfiguration
 ore_soul_sand:
   - ore_soul_sand
   - OreFeatures.ORE_SOUL_SAND
+  - OreConfiguration
 ore_tuff:
   - ore_tuff
   - OreFeatures.ORE_TUFF
+  - OreConfiguration
 patch_berry_bush:
   - patch_berry_bush
   - VegetationFeatures.PATCH_BERRY_BUSH
+  - RandomPatchConfiguration
 patch_brown_mushroom:
   - patch_brown_mushroom
   - VegetationFeatures.PATCH_BROWN_MUSHROOM
+  - RandomPatchConfiguration
 patch_cactus:
   - patch_cactus
   - VegetationFeatures.PATCH_CACTUS
+  - RandomPatchConfiguration
 patch_crimson_roots:
   - patch_crimson_roots
   - NetherFeatures.PATCH_CRIMSON_ROOTS
+  - RandomPatchConfiguration
 patch_dead_bush:
   - patch_dead_bush
   - VegetationFeatures.PATCH_DEAD_BUSH
+  - RandomPatchConfiguration
 patch_fire:
   - patch_fire
   - NetherFeatures.PATCH_FIRE
+  - RandomPatchConfiguration
 patch_grass:
   - patch_grass
   - VegetationFeatures.PATCH_GRASS
+  - RandomPatchConfiguration
 patch_grass_jungle:
   - patch_grass_jungle
   - VegetationFeatures.PATCH_GRASS_JUNGLE
+  - RandomPatchConfiguration
 patch_large_fern:
   - patch_large_fern
   - VegetationFeatures.PATCH_LARGE_FERN
+  - RandomPatchConfiguration
 patch_melon:
   - patch_melon
   - VegetationFeatures.PATCH_MELON
+  - RandomPatchConfiguration
 patch_pumpkin:
   - patch_pumpkin
   - VegetationFeatures.PATCH_PUMPKIN
+  - RandomPatchConfiguration
 patch_red_mushroom:
   - patch_red_mushroom
   - VegetationFeatures.PATCH_RED_MUSHROOM
+  - RandomPatchConfiguration
 patch_soul_fire:
   - patch_soul_fire
   - NetherFeatures.PATCH_SOUL_FIRE
+  - RandomPatchConfiguration
 patch_sugar_cane:
   - patch_sugar_cane
   - VegetationFeatures.PATCH_SUGAR_CANE
+  - RandomPatchConfiguration
 patch_sunflower:
   - patch_sunflower
   - VegetationFeatures.PATCH_SUNFLOWER
+  - RandomPatchConfiguration
 patch_taiga_grass:
   - patch_taiga_grass
   - VegetationFeatures.PATCH_TAIGA_GRASS
+  - RandomPatchConfiguration
 patch_tall_grass:
   - patch_tall_grass
   - VegetationFeatures.PATCH_TALL_GRASS
+  - RandomPatchConfiguration
 patch_waterlily:
   - patch_waterlily
   - VegetationFeatures.PATCH_WATERLILY
+  - RandomPatchConfiguration
 pile_hay:
   - pile_hay
   - PileFeatures.PILE_HAY
+  - BlockPileConfiguration
 pile_ice:
   - pile_ice
   - PileFeatures.PILE_ICE
+  - BlockPileConfiguration
 pile_melon:
   - pile_melon
   - PileFeatures.PILE_MELON
+  - BlockPileConfiguration
 pile_pumpkin:
   - pile_pumpkin
   - PileFeatures.PILE_PUMPKIN
+  - BlockPileConfiguration
 pile_snow:
   - pile_snow
   - PileFeatures.PILE_SNOW
+  - BlockPileConfiguration
 pine:
   - pine
   - TreeFeatures.PINE
+  - TreeConfiguration
 pointed_dripstone:
   - pointed_dripstone
   - CaveFeatures.POINTED_DRIPSTONE
+  - PointedDripstoneConfiguration
 rooted_azalea_tree:
   - rooted_azalea_tree
   - CaveFeatures.ROOTED_AZALEA_TREE
+  - RootSystemConfiguration
 sea_pickle:
   - sea_pickle
   - AquaticFeatures.SEA_PICKLE
+  - CountConfiguration
 seagrass_mid:
   - seagrass_mid
   - AquaticFeatures.SEAGRASS_MID
+  - ProbabilityFeatureConfiguration
 seagrass_short:
   - seagrass_short
   - AquaticFeatures.SEAGRASS_SHORT
+  - ProbabilityFeatureConfiguration
 seagrass_simple:
   - seagrass_simple
   - AquaticFeatures.SEAGRASS_SIMPLE
+  - SimpleBlockConfiguration
 seagrass_slightly_less_short:
   - seagrass_slightly_less_short
   - AquaticFeatures.SEAGRASS_SLIGHTLY_LESS_SHORT
+  - ProbabilityFeatureConfiguration
 seagrass_tall:
   - seagrass_tall
   - AquaticFeatures.SEAGRASS_TALL
+  - ProbabilityFeatureConfiguration
 single_piece_of_grass:
   - single_piece_of_grass
   - VegetationFeatures.SINGLE_PIECE_OF_GRASS
+  - SimpleBlockConfiguration
 small_basalt_columns:
   - small_basalt_columns
   - NetherFeatures.SMALL_BASALT_COLUMNS
+  - ColumnFeatureConfiguration
 spore_blossom:
   - spore_blossom
   - CaveFeatures.SPORE_BLOSSOM
+  - SimpleBlockConfiguration
 spring_lava_frozen:
   - spring_lava_frozen
   - MiscOverworldFeatures.SPRING_LAVA_FROZEN
+  - SpringConfiguration
 spring_lava_nether:
   - spring_lava_nether
   - NetherFeatures.SPRING_LAVA_NETHER
+  - SpringConfiguration
 spring_lava_overworld:
   - spring_lava_overworld
   - MiscOverworldFeatures.SPRING_LAVA_OVERWORLD
+  - SpringConfiguration
 spring_nether_closed:
   - spring_nether_closed
   - NetherFeatures.SPRING_NETHER_CLOSED
+  - SpringConfiguration
 spring_nether_open:
   - spring_nether_open
   - NetherFeatures.SPRING_NETHER_OPEN
+  - SpringConfiguration
 spring_water:
   - spring_water
   - MiscOverworldFeatures.SPRING_WATER
+  - SpringConfiguration
 spruce:
   - spruce
   - TreeFeatures.SPRUCE
+  - TreeConfiguration
 super_birch_bees:
   - super_birch_bees
   - TreeFeatures.SUPER_BIRCH_BEES
+  - TreeConfiguration
 super_birch_bees_0002:
   - super_birch_bees_0002
   - TreeFeatures.SUPER_BIRCH_BEES_0002
+  - TreeConfiguration
 swamp_oak:
   - swamp_oak
   - TreeFeatures.SWAMP_OAK
+  - TreeConfiguration
 trees_birch_and_oak:
   - trees_birch_and_oak
   - VegetationFeatures.TREES_BIRCH_AND_OAK
+  - RandomFeatureConfiguration
 trees_flower_forest:
   - trees_flower_forest
   - VegetationFeatures.TREES_FLOWER_FOREST
+  - RandomFeatureConfiguration
 trees_grove:
   - trees_grove
   - VegetationFeatures.TREES_GROVE
+  - RandomFeatureConfiguration
 trees_jungle:
   - trees_jungle
   - VegetationFeatures.TREES_JUNGLE
+  - RandomFeatureConfiguration
 trees_old_growth_pine_taiga:
   - trees_old_growth_pine_taiga
   - VegetationFeatures.TREES_OLD_GROWTH_PINE_TAIGA
+  - RandomFeatureConfiguration
 trees_old_growth_spruce_taiga:
   - trees_old_growth_spruce_taiga
   - VegetationFeatures.TREES_OLD_GROWTH_SPRUCE_TAIGA
+  - RandomFeatureConfiguration
 trees_plains:
   - trees_plains
   - VegetationFeatures.TREES_PLAINS
+  - RandomFeatureConfiguration
 trees_savanna:
   - trees_savanna
   - VegetationFeatures.TREES_SAVANNA
+  - RandomFeatureConfiguration
 trees_sparse_jungle:
   - trees_sparse_jungle
   - VegetationFeatures.TREES_SPARSE_JUNGLE
+  - RandomFeatureConfiguration
 trees_taiga:
   - trees_taiga
   - VegetationFeatures.TREES_TAIGA
+  - RandomFeatureConfiguration
 trees_water:
   - trees_water
   - VegetationFeatures.TREES_WATER
+  - RandomFeatureConfiguration
 trees_windswept_hills:
   - trees_windswept_hills
   - VegetationFeatures.TREES_WINDSWEPT_HILLS
+  - RandomFeatureConfiguration
 twisting_vines:
   - twisting_vines
   - NetherFeatures.TWISTING_VINES
+  - TwistingVinesConfig
 twisting_vines_bonemeal:
   - twisting_vines_bonemeal
   - NetherFeatures.TWISTING_VINES_BONEMEAL
+  - TwistingVinesConfig
 underwater_magma:
   - underwater_magma
   - CaveFeatures.UNDERWATER_MAGMA
+  - UnderwaterMagmaConfiguration
 vines:
   - vines
   - VegetationFeatures.VINES
+  - NoneFeatureConfiguration
 void_start_platform:
   - void_start_platform
   - MiscOverworldFeatures.VOID_START_PLATFORM
+  - NoneFeatureConfiguration
 warm_ocean_vegetation:
   - warm_ocean_vegetation
   - AquaticFeatures.WARM_OCEAN_VEGETATION
+  - SimpleRandomFeatureConfiguration
 warped_forest_vegetation:
   - warped_forest_vegetation
   - NetherFeatures.WARPED_FOREST_VEGETATION
+  - NetherForestVegetationConfig
 warped_forest_vegetation_bonemeal:
   - warped_forest_vegetation_bonemeal
   - NetherFeatures.WARPED_FOREST_VEGETATION_BONEMEAL
+  - NetherForestVegetationConfig
 warped_fungus:
   - warped_fungus
   - TreeFeatures.WARPED_FUNGUS
+  - HugeFungusConfiguration
 warped_fungus_planted:
   - warped_fungus_planted
   - TreeFeatures.WARPED_FUNGUS_PLANTED
+  - HugeFungusConfiguration
 weeping_vines:
   - weeping_vines
   - NetherFeatures.WEEPING_VINES
+  - NoneFeatureConfiguration

@@ -33,10 +33,17 @@
 <#include "../mcitems.ftl">
 package ${package}.world.features;
 <#assign configuration = generator.map(featuretype, "features", 1)>
+<#assign extends = generator.map(featuretype, "features")>
 
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
+<#if configurationcode?contains("^")>
+    <#assign parts = configurationcode?split("^")>
+    <#assign configurationcode = parts[0]>
+    <#assign configuration = parts[1]>
+    <#assign extends = "Feature<" + configuration + ">">
+</#if>
 <#assign cond = false>
 <#if data.restrictionBiomes?has_content>
 	<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
@@ -48,7 +55,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 	</#list>
 </#if>
 <#compress>
-public class ${name}Feature extends ${generator.map(featuretype, "features")} {
+public class ${name}Feature extends ${extends} {
 	public static ${name}Feature FEATURE = null;
 	public static Holder<ConfiguredFeature<${configuration}, ?>> CONFIGURED_FEATURE = null;
 	public static Holder<PlacedFeature> PLACED_FEATURE = null;
@@ -92,7 +99,7 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 		super(${configuration}.CODEC);
 	}
 
-	<#if (data.restrictionBiomes?has_content && cond) || data.hasGenerationConditions()>
+	<#if (data.restrictionBiomes?has_content && cond) || data.hasGenerationConditions() || parts??>
 	public boolean place(FeaturePlaceContext<${configuration}> context) {
 		<#-- #4781 - we need to use WorldGenLevel instead of Level, or one can run incompatible procedures in condition -->
 		WorldGenLevel world = context.level();
@@ -109,7 +116,7 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 			return false;
 		</#if>
 
-		return super.place(context);
+		return <#if parts??>${configurationcode?keep_before(".config()")}.feature().place(context)<#else>super.place(context)</#if>;
 	}
 	</#if>
 }</#compress>
