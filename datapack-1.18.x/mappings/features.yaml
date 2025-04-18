@@ -78,6 +78,10 @@ feature_geode_simple:
   - GeodeFeature
   - GeodeConfiguration
   - Feature.GEODE
+feature_block_column:
+  - BlockColumnFeature
+  - BlockColumnConfiguration
+  - Feature.BLOCK_COLUMN
 feature_ore:
   - OreFeature
   - OreConfiguration
@@ -94,6 +98,34 @@ feature_simple_random_selector:
   - SimpleRandomSelectorFeature
   - SimpleRandomFeatureConfiguration
   - Feature.SIMPLE_RANDOM_SELECTOR
+feature_root_system:
+  - RootSystemFeature
+  - RootSystemConfiguration
+  - Feature.ROOT_SYSTEM
+feature_vegetation_patch:
+  - VegetationPatchFeature
+  - VegetationPatchConfiguration
+  - Feature.VEGETATION_PATCH
+feature_waterlogged_vegetation_patch:
+  - WaterloggedVegetationPatchFeature
+  - VegetationPatchConfiguration
+  - Feature.WATERLOGGED_VEGETATION_PATCH
+feature_random_selector:
+  - RandomSelectorFeature
+  - RandomFeatureConfiguration
+  - Feature.RANDOM_SELECTOR
+feature_underwater_magma:
+  - UnderwaterMagmaFeature
+  - UnderwaterMagmaConfiguration
+  - Feature.UNDERWATER_MAGMA
+feature_disk_simple:
+  - DiskReplaceFeature
+  - DiskConfiguration
+  - Feature.DISK
+feature_disk:
+  - DiskReplaceFeature
+  - DiskConfiguration
+  - Feature.DISK
 feature_tree_simple:
   - TreeFeature
   - TreeConfiguration

@@ -1,0 +1,1 @@
+new UnderwaterMagmaConfiguration(${field$search_range}, ${field$radius}, ${field$probability})

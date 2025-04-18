@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-new BlockPileConfiguration(${mappedBlockToBlockStateProvider(input$block)?contains("FeatureUtils")?then(mappedBlockToBlockStateProvider(input$block)?substring(0,mappedBlockToBlockStateProvider(input$block)?last_index_of(".defaultBlockState()"))+mappedBlockToBlockStateProvider(input$block)?substring(mappedBlockToBlockStateProvider(input$block)?last_index_of(".defaultBlockState()")+20),mappedBlockToBlockStateProvider(input$block))})
+new BlockPileConfiguration(${toStateProvidertoFeatureState(input$block)})

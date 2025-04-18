@@ -1,0 +1,2 @@
+<#include "mcitems.ftl">
+new BlockColumnConfiguration.Layer(List.of(<#list input_list$layer as layer>${layer}<#sep>,</#list>), ${generator.map(field$direction, "directions")}, ${input$allowed_placement}, ${field$prioritize_tip?lower_case})

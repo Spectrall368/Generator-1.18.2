@@ -15,6 +15,7 @@ public-f net.minecraft.world.level.chunk.ChunkGenerator f_62137_ #biomeSource
 public-f net.minecraft.world.level.chunk.ChunkGenerator f_62138_ #runtimeBiomeSource
 public-f net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator f_64318_ #settings
 public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource
+public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource <init>(Ljava/util/List;)V
 </#if>
 
 <#if w.hasElementsOfType("feature")>

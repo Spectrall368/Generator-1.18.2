@@ -1,7 +1,7 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 status: deprecated
-buildfileversion: 40.3.9
-subversion: 1.2 # force setup re-run to update Gradle wrapper to work with Java 21
+buildfileversion: 40.3.10
+subversion: 1.3 # force setup re-run to update build script for MCREATOR_JVM_OPTIONS
 
 import:
   - datapack-1.18.x
@@ -9,11 +9,10 @@ import:
 java_models:
   key: mojmap-1.18.x
   compatible: [mojmap-1.17.x, mojmap-1.19.x, mojmap-1.20.x, mojmap-1.21.x]
-  requested_key_words: [ModelPart, ~ModelRenderer]
+  requested_key_words: [ModelPart, ~ModelRenderer, ~(ResourceLocation.]
 
 # gradle task definitions
 gradle:
-  setup_task: eclipse
   run_client: runClient
   run_server: runServer
   export_file: "build/libs/modid-1.0.jar"
@@ -27,6 +26,7 @@ import_formatter:
     Nullable: javax.annotation
     Codec: com.mojang.serialization
     SoundEvent: net.minecraft.sounds
+    Attributes: net.minecraft.world.entity.ai.attributes
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
@@ -97,7 +97,7 @@ sources_setup_tasks:
 
 tags:
   template: tags.json.ftl # loaded from datapack generator
-  name: "@RESROOT/data/@namespace/tags/@folder/@name.json"
+  name: "@RESROOT/data/@namespace/tags/@folder_pre21/@name.json"
 
 language_file:
   format: json

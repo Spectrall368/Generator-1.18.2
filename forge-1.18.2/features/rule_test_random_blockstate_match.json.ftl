@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-new RandomBlockStateMatchTest(${mappedBlockToBlockStateCode(input$blockstate)?contains("FeatureUtils")?then(mappedBlockToBlockStateCode(input$blockstate)?substring(0,mappedBlockToBlockStateCode(input$blockstate)?last_index_of(".defaultBlockState()"))+mappedBlockToBlockStateCode(input$blockstate)?substring(mappedBlockToBlockStateCode(input$blockstate)?last_index_of(".defaultBlockState()")+20),mappedBlockToBlockStateCode(input$blockstate))}, ${field$probability}F)
+new RandomBlockStateMatchTest(${toStatetoFeatureState(input$blockstate)}, ${field$probability}F)

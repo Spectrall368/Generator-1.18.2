@@ -1,14 +1,9 @@
 <#include "mcitems.ftl">
 <#assign scale = field$size?number>
-new GeodeConfiguration(
-    new GeodeBlockSettings(
-        ${mappedBlockToBlockStateProvider(input$filling)?contains("FeatureUtils")?then(mappedBlockToBlockStateProvider(input$filling)?substring(0,mappedBlockToBlockStateProvider(input$filling)?last_index_of(".defaultBlockState()"))+mappedBlockToBlockStateProvider(input$filling)?substring(mappedBlockToBlockStateProvider(input$filling)?last_index_of(".defaultBlockState()")+20),mappedBlockToBlockStateProvider(input$filling))},
-        ${mappedBlockToBlockStateProvider(input$inner_layer)?contains("FeatureUtils")?then(mappedBlockToBlockStateProvider(input$inner_layer)?substring(0,mappedBlockToBlockStateProvider(input$inner_layer)?last_index_of(".defaultBlockState()"))+mappedBlockToBlockStateProvider(input$inner_layer)?substring(mappedBlockToBlockStateProvider(input$inner_layer)?last_index_of(".defaultBlockState()")+20),mappedBlockToBlockStateProvider(input$inner_layer))},
-        ${mappedBlockToBlockStateProvider(input$alternate_inner_layer)?contains("FeatureUtils")?then(mappedBlockToBlockStateProvider(input$alternate_inner_layer)?substring(0,mappedBlockToBlockStateProvider(input$alternate_inner_layer)?last_index_of(".defaultBlockState()"))+mappedBlockToBlockStateProvider(input$alternate_inner_layer)?substring(mappedBlockToBlockStateProvider(input$alternate_inner_layer)?last_index_of(".defaultBlockState()")+20),mappedBlockToBlockStateProvider(input$alternate_inner_layer))},
-        ${mappedBlockToBlockStateProvider(input$middle_layer)?contains("FeatureUtils")?then(mappedBlockToBlockStateProvider(input$middle_layer)?substring(0,mappedBlockToBlockStateProvider(input$middle_layer)?last_index_of(".defaultBlockState()"))+mappedBlockToBlockStateProvider(input$middle_layer)?substring(mappedBlockToBlockStateProvider(input$middle_layer)?last_index_of(".defaultBlockState()")+20),mappedBlockToBlockStateProvider(input$middle_layer))},
-        ${mappedBlockToBlockStateProvider(input$outer_layer)?contains("FeatureUtils")?then(mappedBlockToBlockStateProvider(input$outer_layer)?substring(0,mappedBlockToBlockStateProvider(input$outer_layer)?last_index_of(".defaultBlockState()"))+mappedBlockToBlockStateProvider(input$outer_layer)?substring(mappedBlockToBlockStateProvider(input$outer_layer)?last_index_of(".defaultBlockState()")+20),mappedBlockToBlockStateProvider(input$outer_layer))},
-        List.of(<#list input_list$crystal as crystal>${mappedBlockToBlockStateCode(crystal)?contains("FeatureUtils")?then(mappedBlockToBlockStateCode(crystal)?substring(0,mappedBlockToBlockStateCode(crystal)?last_index_of(".defaultBlockState()"))+mappedBlockToBlockStateCode(crystal)?substring(mappedBlockToBlockStateCode(crystal)?last_index_of(".defaultBlockState()")+20),mappedBlockToBlockStateCode(crystal))}<#sep>,</#list>),
-        BlockTags.create(new ResourceLocation("${field$cannot_replace_tag}")),
-        BlockTags.create(new ResourceLocation("${field$invalid_blocks_tag}"))),
+new GeodeConfiguration(new GeodeBlockSettings(${toStateProvidertoFeatureState(input$filling)},
+        ${toStateProvidertoFeatureState(input$inner_layer)}, ${toStateProvidertoFeatureState(input$alternate_inner_layer)},
+        ${toStateProvidertoFeatureState(input$middle_layer)}, ${toStateProvidertoFeatureState(input$outer_layer)},
+        List.of(<#list input_list$crystal as crystal>${toStatetoFeatureState(crystal)}<#sep>,</#list>),
+        BlockTags.create(new ResourceLocation("${field$cannot_replace_tag}")), BlockTags.create(new ResourceLocation("${field$invalid_blocks_tag}"))),
     new GeodeLayerSettings(${1.7 * scale}, ${2.2 * scale}, ${3.2 * scale}, ${4.2 * scale}),
     new GeodeCrackSettings(1, 2.0, 2), 0.35, 0.083, true, UniformInt.of(4, 5), UniformInt.of(3, 4), UniformInt.of(1, 2), -16, 16, 0.05, ${field$invalid_blocks_count})

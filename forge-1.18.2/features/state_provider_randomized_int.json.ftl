@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-/*@BlockStateProvider*/new RandomizedIntStateProvider(${mappedBlockToBlockStateProvider(input$source)?contains("FeatureUtils")?then(mappedBlockToBlockStateProvider(input$source)?substring(0,mappedBlockToBlockStateProvider(input$source)?last_index_of(".defaultBlockState()"))+mappedBlockToBlockStateProvider(input$source)?substring(mappedBlockToBlockStateProvider(input$source)?last_index_of(".defaultBlockState()")+20),mappedBlockToBlockStateProvider(input$source))}, "${field$property}", ${input$value})
+/*@BlockStateProvider*/new RandomizedIntStateProvider(${toStateProvidertoFeatureState(input$source)}, "${field$property}", ${input$value})

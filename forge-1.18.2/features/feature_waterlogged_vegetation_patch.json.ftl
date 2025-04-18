@@ -1,0 +1,3 @@
+<#include "mcitems.ftl">
+<#include "mcelements.ftl">
+new VegetationPatchConfiguration("#${field$replaceable}", ${toStateProvidertoFeatureState(input$ground_state)}, ${toPlacedFeature(input_id$vegetation_feature, input$vegetation_feature)}, ${field$surface}, ${input$depth}, ${field$extra_bottom_block_chance}, ${field$vertical_range}, ${field$vegetation_chance}, ${input$xz_radius}, ${field$extra_edge_column_chance})

@@ -34,8 +34,6 @@
 <#include "triggers.java.ftl">
 package ${package}.item;
 
-import net.minecraft.world.entity.ai.attributes.Attributes;
-
 <#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade"
 		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "MultiTool">
 public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?replace("MultiTool", "Tiered")}Item {

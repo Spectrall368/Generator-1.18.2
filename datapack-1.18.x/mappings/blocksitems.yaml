@@ -10,7 +10,7 @@ Blocks.AIR:
   - "air"
 Blocks.STONE:
   - Blocks.STONE
-  - "#minecraft:stone"
+  - "#forge:stone"
 Blocks.STONE#0:
   - Blocks.STONE
   - "stone"
@@ -295,7 +295,7 @@ Blocks.SPONGE#1:
   - "wet_sponge"
 Blocks.SANDSTONE:
   - Blocks.SANDSTONE
-  - "#minecraft:sandstone"
+  - "#forge:sandstone"
 Blocks.SANDSTONE#0:
   - Blocks.SANDSTONE
   - "sandstone"
@@ -307,7 +307,7 @@ Blocks.SANDSTONE#2:
   - "cut_sandstone"
 Blocks.RED_SANDSTONE:
   - Blocks.RED_SANDSTONE
-  - "#minecraft:sandstone"
+  - "#forge:sandstone"
 Blocks.RED_SANDSTONE#0:
   - Blocks.RED_SANDSTONE
   - "red_sandstone"
@@ -2903,9 +2903,6 @@ Items.DYE#18:
 Items.DYE#19:
   - Items.WHITE_DYE
   - "white_dye"
-Items.COAL:
-  - Items.COAL
-  - "#minecraft:coals"
 Items.COAL#0:
   - Items.COAL
   - "coal"
@@ -3404,9 +3401,6 @@ Items.MELON:
 Items.MELON_SEEDS:
   - Items.MELON_SEEDS
   - "melon_seeds"
-Items.FISH:
-  - Items.COD
-  - "#minecraft:fishes"
 Items.FISH#0:
   - Items.COD
   - "cod"
@@ -3419,9 +3413,6 @@ Items.FISH#2:
 Items.FISH#3:
   - Items.PUFFERFISH
   - "pufferfish"
-Items.COOKED_FISH:
-  - Items.COOKED_COD
-  - "#minecraft:fishes"
 Items.COOKED_FISH#0:
   - Items.COOKED_COD
   - "cooked_cod"
@@ -3899,6 +3890,15 @@ Items.HONEYCOMB:
 Items.HONEY_BOTTLE:
   - Items.HONEY_BOTTLE
   - "honey_bottle"
+Items.TORCH:
+  - Items.TORCH
+  - "torch"
+Items.REDSTONE_TORCH:
+  - Items.REDSTONE_TORCH
+  - "redstone_torch"
+Items.SOUL_TORCH:
+  - Items.SOUL_TORCH
+  - "soul_torch"
 Items.NETHERITE_INGOT:
   - Items.NETHERITE_INGOT
   - "netherite_ingot"

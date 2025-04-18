@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-new BlockStateConfiguration(${mappedBlockToBlockStateCode(input$block)?contains("FeatureUtils")?then(mappedBlockToBlockStateCode(input$block)?substring(0,mappedBlockToBlockStateCode(input$block)?last_index_of(".defaultBlockState()"))+mappedBlockToBlockStateCode(input$block)?substring(mappedBlockToBlockStateCode(input$block)?last_index_of(".defaultBlockState()")+20),mappedBlockToBlockStateCode(input$block))})
+new BlockStateConfiguration(${toStatetoFeatureState(input$block)})

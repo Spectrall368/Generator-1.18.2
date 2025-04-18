@@ -283,9 +283,9 @@ e -> {
 <#macro buttonDisplayCondition component>
 <#if hasProcedure(component.displayCondition)>
 {
-	@Override public void render(PoseStack ms, int gx, int gy, float ticks) {
+	@Override public void renderWidget(PoseStack ms, int gx, int gy, float ticks) {
 		if (<@procedureOBJToConditionCode component.displayCondition/>)
-			super.render(ms, gx, gy, ticks);
+			super.renderWidget(ms, gx, gy, ticks);
 	}
 }
 </#if>

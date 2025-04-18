@@ -74,7 +74,7 @@
     <#if !mappedBlocks??>
         <#return "Ingredient.EMPTY">
     <#elseif mappedBlocks?size == 1>
-        <#return mappedMCItemToIngredient(mappedBlocks[0])>
+        <#return mappedMCItemToIngredient(mappedBlocks?first)>
     <#else>
         <#assign itemsOnly = true>
 
@@ -318,6 +318,9 @@
                             <#assign properties += [{"name": "axis", "value": "y"}] />
                         </#if>
                     </#if>
+                    <#list ge.customProperties as prop>
+                        <#assign properties += [{"name": prop.property().getName().replace("CUSTOM:", ""), "value": prop.value()}] />
+                    </#list>
                 </#if>
             </#if>
 
@@ -356,4 +359,16 @@
         </#if>
     </#if>
     <#return '{ "Name": "minecraft:air" }'>
+</#function>
+
+<#function toFeatureState block>
+    <#return block?contains("FeatureUtils")?then(block?substring(0,block?last_index_of(".defaultBlockState()"))+block?substring(block?last_index_of(".defaultBlockState()")+20),block)>
+</#function>
+
+<#function toStateProvidertoFeatureState block>
+    <#return toFeatureState(mappedBlockToBlockStateProvider(block))>
+</#function>
+
+<#function toStatetoFeatureState block>
+    <#return toFeatureState(mappedBlockToBlockStateCode(block))>
 </#function>

@@ -73,6 +73,42 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 		entity.setArrowCount(entity.getArrowCount() - 1); <#-- #53957 -->
 	}
 
+	<#if (data.modelWidth > 0.5) || (data.modelHeight > 0.5)>
+	@Nullable @Override protected EntityHitResult findHitEntity(Vec3 projectilePosition, Vec3 deltaPosition) {
+		double d0 = Double.MAX_VALUE;
+		Entity entity = null;
+		AABB lookupBox = this.getBoundingBox();
+		for (Entity entity1 : this.level().getEntities(this, lookupBox, this::canHitEntity)) {
+			if (entity1 == this.getOwner()) continue;
+			AABB aabb = entity1.getBoundingBox();
+			if (aabb.intersects(lookupBox)) {
+				double d1 = projectilePosition.distanceToSqr(projectilePosition);
+				if (d1 < d0) {
+					entity = entity1;
+					d0 = d1;
+				}
+			}
+		}
+		return entity == null ? null : new EntityHitResult(entity);
+	}
+
+	private Direction determineHitDirection(AABB entityBox, AABB blockBox) {
+		double dx = entityBox.getCenter().x - blockBox.getCenter().x;
+		double dy = entityBox.getCenter().y - blockBox.getCenter().y;
+		double dz = entityBox.getCenter().z - blockBox.getCenter().z;
+		double absDx = Math.abs(dx);
+		double absDy = Math.abs(dy);
+		double absDz = Math.abs(dz);
+		if (absDy > absDx && absDy > absDz) {
+			return dy > 0 ? Direction.DOWN : Direction.UP;
+		} else if (absDx > absDz) {
+			return dx > 0 ? Direction.WEST : Direction.EAST;
+		} else {
+			return dz > 0 ? Direction.NORTH : Direction.SOUTH;
+		}
+	}
+	</#if>
+
 	<#if hasProcedure(data.onHitsPlayer)>
 	@Override public void playerTouch(Player entity) {
 		super.playerTouch(entity);
