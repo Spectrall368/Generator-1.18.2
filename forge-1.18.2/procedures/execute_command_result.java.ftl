@@ -4,7 +4,7 @@
 		StringBuilder _result = new StringBuilder();
 		if (world instanceof ServerLevel _level) {
 			CommandSource _dataConsumer = new CommandSource() {
-				@Override public void sendSystemMessage(Component message) {
+				@Override public void sendMessage(Component message, UUID uuid)
 					_result.append(message.getString());
 				}
 
@@ -20,7 +20,7 @@
 					return false;
 				}
 			};
-			_level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(_dataConsumer, pos, Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), null), _command);
+			_level.getServer().getCommands().performCommand(new CommandSourceStack(_dataConsumer, pos, Vec2.ZERO, _level, 4, "", Component.literal(""), _level.getServer(), null), _command);
 		}
 		return _result.toString();
 	}

@@ -2,9 +2,9 @@
 (new Object(){
 	public String getResult(Entity _ent, String _command) {
 		StringBuilder _result = new StringBuilder();
-		if(!_ent.level().isClientSide() && _ent.getServer() != null) {
+		if(!_ent.level.isClientSide() && _ent.getServer() != null) {
 			CommandSource _dataConsumer = new CommandSource() {
-				@Override public void sendSystemMessage(Component message) {
+				@Override public void sendMessage(Component message, UUID uuid) {
 					_result.append(message.getString());
 				}
 
@@ -20,10 +20,10 @@
 					return false;
 				}
 			};
-			_ent.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(
+			_ent.getServer().getCommands().performCommand(new CommandSourceStack(
 					_dataConsumer, _ent.position(), _ent.getRotationVector(),
-					_ent.level() instanceof ServerLevel ? (ServerLevel) _ent.level() : null, 4,
-					_ent.getName().getString(), _ent.getDisplayName(), _ent.level().getServer(), _ent
+					_ent.level instanceof ServerLevel ? (ServerLevel) _ent.level : null, 4,
+					_ent.getName().getString(), _ent.getDisplayName(), _ent.level.getServer(), _ent
 			), _command);
 		}
 		return _result.toString();
