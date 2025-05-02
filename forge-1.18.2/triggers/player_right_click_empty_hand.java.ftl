@@ -34,7 +34,7 @@
 						"x": "context.getSender().getX()",
 						"y": "context.getSender().getY()",
 						"z": "context.getSender().getZ()",
-						"world": "context.getSender().level()",
+						"world": "context.getSender().level",
 						"entity": "context.getSender()"
 					}/>
 				</#compress></#assign>
