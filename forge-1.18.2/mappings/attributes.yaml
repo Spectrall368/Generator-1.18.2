@@ -1,4 +1,4 @@
-_default: Attributes.MAX_HEALTH
+_default: Attributes.ARMOR
 _mcreator_prefix: "CUSTOM:"
 _mcreator_map_template: "@JavaModNameAttributes.@REGISTRYNAME.get()"
 MAX_HEALTH: Attributes.MAX_HEALTH
