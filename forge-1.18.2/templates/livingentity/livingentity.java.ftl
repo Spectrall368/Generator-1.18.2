@@ -65,12 +65,15 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		<#assign spawnBiomes = w.filterBrokenReferences(data.restrictionBiomes)>
 
 		<#if spawnBiomes?has_content>
-		private static final Set<ResourceLocation> SPAWN_BIOMES = Set.of(
-			<#list spawnBiomes as restrictionBiome>
-				new ResourceLocation("${restrictionBiome}")<#if restrictionBiome?has_next>,</#if>
-			</#list>
-		);
-		</#if>
+        private static final Set<ResourceLocation> SPAWN_BIOMES =
+        Set.of(
+            <#list spawnBiomes as restrictionBiome>
+                new ResourceLocation("${restrictionBiome?replace("#", "")}")<#sep>,
+            </#list>
+        );
+        <#else>
+        null;
+        </#if>
 
 		@SubscribeEvent public static void addLivingEntityToBiomes(BiomeLoadingEvent event) {
 			<#if spawnBiomes?has_content>

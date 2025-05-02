@@ -94,7 +94,7 @@ public class ${JavaModName}Blocks {
         </#if>
 
 		<#if hasTintedBlocks>
-		@SubscribeEvent public static void blockColorLoad(RegisterColorHandlersEvent.Block event) {
+		@SubscribeEvent public static void blockColorLoad(ColorHandlerEvent.Block event) {
 			<#list blocks as block>
 				<#if block.getModElement().getTypeString() == "block" || block.getModElement().getTypeString() == "plant">
 					<#if block.tintType != "No tint">
@@ -106,7 +106,7 @@ public class ${JavaModName}Blocks {
 		</#if>
 
 		<#if hasTintedBlockItems>
-		@SubscribeEvent public static void itemColorLoad(RegisterColorHandlersEvent.Item event) {
+		@SubscribeEvent public static void itemColorLoad(ColorHandlerEvent.Item event) {
 			<#list blocks as block>
 				<#if block.getModElement().getTypeString() == "block" || block.getModElement().getTypeString() == "plant">
 					<#if block.tintType != "No tint" && block.isItemTinted>

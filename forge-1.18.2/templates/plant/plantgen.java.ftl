@@ -35,7 +35,7 @@ package ${package}.world.features.plants;
 <#assign cond = false>
 <#if data.restrictionBiomes?has_content>
 	<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-		<#if restrictionBiome == "#minecraft:is_overworld" || restrictionBiome == "#minecraft:is_end">
+		<#if restrictionBiome?contains(":is_")>
 			<#assign cond = true>
 			 <#break>
 		</#if>
@@ -47,7 +47,6 @@ import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
 public class ${name}Feature extends RandomPatchFeature {
-
 	public static ${name}Feature FEATURE = null;
 	public static Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> CONFIGURED_FEATURE = null;
 	public static Holder<PlacedFeature> PLACED_FEATURE = null;
@@ -59,29 +58,23 @@ public class ${name}Feature extends RandomPatchFeature {
 				FeatureUtils.simpleRandomPatchConfiguration(${data.patchSize}, PlacementUtils.filtered(
 								Feature.BLOCK_COLUMN, BlockColumnConfiguration.simple(BiasedToBottomInt.of(2, 4),
 										BlockStateProvider.simple(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().defaultBlockState())),
-						BlockPredicate.allOf(BlockPredicate.ONLY_IN_AIR_PREDICATE,
-								BlockPredicate.wouldSurvive(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().defaultBlockState(), BlockPos.ZERO))
-				))
+						BlockPredicate.allOf(BlockPredicate.ONLY_IN_AIR_PREDICATE, BlockPredicate.wouldSurvive(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().defaultBlockState(), Vec3i.ZERO))))
 			<#else>
 				FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK,
 						new SimpleBlockConfiguration(BlockStateProvider.simple(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().defaultBlockState())),
 						List.of(), ${data.patchSize})
 			</#if>
 		);
-		PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE,
-				List.of(
-			CountPlacement.of(${data.frequencyOnChunks}),
+		PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE, List.of(CountPlacement.of(${data.frequencyOnChunks}),
 			<#if ((data.plantType == "normal" || data.plantType == "double") && data.generationType == "Flower") || data.plantType == "growapable">
-			RarityFilter.onAverageOnceEvery(32),
-			</#if>
+			RarityFilter.onAverageOnceEvery(32),</#if>
 			InSquarePlacement.spread(),
 			<#if data.generateAtAnyHeight>
-				PlacementUtils.FULL_RANGE
+                PlacementUtils.FULL_RANGE
 			<#else>
-			PlacementUtils.HEIGHTMAP<#if ((data.plantType == "normal" || data.plantType == "double") && data.generationType == "Grass") || data.plantType == "growapable">_WORLD_SURFACE</#if>
-			</#if>,
-			 BiomeFilter.biome()
-		));
+			    PlacementUtils.HEIGHTMAP<#if ((data.plantType == "normal" || data.plantType == "double") && data.generationType == "Grass") || data.plantType == "growapable">_WORLD_SURFACE</#if>
+            </#if>,
+            BiomeFilter.biome()));
 		return FEATURE;
 	}
 
@@ -102,11 +95,16 @@ public class ${name}Feature extends RandomPatchFeature {
 
     <#if data.restrictionBiomes?has_content && cond>
 	private final Set<ResourceKey<Level>> generate_dimensions = Set.of(
-		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
+	    <#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
 			<#if restrictionBiome == "#minecraft:is_overworld">
 				Level.OVERWORLD
+			<#elseif restrictionBiome == "#minecraft:is_nether">
+				Level.NETHER
 			<#elseif restrictionBiome == "#minecraft:is_end">
 				Level.END
+			<#else>
+			    ResourceKey.create(Registry.DIMENSION_REGISTRY,
+                						new ResourceLocation("${modid}:${restrictionBiome?keep_after("is_")}"))
 			</#if><#sep>,
 		</#list>
 	);
@@ -116,7 +114,7 @@ public class ${name}Feature extends RandomPatchFeature {
 		super(RandomPatchConfiguration.CODEC);
 	}
 
-	public boolean place(FeaturePlaceContext<RandomPatchConfiguration> context) {
+	@Override public boolean place(FeaturePlaceContext<RandomPatchConfiguration> context) {
 		WorldGenLevel world = context.level();
 		<#if data.restrictionBiomes?has_content && cond>
 		if (!generate_dimensions.contains(world.getLevel().dimension()))
@@ -126,5 +124,4 @@ public class ${name}Feature extends RandomPatchFeature {
 		return super.place(context);
 	}
 }
-
 <#-- @formatter:on -->

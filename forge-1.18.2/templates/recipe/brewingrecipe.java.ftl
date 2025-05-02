@@ -29,7 +29,7 @@
 -->
 
 <#-- @formatter:off -->
-<#include "mcitems.ftl">
+<#include "../mcitems.ftl">
 package ${package}.recipes.brewing;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}BrewingRecipe implements IBrewingRecipe {
@@ -67,5 +67,4 @@ package ${package}.recipes.brewing;
 		}
 		return ItemStack.EMPTY;
 	}
-
 }

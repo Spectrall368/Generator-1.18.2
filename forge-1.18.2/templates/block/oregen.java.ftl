@@ -35,7 +35,7 @@ package ${package}.world.features.ores;
 <#assign cond = false>
 <#if data.restrictionBiomes?has_content>
 	<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-		<#if restrictionBiome == "#minecraft:is_overworld" || restrictionBiome == "#minecraft:is_end">
+		<#if restrictionBiome?contains(":is_")>
 			<#assign cond = true>
 			 <#break>
 		</#if>
@@ -44,7 +44,6 @@ package ${package}.world.features.ores;
 </#if>
 
 public class ${name}Feature extends OreFeature {
-
 	public static ${name}Feature FEATURE = null;
 	public static Holder<ConfiguredFeature<OreConfiguration, ?>> CONFIGURED_FEATURE = null;
 	public static Holder<PlacedFeature> PLACED_FEATURE = null;
@@ -52,13 +51,11 @@ public class ${name}Feature extends OreFeature {
 	public static Feature<?> feature() {
 		FEATURE = new ${name}Feature();
 		CONFIGURED_FEATURE = FeatureUtils.register("${modid}:${registryname}", FEATURE,
-				new OreConfiguration(${name}FeatureRuleTest.INSTANCE, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().defaultBlockState(), ${data.frequencyOnChunk})
-		);
+				new OreConfiguration(${name}FeatureRuleTest.INSTANCE, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().defaultBlockState(), ${data.frequencyOnChunk}));
 		PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE, List.of(
 				CountPlacement.of(${data.frequencyPerChunks}), InSquarePlacement.spread(),
 				HeightRangePlacement.${data.generationShape?lower_case}(VerticalAnchor.absolute(${data.minGenerateHeight}), VerticalAnchor.absolute(${data.maxGenerateHeight})),
-				BiomeFilter.biome()
-		));
+				BiomeFilter.biome()));
 		return FEATURE;
 	}
 
@@ -66,9 +63,8 @@ public class ${name}Feature extends OreFeature {
 		return PLACED_FEATURE;
 	}
 
-
 	public static final Set<ResourceLocation> GENERATE_BIOMES =
-    <#if data.restrictionBiomes?has_content && !cond>
+	<#if data.restrictionBiomes?has_content && !cond>
 	Set.of(
 		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
 			new ResourceLocation("${restrictionBiome?replace("#", "")}")<#sep>,
@@ -80,11 +76,16 @@ public class ${name}Feature extends OreFeature {
 
     <#if data.restrictionBiomes?has_content && cond>
 	private final Set<ResourceKey<Level>> generate_dimensions = Set.of(
-		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
+	    <#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
 			<#if restrictionBiome == "#minecraft:is_overworld">
 				Level.OVERWORLD
+			<#elseif restrictionBiome == "#minecraft:is_nether">
+				Level.NETHER
 			<#elseif restrictionBiome == "#minecraft:is_end">
 				Level.END
+			<#else>
+			    ResourceKey.create(Registry.DIMENSION_REGISTRY,
+                						new ResourceLocation("${modid}:${restrictionBiome?keep_after("is_")}"))
 			</#if><#sep>,
 		</#list>
 	);
@@ -94,7 +95,7 @@ public class ${name}Feature extends OreFeature {
 		super(OreConfiguration.CODEC);
 	}
 
-	public boolean place(FeaturePlaceContext<OreConfiguration> context) {
+	@Override public boolean place(FeaturePlaceContext<OreConfiguration> context) {
 		WorldGenLevel world = context.level();
 		<#if data.restrictionBiomes?has_content && cond>
 		if (!generate_dimensions.contains(world.getLevel().dimension()))
@@ -105,7 +106,6 @@ public class ${name}Feature extends OreFeature {
 	}
 
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) private static class ${name}FeatureRuleTest extends RuleTest {
-
 		static final ${name}FeatureRuleTest INSTANCE = new ${name}FeatureRuleTest();
 
 		private static final com.mojang.serialization.Codec<${name}FeatureRuleTest> CODEC = com.mojang.serialization.Codec.unit(() -> INSTANCE);
@@ -122,7 +122,6 @@ public class ${name}Feature extends OreFeature {
 		protected RuleTestType<?> getType() {
 			return CUSTOM_MATCH;
 		}
-
 	}
 }
 <#-- @formatter:on -->
