@@ -1,5 +1,5 @@
-_default: DIRT
-NONE: new Material.Builder(MaterialColor.NONE).build()
+_default: (new Material.Builder(MaterialColor.NONE)).build()
+NONE: (new Material.Builder(MaterialColor.NONE)).build()
 AIR: AIR
 STRUCTURE_VOID: STRUCTURAL_AIR
 PORTAL: PORTAL
