@@ -78,7 +78,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 		double d0 = Double.MAX_VALUE;
 		Entity entity = null;
 		AABB lookupBox = this.getBoundingBox();
-		for (Entity entity1 : this.level().getEntities(this, lookupBox, this::canHitEntity)) {
+		for (Entity entity1 : this.level.getEntities(this, lookupBox, this::canHitEntity)) {
 			if (entity1 == this.getOwner()) continue;
 			AABB aabb = entity1.getBoundingBox();
 			if (aabb.intersects(lookupBox)) {
