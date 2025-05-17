@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2021, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -35,7 +35,6 @@ package ${package}.world.dimension;
 
 <#compress>
 @Mod.EventBusSubscriber public class ${name}Dimension {
-
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public static class ${name}SpecialEffectsHandler {
 		@SubscribeEvent public static void registerFillerBlocks(FMLCommonSetupEvent event) {
 			Set<Block> replaceableBlocks = new HashSet<>();
@@ -58,34 +57,33 @@ package ${package}.world.dimension;
 			});
 		}
 
+        <#if data.useCustomEffects>
 		@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void registerDimensionSpecialEffects(FMLClientSetupEvent event) {
 			DimensionSpecialEffects customEffect = new DimensionSpecialEffects(
-				<#if data.imitateOverworldBehaviour>DimensionSpecialEffects.OverworldEffects.CLOUD_LEVEL<#else>Float.NaN</#if>,
+				<#if data.hasClouds>${data.cloudHeight}f<#else>Float.NaN</#if>,
 				true,
-				<#if data.imitateOverworldBehaviour>DimensionSpecialEffects.SkyType.NORMAL<#else>DimensionSpecialEffects.SkyType.NONE</#if>,
+				DimensionSpecialEffects.SkyType.${data.skyType},
 				false,
 				false
 			) {
-
 				@Override public Vec3 getBrightnessDependentFogColor(Vec3 color, float sunHeight) {
 					<#if data.airColor?has_content>
-						return new Vec3(${data.airColor.getRed()/255},${data.airColor.getGreen()/255},${data.airColor.getBlue()/255});
+						return new Vec3(${data.airColor.getRed()/255},${data.airColor.getGreen()/255},${data.airColor.getBlue()/255})
 					<#else>
-						<#if data.imitateOverworldBehaviour>
-							return color.multiply(sunHeight * 0.94 + 0.06, sunHeight * 0.94 + 0.06, sunHeight * 0.91 + 0.09);
-						<#else>
-							return color;
-						</#if>
+						return color
 					</#if>
+					<#if data.sunHeightAffectsFog>
+						.multiply(sunHeight * 0.94 + 0.06, sunHeight * 0.94 + 0.06, sunHeight * 0.91 + 0.09)
+					</#if>;
 				}
 
 				@Override public boolean isFoggyAt(int x, int y) {
 					return ${data.hasFog};
 				}
-
 			};
 			event.enqueueWork(() -> DimensionSpecialEffects.EFFECTS.put(new ResourceLocation("${modid}:${registryname}"), customEffect));
 		}
+		</#if>
 	}
 
 	<#if hasProcedure(data.onPlayerLeavesDimension) || hasProcedure(data.onPlayerEntersDimension)>
@@ -111,4 +109,3 @@ package ${package}.world.dimension;
     </#if>
 }
 </#compress>
-<#-- @formatter:on -->

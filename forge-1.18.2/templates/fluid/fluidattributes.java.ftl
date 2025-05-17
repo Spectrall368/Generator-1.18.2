@@ -37,8 +37,7 @@ public class ${name}FluidAttributes extends FluidAttributes {
 	}
 
 	public static class CustomBuilder extends FluidAttributes.Builder {
-		protected CustomBuilder(ResourceLocation stillTexture, ResourceLocation flowingTexture,
-				BiFunction<FluidAttributes.Builder, Fluid, FluidAttributes> factory) {
+		protected CustomBuilder(ResourceLocation stillTexture, ResourceLocation flowingTexture, BiFunction<FluidAttributes.Builder, Fluid, FluidAttributes> factory) {
 			super(stillTexture, flowingTexture, factory);
 		}
 	}
@@ -72,5 +71,4 @@ public class ${name}FluidAttributes extends FluidAttributes {
 		</#if> | 0xFF000000;
 	}
 	</#if>
-
 }

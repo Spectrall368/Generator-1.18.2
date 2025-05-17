@@ -7,7 +7,7 @@ public net.minecraft.world.level.levelgen.carver.WorldCarver f_64983_ #replaceab
 public net.minecraft.client.renderer.DimensionSpecialEffects f_108857_ #EFFECTS
 </#if>
 
-<#if w.hasElementsOfType("biome")>
+<#if w.getGElementsOfType("biome")?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0>
 public net.minecraft.world.level.biome.MultiNoiseBiomeSource <init>(Lnet/minecraft/world/level/biome/Climate$ParameterList;Ljava/util/Optional;)V #constructor
 public-f net.minecraft.world.level.biome.MultiNoiseBiomeSource f_48438_ #preset
 public-f net.minecraft.world.level.biome.MultiNoiseBiomeSource f_48435_ #parameters

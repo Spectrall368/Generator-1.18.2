@@ -10,18 +10,18 @@
     "biome_source": <@ms.multiNoiseSource/>,
     "settings": {
       "name": "${modid}:${registryname}",
-      "sea_level": 63,
+      "sea_level": ${data.seaLevel},
       "legacy_random_source": false,
       "disable_mob_generation": false,
       "aquifers_enabled": true,
-      "ore_veins_enabled": true,
+      "ore_veins_enabled": ${data.generateOreVeins},
       "default_block": ${mappedMCItemToBlockStateJSON(data.mainFillerBlock)},
       "default_fluid": ${mappedMCItemToBlockStateJSON(data.fluidBlock)},
       "noise": {
         "min_y": -64,
         "height": 384,
-        "size_horizontal": 1,
-        "size_vertical": 2,
+        "size_horizontal": ${data.horizontalNoiseSize},
+        "size_vertical": ${data.verticalNoiseSize},
         "sampling": {
           "xz_scale": 1,
           "y_scale": 1,

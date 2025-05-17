@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2021, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -29,66 +29,62 @@
 -->
 
 <#-- @formatter:off -->
-package ${package}.world.features.treedecorators;
 <#include "../mcitems.ftl">
+package ${package}.world.features.treedecorators;
 
 public class ${name}TrunkDecorator extends TrunkVineDecorator {
 
-        public static final ${name}TrunkDecorator INSTANCE = new ${name}TrunkDecorator();
+    public static final Codec<${name}TrunkDecorator> CODEC = Codec.unit(${name}TrunkDecorator::new);
+    public static final TreeDecoratorType<?> DECORATOR_TYPE = new TreeDecoratorType<>(CODEC);
 
-        public static com.mojang.serialization.Codec<${name}TrunkDecorator> codec;
-        public static TreeDecoratorType<?> tdt;
+    static {
+        DECORATOR_TYPE.setRegistryName("${modid}:${registryname}_tree_trunk_decorator");
+        ForgeRegistries.TREE_DECORATOR_TYPES.register(DECORATOR_TYPE);
+    }
 
-        static {
-            codec = com.mojang.serialization.Codec.unit(() -> INSTANCE);
-            tdt = new TreeDecoratorType<>(codec);
-            tdt.setRegistryName("${registryname}_tree_trunk_decorator");
-            ForgeRegistries.TREE_DECORATOR_TYPES.register(tdt);
-        }
+    @Override
+    protected TreeDecoratorType<?> type() {
+        return DECORATOR_TYPE;
+    }
 
-        @Override
-        protected TreeDecoratorType<?> type() {
-            return tdt;
-        }
-
-        @Override
-        public void place(LevelSimulatedReader levelReader, BiConsumer<BlockPos, BlockState> biConsumer, Random random, List<BlockPos> listBlockPos, List<BlockPos> listBlockPos2) {
-            listBlockPos.forEach(blockpos -> {
-                if (random.nextInt(3) > 0) {
-                    BlockPos bp = blockpos.west();
-                    if (Feature.isAir(levelReader, bp)) {
-                        biConsumer.accept(blockpos, oriented(${mappedBlockToBlockStateCode(data.treeVines)}, Direction.EAST));
-                    }
+    @Override
+    public void place(LevelSimulatedReader levelReader, BiConsumer<BlockPos, BlockState> biConsumer, Random random, List<BlockPos> listBlockPos, List<BlockPos> listBlockPos2) {
+        listBlockPos.forEach(blockpos -> {
+            if (random.nextInt(3) > 0) {
+                BlockPos pos = blockpos.west();
+                if (Feature.isAir(levelReader, bp)) {
+					biConsumer.accept(pos, oriented(${mappedBlockToBlockStateCode(data.treeVines)}, Direction.EAST));
                 }
+            }
 
-                if (random.nextInt(3) > 0) {
-                    BlockPos bp = blockpos.east();
-                    if (Feature.isAir(levelReader, bp)) {
-                        biConsumer.accept(blockpos, oriented(${mappedBlockToBlockStateCode(data.treeVines)}, Direction.WEST));
-                    }
-                }
+			if (random.nextInt(3) > 0) {
+				BlockPos pos = blockpos.east();
+				if (Feature.isAir(levelReader, bp)) {
+					biConsumer.accept(pos, oriented(${mappedBlockToBlockStateCode(data.treeVines)}, Direction.WEST));
+				}
+			}
 
-                if (random.nextInt(3) > 0) {
-                    BlockPos bp = blockpos.north();
-                    if (Feature.isAir(levelReader, bp)) {
-                        biConsumer.accept(blockpos, oriented(${mappedBlockToBlockStateCode(data.treeVines)}, Direction.SOUTH));
-                    }
-                }
+			if (random.nextInt(3) > 0) {
+				BlockPos pos = blockpos.north();
+				if (Feature.isAir(levelReader, bp)) {
+					biConsumer.accept(pos, oriented(${mappedBlockToBlockStateCode(data.treeVines)}, Direction.SOUTH));
+				}
+			}
 
-                if (random.nextInt(3) > 0) {
-                    BlockPos bp = blockpos.south();
-                    if (Feature.isAir(levelReader, bp)) {
-                        biConsumer.accept(blockpos, oriented(${mappedBlockToBlockStateCode(data.treeVines)}, Direction.NORTH));
-                    }
-                }
-            });
-        }
+			if (random.nextInt(3) > 0) {
+				BlockPos pos = blockpos.south();
+				if (Feature.isAir(levelReader, bp)) {
+					biConsumer.accept(pos, oriented(${mappedBlockToBlockStateCode(data.treeVines)}, Direction.NORTH));
+				}
+			}
+        });
+    }
 
-	private static BlockState oriented(BlockState blockstate, Direction direction) {
+	@SuppressWarnings("deprecation") private static BlockState oriented(BlockState blockstate, Direction direction) {
 		return switch (direction) {
-			case SOUTH -> blockstate.getBlock().rotate(blockstate, Rotation.CLOCKWISE_180);
-			case EAST -> blockstate.getBlock().rotate(blockstate, Rotation.CLOCKWISE_90);
-			case WEST -> blockstate.getBlock().rotate(blockstate, Rotation.COUNTERCLOCKWISE_90);
+			case SOUTH -> blockstate.rotate(Rotation.CLOCKWISE_180);
+			case EAST -> blockstate.rotate(Rotation.CLOCKWISE_90);
+			case WEST -> blockstate.rotate(Rotation.COUNTERCLOCKWISE_90);
 			default -> blockstate;
 		};
 	}

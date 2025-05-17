@@ -1,30 +1,30 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
- # 
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
+ #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
  # the Free Software Foundation, either version 3 of the License, or
  # (at your option) any later version.
- # 
+ #
  # This program is distributed in the hope that it will be useful,
  # but WITHOUT ANY WARRANTY; without even the implied warranty of
  # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  # GNU General Public License for more details.
- # 
+ #
  # You should have received a copy of the GNU General Public License
  # along with this program.  If not, see <https://www.gnu.org/licenses/>.
- # 
+ #
  # Additional permission for code generator templates (*.ftl files)
- # 
- # As a special exception, you may create a larger work that contains part or 
- # all of the MCreator code generator templates (*.ftl files) and distribute 
- # that work under terms of your choice, so long as that work isn't itself a 
- # template for code generation. Alternatively, if you modify or redistribute 
- # the template itself, you may (at your option) remove this special exception, 
- # which will cause the template and the resulting code generator output files 
- # to be licensed under the GNU General Public License without this special 
+ #
+ # As a special exception, you may create a larger work that contains part or
+ # all of the MCreator code generator templates (*.ftl files) and distribute
+ # that work under terms of your choice, so long as that work isn't itself a
+ # template for code generation. Alternatively, if you modify or redistribute
+ # the template itself, you may (at your option) remove this special exception,
+ # which will cause the template and the resulting code generator output files
+ # to be licensed under the GNU General Public License without this special
  # exception.
 -->
 
@@ -33,6 +33,9 @@
 <#include "procedures.java.ftl">
 <#include "triggers.java.ftl">
 package ${package}.item;
+
+import java.util.function.Consumer;
+import net.minecraftforge.client.IItemRenderProperties;
 
 public abstract class ${name}Item extends ArmorItem {
 
@@ -84,9 +87,9 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 
 		<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
-		public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.IItemRenderProperties> consumer) {
+		@Override public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 			consumer.accept(new IItemRenderProperties() {
-				@Override public HumanoidModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
+				@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
 					HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
 							"head", new ${data.helmetModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.helmetModelName}.LAYER_LOCATION)).${data.helmetModelPart},
 							"hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
@@ -105,7 +108,7 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<@addSpecialInformation data.helmetSpecialInformation/>
+		<@addSpecialInformation data.helmetSpecialInformation, "item." + modid + "." + registryname + "_helmet"/>
 
 		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 			<#if data.helmetModelTexture?has_content && data.helmetModelTexture != "From armor">
@@ -131,7 +134,7 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 
 		<#if data.bodyModelName != "Default" && data.getBodyModel()??>
-		public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.IItemRenderProperties> consumer) {
+		@Override public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 			consumer.accept(new IItemRenderProperties() {
 				@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
 					HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
@@ -152,7 +155,7 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<@addSpecialInformation data.bodySpecialInformation/>
+		<@addSpecialInformation data.bodySpecialInformation, "item." + modid + "." + registryname + "_chestplate"/>
 
 		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 			<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">
@@ -178,7 +181,7 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 
 		<#if data.leggingsModelName != "Default" && data.getLeggingsModel()??>
-		public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.IItemRenderProperties> consumer) {
+		@Override public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 			consumer.accept(new IItemRenderProperties() {
 				@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
 					HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
@@ -199,7 +202,7 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<@addSpecialInformation data.leggingsSpecialInformation/>
+		<@addSpecialInformation data.leggingsSpecialInformation, "item." + modid + "." + registryname + "_leggings"/>
 
 		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 			<#if data.leggingsModelTexture?has_content && data.leggingsModelTexture != "From armor">
@@ -225,7 +228,7 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 
 		<#if data.bootsModelName != "Default" && data.getBootsModel()??>
-		public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.IItemRenderProperties> consumer) {
+		@Override public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 			consumer.accept(new IItemRenderProperties() {
 				@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
 					HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
@@ -246,7 +249,7 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<@addSpecialInformation data.bootsSpecialInformation/>
+		<@addSpecialInformation data.bootsSpecialInformation, "item." + modid + "." + registryname + "_boots"/>
 
 		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 			<#if data.bootsModelTexture?has_content && data.bootsModelTexture != "From armor">

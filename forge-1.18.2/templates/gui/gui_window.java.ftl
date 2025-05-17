@@ -134,6 +134,20 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			<#if hasProcedure(component.displayCondition)>}</#if>
 		</#list>
 
+		<#list data.getComponentsOfType("Sprite") as component>
+ 			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
+ 				RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.sprite}"));
+ 				this.blit(ms, this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
+ 					<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
+ 						<@getSpriteByIndex component "width"/>, 0
+ 					<#else>
+ 						0, <@getSpriteByIndex component "height"/>
+ 					</#if>,
+ 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+ 					${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())});
+ 			<#if hasProcedure(component.displayCondition)>}</#if>
+ 		</#list>
+
 		RenderSystem.disableBlend();
 	}
 
@@ -266,28 +280,48 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
         	this.addRenderableWidget(${component.getName()});
 		</#list>
 	}
-
 }
-
 <#macro buttonOnClick component>
 e -> {
 	<#if hasProcedure(component.onClick)>
-	    if (<@procedureOBJToConditionCode component.displayCondition/>) {
+		if (<@procedureOBJToConditionCode component.displayCondition/>) {
 			${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));
 			${name}ButtonMessage.handleButtonAction(entity, ${btid}, x, y, z);
 		}
 	</#if>
 }
 </#macro>
-
 <#macro buttonDisplayCondition component>
 <#if hasProcedure(component.displayCondition)>
 {
 	@Override public void renderWidget(PoseStack ms, int gx, int gy, float ticks) {
-		if (<@procedureOBJToConditionCode component.displayCondition/>)
-			super.renderWidget(ms, gx, gy, ticks);
+		this.visible = <@procedureOBJToConditionCode component.displayCondition/>;
+ 		super.renderWidget(ms, gx, gy, ticks);
 	}
 }
 </#if>
 </#macro>
+<#macro getSpriteByIndex component dim>
+ 	<#if hasProcedure(component.spriteIndex)>
+ 		Mth.clamp((int) <@procedureOBJToNumberCode component.spriteIndex/> *
+ 			<#if dim == "width">
+ 				${component.getWidth(w.getWorkspace())}
+ 			<#else>
+ 				${component.getHeight(w.getWorkspace())}
+ 			</#if>,
+ 			0,
+ 			<#if dim == "width">
+ 				${component.getTextureWidth(w.getWorkspace()) - component.getWidth(w.getWorkspace())}
+ 			<#else>
+ 				${component.getTextureHeight(w.getWorkspace()) - component.getHeight(w.getWorkspace())}
+ 			</#if>
+ 		)
+ 	<#else>
+ 		<#if dim == "width">
+ 			${component.getWidth(w.getWorkspace()) * component.spriteIndex.getFixedValue()}
+ 		<#else>
+ 			${component.getHeight(w.getWorkspace()) * component.spriteIndex.getFixedValue()}
+ 		</#if>
+ 	</#if>
+ </#macro>
 <#-- @formatter:on -->
