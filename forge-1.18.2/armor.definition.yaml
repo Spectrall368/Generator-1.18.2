@@ -2,7 +2,7 @@ templates:
   - template: armor.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
 
-# Helmet item model
+  # Helmet item model
   - template: json/item.json.ftl
     writer: json
     variables: "item=helmet"
@@ -32,7 +32,7 @@ templates:
     variables: "item=helmet"
     name: "@MODASSETSROOT/models/item/@registryname_helmet.json"
 
-# Body item model
+  # Body item model
   - template: json/item.json.ftl
     writer: json
     variables: "item=body"
@@ -62,7 +62,7 @@ templates:
     variables: "item=body"
     name: "@MODASSETSROOT/models/item/@registryname_chestplate.json"
 
-# Leggings item model
+  # Leggings item model
   - template: json/item.json.ftl
     writer: json
     variables: "item=leggings"
@@ -92,7 +92,7 @@ templates:
     variables: "item=leggings"
     name: "@MODASSETSROOT/models/item/@registryname_leggings.json"
 
-# Boots item model
+  # Boots item model
   - template: json/item.json.ftl
     writer: json
     variables: "item=boots"
@@ -135,3 +135,11 @@ localizationkeys:
   - key: item.@modid.@registryname_boots
     mapto: bootsName
     condition: enableBoots
+  - fromlist: data.getHelmetFixedSpecialInformation()
+    key: item.@modid.@registryname_helmet.description_@item_index
+  - fromlist: data.getBodyFixedSpecialInformation()
+    key: item.@modid.@registryname_chestplate.description_@item_index
+  - fromlist: data.getLeggingsFixedSpecialInformation()
+    key: item.@modid.@registryname_leggings.description_@item_index
+  - fromlist: data.getBootsFixedSpecialInformation()
+    key: item.@modid.@registryname_boots.description_@item_index

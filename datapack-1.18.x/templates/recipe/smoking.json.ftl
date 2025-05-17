@@ -4,7 +4,7 @@
     "type": "minecraft:smoking",
     <#if data.group?has_content>"group": "${data.group}",</#if>
     "experience": ${data.xpReward},
-    "cookingtime": ${data.cookingTime},
+	"cookingtime": ${data.cookingTime},
     "ingredient": {
       ${mappedMCItemToItemObjectJSON(data.smokingInputStack)}
     },

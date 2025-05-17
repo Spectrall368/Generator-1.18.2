@@ -328,7 +328,7 @@ public class ${name}Item extends FishingRodItem {
         </#if>
     </#if>
 
-	<@addSpecialInformation data.specialInformation/>
+	<@addSpecialInformation data.specialInformation, "item." + modid + "." + registryname/>
 
     <@onItemUsedOnBlock data.onRightClickedOnBlock/>
 
