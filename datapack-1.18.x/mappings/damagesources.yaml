@@ -1,6 +1,7 @@
 _default:
   - DamageSource.GENERIC
   - generic
+_mcreator_prefix: "CUSTOM:"
 _mcreator_map_template:
   - "@JavaModNameDamageSources.@REGISTRYNAME"
   - "@modid:@registryname"

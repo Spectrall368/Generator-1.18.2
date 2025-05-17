@@ -1,13 +1,3 @@
-<#function mappedBlockToBlockStateProvider mappedBlock>
-    <#if mappedBlock?starts_with("/*@BlockStateProvider*/")>
-        <#return mappedBlock?replace("/*@BlockStateProvider*/", "")>
-	<#elseif featureType == "configured_feature_reference">
- 		<#return '{"feature": ' + featureConfig + ', "placement": [' + placement?remove_ending(",") + ']}'>
-    <#else>
-        <#return '{"type": "minecraft:simple_state_provider", "state": ' + mappedBlock + '}'>
-    </#if>
-</#function>
-
 <#function transformExtension mappedBlock>
     <#assign extension = mappedBlock?keep_after_last(".")?replace("body", "chestplate")?replace("legs", "leggings")>
     <#return (extension?has_content)?then("_" + extension, "")>

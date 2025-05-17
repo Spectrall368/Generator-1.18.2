@@ -11,9 +11,6 @@
 <#assign features_fluid_springs = []>
 <#assign features_vegetal_decoration = []>
 <#assign features_top_layer_modification = []>
-<#if data.hasTrees()>
-	<#assign features_vegetal_decoration = features_vegetal_decoration + ["${modid}:${registryname}_tree"]>
-</#if>
 <#list generator.sortByMappings(data.defaultFeatures, "defaultfeatures") as defaultFeature>
 	<#if data.spawnBiomeNether &&
 	(defaultFeature == "Caves" ||
@@ -24,7 +21,6 @@
 	defaultFeature == "Fossils")>
 		<#continue>
 	</#if>
-
 	<#assign mfeat = generator.map(defaultFeature, "defaultfeatures")>
 	<#if mfeat != "null">
 		<#assign features_array = mfeat?split(",")>
@@ -64,7 +60,6 @@
     "precipitation": <#if (data.rainingPossibility > 0)><#if (data.temperature > 0.15)>"rain"<#else>"snow"</#if><#else>"none"</#if>,
     "temperature": ${data.temperature},
     "downfall": ${data.rainingPossibility},
-    "category": "none",
     "effects": {
 		<#if data.ambientSound?has_content && data.ambientSound.getMappedValue()?has_content>
 		"ambient_sound": "${data.ambientSound}",
@@ -102,7 +97,7 @@
     	"foliage_color": ${data.foliageColor?has_content?then(data.foliageColor.getRGB(), 10387789)},
     	"grass_color": ${data.grassColor?has_content?then(data.grassColor.getRGB(), 9470285)},
     	"sky_color": ${data.airColor?has_content?then(data.airColor.getRGB(), 7972607)},
-    	"fog_color": ${data.fogColor?has_content?then(data.fogColor.getRGB(), 12638463)},
+    	"fog_color": ${data.airColor?has_content?then(data.airColor.getRGB(), 12638463)},
     	"water_color": ${data.waterColor?has_content?then(data.waterColor.getRGB(), 4159204)},
     	"water_fog_color": ${data.waterFogColor?has_content?then(data.waterFogColor.getRGB(), 329011)}
     },
@@ -150,7 +145,7 @@
 	<#list entities as entry>
 	<#-- @formatter:off -->
     {
-      	"type": "${entry.entity.getMappedValue(2)}",
+		"type": "${entry.entity.getMappedValue(2)}",
 		"weight": ${entry.weight},
 		"minCount": ${entry.minGroup},
 		"maxCount": ${entry.maxGroup}

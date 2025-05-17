@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2021, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -29,17 +29,21 @@
 -->
 
 <#-- @formatter:off -->
-<#include "../mcitems.ftl">
 package ${package}.world.features.treedecorators;
+<#include "../mcitems.ftl">
 
 public class ${name}FruitDecorator extends CocoaDecorator {
 
-    public static final Codec<${name}FruitDecorator> CODEC = Codec.unit(${name}FruitDecorator::new);
-    public static final TreeDecoratorType<?> DECORATOR_TYPE = new TreeDecoratorType<>(CODEC);
+    public static final ${name}FruitDecorator INSTANCE = new ${name}FruitDecorator();
+
+    public static com.mojang.serialization.Codec<${name}FruitDecorator> codec;
+    public static TreeDecoratorType<?> tdt;
 
     static {
-        DECORATOR_TYPE.setRegistryName("${modid}:${registryname}_tree_fruit_decorator");
-        ForgeRegistries.TREE_DECORATOR_TYPES.register(DECORATOR_TYPE);
+        codec = com.mojang.serialization.Codec.unit(() -> INSTANCE);
+        tdt = new TreeDecoratorType<>(codec);
+        tdt.setRegistryName("${registryname}_tree_fruit_decorator");
+        ForgeRegistries.TREE_DECORATOR_TYPES.register(tdt);
     }
 
     public ${name}FruitDecorator() {
@@ -47,7 +51,7 @@ public class ${name}FruitDecorator extends CocoaDecorator {
     }
 
     @Override protected TreeDecoratorType<?> type() {
-        return DECORATOR_TYPE;
+        return tdt;
     }
 
     @Override ${mcc.getMethod("net.minecraft.world.level.levelgen.feature.treedecorators.CocoaDecorator", "place", "LevelSimulatedReader", "java.util.function.BiConsumer<BlockPos, BlockState>", "Random", "List", "List")
@@ -59,11 +63,11 @@ public class ${name}FruitDecorator extends CocoaDecorator {
         .replace("p_161722_", "blocks")
         .replace("p_161723_", "blocks2")}
 
-    @SuppressWarnings("deprecation") private static BlockState oriented(BlockState blockstate, Direction direction) {
+    private static BlockState oriented(BlockState blockstate, Direction direction) {
         return switch (direction) {
-            case SOUTH -> blockstate.rotate(Rotation.CLOCKWISE_180);
-            case EAST -> blockstate.rotate(Rotation.CLOCKWISE_90);
-            case WEST -> blockstate.rotate(Rotation.COUNTERCLOCKWISE_90);
+            case SOUTH -> blockstate.getBlock().rotate(blockstate, Rotation.CLOCKWISE_180);
+            case EAST -> blockstate.getBlock().rotate(blockstate, Rotation.CLOCKWISE_90);
+            case WEST -> blockstate.getBlock().rotate(blockstate, Rotation.COUNTERCLOCKWISE_90);
             default -> blockstate;
         };
     }

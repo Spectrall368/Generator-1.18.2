@@ -1,3 +1,4 @@
+_mcreator_prefix: "CUSTOM:"
 _mcreator_map_template: "(SimpleParticleType) (@JavaModNameParticleTypes.@REGISTRYNAME.get())"
 _default: ParticleTypes.CRIT
 VILLAGER_ANGRY: ParticleTypes.ANGRY_VILLAGER

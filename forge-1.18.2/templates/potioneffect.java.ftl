@@ -38,10 +38,6 @@ public class ${name}MobEffect extends MobEffect {
 
 	public ${name}MobEffect() {
 		super(MobEffectCategory.${data.mobEffectCategory}, ${data.color.getRGB()});
-		<#list data.modifiers as modifier>
-		this.addAttributeModifier(${modifier.attribute}, "${w.getUUID(data.getModElement().getRegistryName() + "_" + modifier?index)}", ${modifier.amount},
-				AttributeModifier.Operation.${getAttributeOperation(modifier.operation)});
-		</#list>
 	}
 
 	<#if data.isInstant>
@@ -80,7 +76,6 @@ public class ${name}MobEffect extends MobEffect {
 			}
 		<#else>
 			@Override public void addAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
-				super.addAttributeModifiers(entity, attributeMap, amplifier);
 				<@procedureCode data.onStarted, {
 					"x": "entity.getX()",
 					"y": "entity.getY()",
@@ -156,12 +151,3 @@ public class ${name}MobEffect extends MobEffect {
 }
 </#compress>
 <#-- @formatter:on -->
-<#function getAttributeOperation operation>
- 	<#if operation == "ADD_VALUE">
- 		<#return "ADDITION">
- 	<#elseif operation == "ADD_MULTIPLIED_BASE">
- 		<#return "MULTIPLY_BASE">
- 	<#else>
- 		<#return "MULTIPLY_TOTAL">
- 	</#if>
- </#function>

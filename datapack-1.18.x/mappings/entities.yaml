@@ -2,6 +2,7 @@ _default:
   - Zombie
   - EntityType.ZOMBIE
   - zombie
+_mcreator_prefix: "CUSTOM:"
 _mcreator_map_template:
   - "@NAMEEntity"
   - "@JavaModNameEntities.@REGISTRYNAME.get()"

@@ -35,12 +35,10 @@
 package ${package}.item;
 
 <#compress>
-public class ${name}Item extends <#if data.isMusicDisc>Record</#if>Item {
+public class ${name}Item extends Item {
 
 	public ${name}Item() {
-	    super(<#if data.isMusicDisc>
-                ${data.musicDiscAnalogOutput}, () -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.musicDiscMusic}" )),
-                </#if>new Item.Properties()
+		super(new Item.Properties()
 				.tab(<@CreativeTabs data.creativeTabs/>)
 				<#if data.hasInventory()>
 				.stacksTo(1)
@@ -144,7 +142,7 @@ public class ${name}Item extends <#if data.isMusicDisc>Record</#if>Item {
 	}
 	</#if>
 
-	<@addSpecialInformation data.specialInformation, "item." + modid + "." + registryname/>
+	<@addSpecialInformation data.specialInformation/>
 
 	<#assign shouldExplicitlyCallStartUsing = !data.isFood && (data.useDuration > 0)> <#-- ranged items handled in if below so no need to check for that here too -->
  	<#if hasProcedure(data.onRightClickedInAir) || data.hasInventory() || data.enableRanged || shouldExplicitlyCallStartUsing>

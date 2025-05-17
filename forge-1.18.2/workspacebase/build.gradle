@@ -1,6 +1,6 @@
 plugins {
     id 'eclipse'
-    id 'net.neoforged.moddev.legacyforge' version '2.0.88'
+    id 'net.neoforged.moddev.legacyforge' version '2.0.83'
 }
 
 version = '1.0'
@@ -10,6 +10,11 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 legacyForge {
     version = "${generator.getGeneratorMinecraftVersion()}-${generator.getGeneratorBuildFileVersion()}"
+
+    parchment {
+        mappingsVersion = "2022.11.06"
+        minecraftVersion = "${generator.getGeneratorMinecraftVersion()}"
+    }
 
     runs {
         client {

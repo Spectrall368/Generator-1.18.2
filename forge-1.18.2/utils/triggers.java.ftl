@@ -12,29 +12,20 @@
 	</#if>
 </#macro>
 
-<#macro addSpecialInformation procedure="" translationKeyHeader="" isBlock=false>
+<#macro addSpecialInformation procedure="" isBlock=false>
 	<#if procedure?has_content && (hasProcedure(procedure) || !procedure.getFixedValue().isEmpty())>
 		@Override public void appendHoverText(ItemStack itemstack, <#if isBlock>BlockGetter<#else>Level</#if> level, List<Component> list, TooltipFlag flag) {
 		super.appendHoverText(itemstack, level, list, flag);
 		<#if hasProcedure(procedure)>
 			Entity entity = itemstack.getEntityRepresentation();
-			String hoverText = <@procedureCode procedure, {
- 				"x": "entity != null ? entity.getX() : 0.0",
- 				"y": "entity != null ? entity.getY() : 0.0",
- 				"z": "entity != null ? entity.getZ() : 0.0",
- 				"entity": "entity",
- 				"world": "level instanceof Level ? (LevelAccessor) level : null",
- 				"itemstack": "itemstack"
- 			}, false/>;
- 			if (hoverText != null) {
- 				for (String line : hoverText.split("\n")) {
- 					list.add(new TextComponent(line));
- 				}
- 			}
-		<#elseif translationKeyHeader?has_content>
- 			<#list procedure.getFixedValue() as entry>
- 				list.add(new TranslatableComponent("${translationKeyHeader}.description_${entry?index}"));
- 			</#list>
+			list.add(Component.literal(<@procedureCode procedure, {
+				"x": "entity != null ? entity.getX() : 0.0",
+				"y": "entity != null ? entity.getY() : 0.0",
+				"z": "entity != null ? entity.getZ() : 0.0",
+				"entity": "entity",
+				"world": "level instanceof Level ? (LevelAccessor) level : null",
+				"itemstack": "itemstack"
+			}, false/>));
 		<#else>
 			<#list procedure.getFixedValue() as entry>
 				list.add(new TextComponent("${JavaConventions.escapeStringForJava(entry)}"));

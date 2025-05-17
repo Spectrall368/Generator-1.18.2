@@ -1,4 +1,5 @@
 _default: plains
+_mcreator_prefix: "CUSTOM:"
 _mcreator_map_template: "@modid:@registryname"
 _bypass_prefix: "#"
 ocean: ocean

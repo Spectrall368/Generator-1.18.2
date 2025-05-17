@@ -29,73 +29,71 @@
 -->
 
 <#-- @formatter:off -->
+
 <#include "../procedures.java.ftl">
+
 package ${package}.client.renderer;
 
 <#assign humanoid = false>
 <#assign model = "HumanoidModel">
+
 <#if data.mobModelName == "Chicken">
-	<#assign rootPart = "context.bakeLayer(ModelLayers.CHICKEN)">
+	<#assign super = "super(context, new ChickenModel(context.bakeLayer(ModelLayers.CHICKEN)), " + data.modelShadowSize + "f);">
 	<#assign model = "ChickenModel">
 <#elseif data.mobModelName == "Cod">
-	<#assign rootPart = "context.bakeLayer(ModelLayers.COD)">
+	<#assign super = "super(context, new CodModel(context.bakeLayer(ModelLayers.COD)), " + data.modelShadowSize + "f);">
 	<#assign model = "CodModel">
 <#elseif data.mobModelName == "Cow">
-	<#assign rootPart = "context.bakeLayer(ModelLayers.COW)">
+	<#assign super = "super(context, new CowModel(context.bakeLayer(ModelLayers.COW)), " + data.modelShadowSize + "f);">
 	<#assign model = "CowModel">
 <#elseif data.mobModelName == "Creeper">
-	<#assign rootPart = "context.bakeLayer(ModelLayers.CREEPER)">
+	<#assign super = "super(context, new CreeperModel(context.bakeLayer(ModelLayers.CREEPER)), " + data.modelShadowSize + "f);">
 	<#assign model = "CreeperModel">
 <#elseif data.mobModelName == "Ghast">
-	<#assign rootPart = "context.bakeLayer(ModelLayers.GHAST)">
+	<#assign super = "super(context, new GhastModel(context.bakeLayer(ModelLayers.GHAST)), " + data.modelShadowSize + "f);">
 	<#assign model = "GhastModel">
 <#elseif data.mobModelName == "Ocelot">
-	<#assign rootPart = "context.bakeLayer(ModelLayers.OCELOT)">
+	<#assign super = "super(context, new OcelotModel(context.bakeLayer(ModelLayers.OCELOT)), " + data.modelShadowSize + "f);">
 	<#assign model = "OcelotModel">
 <#elseif data.mobModelName == "Pig">
-	<#assign rootPart = "context.bakeLayer(ModelLayers.PIG)">
+	<#assign super = "super(context, new PigModel(context.bakeLayer(ModelLayers.PIG)), " + data.modelShadowSize + "f);">
 	<#assign model = "PigModel">
 <#elseif data.mobModelName == "Piglin">
-	<#assign rootPart = "context.bakeLayer(ModelLayers.PIGLIN)">
+	<#assign super = "super(context, new PiglinModel(context.bakeLayer(ModelLayers.PIGLIN)), " + data.modelShadowSize + "f);">
 	<#assign model = "PiglinModel">
 <#elseif data.mobModelName == "Slime">
-	<#assign rootPart = "context.bakeLayer(ModelLayers.SLIME)">
+	<#assign super = "super(context, new SlimeModel(context.bakeLayer(ModelLayers.SLIME)), " + data.modelShadowSize + "f);">
 	<#assign model = "SlimeModel">
 <#elseif data.mobModelName == "Salmon">
-	<#assign rootPart = "context.bakeLayer(ModelLayers.SALMON)">
+	<#assign super = "super(context, new SalmonModel(context.bakeLayer(ModelLayers.SALMON)), " + data.modelShadowSize + "f);">
 	<#assign model = "SalmonModel">
 <#elseif data.mobModelName == "Spider">
-	<#assign rootPart = "context.bakeLayer(ModelLayers.SPIDER)">
+	<#assign super = "super(context, new SpiderModel(context.bakeLayer(ModelLayers.SPIDER)), " + data.modelShadowSize + "f);">
 	<#assign model = "SpiderModel">
 <#elseif data.mobModelName == "Villager">
-	<#assign rootPart = "context.bakeLayer(ModelLayers.VILLAGER)">
+	<#assign super = "super(context, new VillagerModel(context.bakeLayer(ModelLayers.VILLAGER)), " + data.modelShadowSize + "f);">
 	<#assign model = "VillagerModel">
 <#elseif data.mobModelName == "Silverfish">
-	<#assign rootPart = "context.bakeLayer(ModelLayers.SILVERFISH)">
+	<#assign super = "super(context, new SilverfishModel(context.bakeLayer(ModelLayers.SILVERFISH)), " + data.modelShadowSize + "f);">
 	<#assign model = "SilverfishModel">
 <#elseif data.mobModelName == "Witch">
-	<#assign rootPart = "context.bakeLayer(ModelLayers.WITCH)">
+	<#assign super = "super(context, new WitchModel(context.bakeLayer(ModelLayers.WITCH)), " + data.modelShadowSize + "f);">
 	<#assign model = "WitchModel">
 <#elseif !data.isBuiltInModel()>
-	<#assign rootPart = "context.bakeLayer(${data.mobModelName}.LAYER_LOCATION)">
+	<#assign super = "super(context, new ${data.mobModelName}(context.bakeLayer(${data.mobModelName}.LAYER_LOCATION)), " + data.modelShadowSize + "f);">
 	<#assign model = data.mobModelName>
 <#else>
-	<#assign rootPart = "context.bakeLayer(ModelLayers.PLAYER)">
+	<#assign super = "super(context, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER)), " + data.modelShadowSize + "f);">
 	<#assign model = "HumanoidModel">
 	<#assign humanoid = true>
 </#if>
 
 <#assign model = model + "<" + name + "Entity>">
 
-<#compress>
 public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${name}Entity, ${model}> {
 
 	public ${name}Renderer(EntityRendererProvider.Context context) {
-		<#if data.animations?has_content>
- 		super(context, new AnimatedModel(${rootPart}), ${data.modelShadowSize}f);
- 		<#else>
- 		super(context, new ${model}(${rootPart}), ${data.modelShadowSize}f);
- 		</#if>
+		${super}
 
 		<#if humanoid>
 		this.addLayer(new HumanoidArmorLayer(this, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)),
@@ -183,4 +181,3 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	}
 	</#if>
 }
-</#compress>

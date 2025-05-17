@@ -33,8 +33,6 @@
 <#include "../mcitems.ftl">
 <#include "../procedures.java.ftl">
 <#include "../triggers.java.ftl">
-<#assign filteredCustomProperties = data.customProperties?filter(e ->
- 	e.property().getName().startsWith("CUSTOM:") || generator.map(e.property().getName(), "blockstateproperties") != "")>
 package ${package}.block;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
@@ -43,8 +41,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 public class ${name}Block extends
 	<#if data.hasGravity>
 		FallingBlock
-	<#elseif data.blockBase?has_content && data.blockBase == "Button">
-		<#if (data.material.getUnmappedValue() == "WOOD") || (data.material.getUnmappedValue() == "NETHER_WOOD")>Wood<#else>Stone</#if>ButtonBlock
 	<#elseif data.blockBase?has_content>
 		${data.blockBase?replace("Stairs", "Stair")?replace("Pane", "IronBars")}Block
 	<#else>
@@ -79,25 +75,14 @@ public class ${name}Block extends
 	<#if data.isWaterloggable>
 		public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	</#if>
-	<#list filteredCustomProperties as prop>
- 		<#if prop.property().getName().startsWith("CUSTOM:")>
- 			<#assign propName = prop.property().getName().replace("CUSTOM:", "")>
- 			<#if prop.property().getClass().getSimpleName().equals("LogicType")>
- 				public static final BooleanProperty ${propName?upper_case} = BooleanProperty.create("${propName}");
- 			<#elseif prop.property().getClass().getSimpleName().equals("IntegerType")>
- 				public static final IntegerProperty ${propName?upper_case} = IntegerProperty.create("${propName}", ${prop.property().getMin()}, ${prop.property().getMax()});
- 			<#elseif prop.property().getClass().getSimpleName().equals("StringType")>
- 				public static final EnumProperty<${StringUtils.snakeToCamel(propName)}Property> ${propName?upper_case} = EnumProperty.create("${propName}", ${StringUtils.snakeToCamel(propName)}Property.class);
- 			</#if>
- 		<#else>
- 			<#assign propName = prop.property().getName()>
- 			<#if prop.property().getClass().getSimpleName().equals("LogicType")>
- 				public static final BooleanProperty ${propName?upper_case} = ${generator.map(propName, "blockstateproperties")};
- 			<#elseif prop.property().getClass().getSimpleName().equals("IntegerType")>
- 				public static final IntegerProperty ${propName?upper_case} = ${generator.map(propName, "blockstateproperties")};
- 			<#elseif prop.property().getClass().getSimpleName().equals("StringType")>
- 				public static final EnumProperty<${generator.map(propName, "blockstateproperties", 2)}> ${propName?upper_case} = ${generator.map(propName, "blockstateproperties")};
- 			</#if>
+	<#list data.customProperties as prop>
+		<#assign propName = prop.property().getName().replace("CUSTOM:", "")>
+		<#if prop.property().getClass().getSimpleName().equals("LogicType")>
+			public static final BooleanProperty ${propName?upper_case} = BooleanProperty.create("${propName}");
+		<#elseif prop.property().getClass().getSimpleName().equals("IntegerType")>
+			public static final IntegerProperty ${propName?upper_case} = IntegerProperty.create("${propName}", ${prop.property().getMin()}, ${prop.property().getMax()});
+		<#elseif prop.property().getClass().getSimpleName().equals("StringType")>
+			public static final EnumProperty<${StringUtils.snakeToCamel(propName)}Property> ${propName?upper_case} = EnumProperty.create("${propName}", ${StringUtils.snakeToCamel(propName)}Property.class);
 		</#if>
 	</#list>
 
@@ -164,19 +149,18 @@ public class ${name}Block extends
 
 	public ${name}Block() {
 		<#if data.blockBase?has_content && data.blockBase == "Stairs">
-		super(() -> Blocks.AIR.defaultBlockState(),
+			super(() -> Blocks.AIR.defaultBlockState(), <@blockProperties/>);
 		<#elseif data.blockBase?has_content && data.blockBase == "PressurePlate">
-		    <#if (data.material.getUnmappedValue() == "WOOD") || (data.material.getUnmappedValue() == "NETHER_WOOD")>
-		        super(Sensitivity.EVERYTHING,
+		    <#if data.material.getUnmappedValue() == "WOOD">
+		        super(Sensitivity.EVERYTHING, <@blockProperties/>);
 		    <#else>
-		        super(Sensitivity.MOBS,
+		        super(Sensitivity.MOBS, <@blockProperties/>);
 		    </#if>
 		<#else>
-		super(
+			super(<@blockProperties/>);
 		</#if>
-		<@blockProperties/>);
 
-	    <#if data.rotationMode != 0 || data.isWaterloggable || filteredCustomProperties?has_content>
+	    <#if data.rotationMode != 0 || data.isWaterloggable || data.customProperties?has_content>
 	    this.registerDefaultState(this.stateDefinition.any()
 	    	<#if data.rotationMode == 1 || data.rotationMode == 3>
 	    	.setValue(FACING, Direction.NORTH)
@@ -206,7 +190,7 @@ public class ${name}Block extends
    	}
 	</#if>
 
-	<@addSpecialInformation data.specialInformation, "block." + modid + "." + registryname, true/>
+	<@addSpecialInformation data.specialInformation, true/>
 
 	<#if data.displayFluidOverlay>
 	@Override public boolean shouldDisplayFluidOverlay(BlockState state, BlockAndTintGetter world, BlockPos pos, FluidState fluidstate) {
@@ -255,7 +239,7 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if data.rotationMode != 0 || data.isWaterloggable || filteredCustomProperties?has_content>
+	<#if data.rotationMode != 0 || data.isWaterloggable || data.customProperties?has_content>
 	@Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
 		<#assign props = []>
@@ -267,7 +251,7 @@ public class ${name}Block extends
 				<#assign props += ["FACE"]>
 			</#if>
 		</#if>
-		<#list filteredCustomProperties as prop>
+		<#list data.customProperties as prop>
 			<#assign props += [prop.property().getName().replace("CUSTOM:", "")?upper_case]>
 		</#list>
 		<#if data.isWaterloggable>
@@ -327,15 +311,11 @@ public class ${name}Block extends
 	</#if>
 
 	<#macro initCustomBlockStateProperties>
-		<#list filteredCustomProperties as prop>
-			<#assign propName = prop.property().getName()>
-			.setValue(${propName.replace("CUSTOM:", "")?upper_case},
+		<#list data.customProperties as prop>
+			<#assign propName = prop.property().getName().replace("CUSTOM:", "")>
+			.setValue(${propName?upper_case},
 				<#if prop.property().getClass().getSimpleName().equals("StringType")>
-					<#if propName.startsWith("CUSTOM:")>
-					${StringUtils.snakeToCamel(propName.replace("CUSTOM:", ""))}Property.${prop.value()?upper_case}
-					<#else>
-					${propName?upper_case}.getValue("${prop.value()}").get()
-					</#if>
+				${StringUtils.snakeToCamel(propName)}Property.${prop.value()?upper_case}
 				<#else>
 				${prop.value()}
 				</#if>
@@ -712,7 +692,7 @@ public class ${name}Block extends
 	</#if>
 
 	<#list data.customProperties as prop>
-		<#if prop.property().getName().startsWith("CUSTOM:") && prop.property().getClass().getSimpleName().equals("StringType")>
+		<#if prop.property().getClass().getSimpleName().equals("StringType")>
 		<#assign propClassName = StringUtils.snakeToCamel(prop.property().getName().replace("CUSTOM:", ""))>
 		public enum ${propClassName}Property implements StringRepresentable {
 			<#list prop.property.getArrayData() as value>

@@ -92,20 +92,6 @@ package ${package}.client.gui;
 					<#if hasProcedure(component.displayCondition)>}</#if>
 				</#list>
 
-        	<#list data.getComponentsOfType("Sprite") as component>
- 				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
- 					RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.sprite}"));
- 					Minecraft.getInstance().gui.blit(event.${stackMethodName}(), <@calculatePosition component/>,
- 						<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
- 							<@getSpriteByIndex component "width"/>, 0
- 						<#else>
- 							0, <@getSpriteByIndex component "height"/>
- 						</#if>,
- 						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
- 						${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())});
- 				<#if hasProcedure(component.displayCondition)>}</#if>
-         	</#list>
-
 				<#list data.getComponentsOfType("Label") as component>
 						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>)
@@ -134,7 +120,7 @@ package ${package}.client.gui;
 				RenderSystem.disableBlend();
 				RenderSystem.setShaderColor(1, 1, 1, 1);
 			</#if>
-        }
+		}
 	}
 }
 <#macro calculatePosition component x_offset=0 y_offset=0>
@@ -158,27 +144,4 @@ package ${package}.client.gui;
 		w - ${427 - (component.x + x_offset)}, h - ${240 - (component.y + y_offset)}
 	</#if>
 </#macro>
- <#macro getSpriteByIndex component dim>
- 	<#if hasProcedure(component.spriteIndex)>
- 		Mth.clamp((int) <@procedureOBJToNumberCode component.spriteIndex/> *
- 			<#if dim == "width">
- 				${component.getWidth(w.getWorkspace())}
- 			<#else>
- 				${component.getHeight(w.getWorkspace())}
- 			</#if>,
- 			0,
- 			<#if dim == "width">
- 				${component.getTextureWidth(w.getWorkspace()) - component.getWidth(w.getWorkspace())}
- 			<#else>
- 				${component.getTextureHeight(w.getWorkspace()) - component.getHeight(w.getWorkspace())}
- 			</#if>
- 		)
- 	<#else>
- 		<#if dim == "width">
- 			${component.getWidth(w.getWorkspace()) * component.spriteIndex.getFixedValue()}
- 		<#else>
- 			${component.getHeight(w.getWorkspace()) * component.spriteIndex.getFixedValue()}
- 		</#if>
- 	</#if>
- </#macro>
 <#-- @formatter:on -->

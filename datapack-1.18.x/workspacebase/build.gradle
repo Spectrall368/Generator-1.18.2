@@ -3,4 +3,3 @@ tasks.register('build', Zip.class) {
     archiveFileName = 'export.zip'
     destinationDirectory = file('build/export/')
 }
-

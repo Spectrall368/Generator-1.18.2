@@ -1,4 +1,5 @@
 _default: null
+_mcreator_prefix: "CUSTOM:"
 _mcreator_map_template: "@JavaModNameGameRules.@REGISTRYNAME"
 ANNOUNCE_ADVANCEMENTS: GameRules.RULE_ANNOUNCE_ADVANCEMENTS
 COMMAND_BLOCK_OUTPUT: GameRules.RULE_COMMANDBLOCKOUTPUT

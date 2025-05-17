@@ -1,4 +1,5 @@
 _default: none
+_mcreator_prefix: "CUSTOM:"
 _mcreator_map_template: "@modid:@registryname"
 "No parent: root": none
 story/root: minecraft:story/root

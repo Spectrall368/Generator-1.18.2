@@ -2,14 +2,6 @@ templates:
   - template: biome/biome.json.ftl
     writer: json
     name: "@MODDATAROOT/worldgen/biome/@registryname.json"
-  - template: biome/configured_tree.json.ftl
-    writer: json
-    condition: hasTrees()
-    name: "@MODDATAROOT/worldgen/configured_feature/@registryname_tree.json"
-  - template: biome/placed_tree.json.ftl
-    writer: json
-    condition: hasTrees()
-    name: "@MODDATAROOT/worldgen/placed_feature/@registryname_tree.json"
 
 tags:
   - tag: BIOMES:minecraft:has_structure/mineshaft
@@ -75,7 +67,7 @@ tags:
   - tag: BIOMES:minecraft:has_structure/ruined_portal_nether
     condition: "${data.spawnRuinedPortal == 'NETHER'}"
 
-field_exclusions: [name, coverageEstimate, treeVines, treeFruits, spawnBiome, spawnInCaves, spawnBiomeNether]
+field_exclusions: [name, coverageEstimate, treeVines, treeFruits, treeBranch, treeStem, minHeight, treeType, vanillaTreeType, treesPerChunk, spawnBiome, spawnInCaves, spawnBiomeNether]
 
 localizationkeys:
   - key: biome.@modid.@registryname
