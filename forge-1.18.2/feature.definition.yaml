@@ -5,6 +5,7 @@ templates:
 # Templates for custom structure feature
 global_templates:
   - template: elementinits/features.java.ftl
+    writer: java
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameFeatures.java"
   - template: feature/structure_feature.java.ftl
     writer: java

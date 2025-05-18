@@ -42,10 +42,6 @@ public class ${name}LeaveDecorator extends LeaveVineDecorator {
         ForgeRegistries.TREE_DECORATOR_TYPES.register(DECORATOR_TYPE);
     }
 
-	public ${name}LeaveDecorator() {
-		super(0.25f);
-	}
-
     @Override
     protected TreeDecoratorType<?> type() {
         return DECORATOR_TYPE;

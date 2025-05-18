@@ -29,6 +29,7 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfType("potion")>${JavaModName}Potions.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("gui")>${JavaModName}Menus.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("particle")>${JavaModName}ParticleTypes.REGISTRY.register(bus);</#if>
+		<#if w.hasElementsOfType("structure")>${JavaModName}Structures.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("villagerprofession")>${JavaModName}VillagerProfessions.PROFESSIONS.register(bus);</#if>
 		<#if w.hasElementsOfType("fluid")>${JavaModName}Fluids.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("attribute")>${JavaModName}Attributes.REGISTRY.register(bus);</#if>

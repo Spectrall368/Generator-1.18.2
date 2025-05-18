@@ -3,32 +3,32 @@
   "type": "${modid}:${registryname}",
   "config": {
     "start_pool": "${modid}:${registryname}",
-    "size": ${[data.size, 30]?min},
-  },
-  "max_distance_from_center": ${data.maxDistanceFromCenter},
-  "spawn_overrides": {},
-  "terrain_adaptation": "${data.terrainAdaptation?replace("encapsulate", "none")}",
-  "start_height": {
-    <#if data.useStartHeight>
-    "type": "minecraft:${data.startHeightProviderType?lower_case}",
-    "min_inclusive": {
-      "absolute": ${data.startHeightMin}
+    "size": ${[data.size, 7]?min},
+    "start_height": {
+        <#if data.useStartHeight>
+        "type": "minecraft:${data.startHeightProviderType?lower_case}",
+        "min_inclusive": {
+          "absolute": ${data.startHeightMin}
+        },
+        "max_inclusive": {
+          "absolute": ${data.startHeightMax}
+        }
+        <#else>
+        "absolute": 0
+        </#if>
     },
-    "max_inclusive": {
-      "absolute": ${data.startHeightMax}
-    }
-    <#else>
-    "absolute": 0
-    </#if>
-  },
   <#if !data.useStartHeight>
   "project_start_to_heightmap": "${data.surfaceDetectionType}",
   </#if>
+  "max_distance_from_center": ${data.maxDistanceFromCenter}
+  },
+  "adapt_noise": <#if data.terrainAdaptation == "none" || data.terrainAdaptation == "bury" || data.terrainAdaptation == "encapsulate">false<#else>true</#if>,
+  "spawn_overrides": {},
   <#if spawnBiomes?size == 1>
-  "biomes": "${spawnBiomes?first}",
+  "biomes": "${spawnBiomes?first}"
   <#else>
   "biomes": [
     <#list spawnBiomes as spawnBiome>"${spawnBiome}"<#sep>,</#list>
-  ],
+  ]
   </#if>
 }

@@ -51,30 +51,30 @@ public class ${name}TrunkDecorator extends TrunkVineDecorator {
     public void place(LevelSimulatedReader levelReader, BiConsumer<BlockPos, BlockState> biConsumer, Random random, List<BlockPos> listBlockPos, List<BlockPos> listBlockPos2) {
         listBlockPos.forEach(blockpos -> {
             if (random.nextInt(3) > 0) {
-                BlockPos pos = blockpos.west();
+                BlockPos bp = blockpos.west();
                 if (Feature.isAir(levelReader, bp)) {
-					biConsumer.accept(pos, oriented(${mappedBlockToBlockStateCode(data.treeVines)}, Direction.EAST));
+					biConsumer.accept(blockpos, oriented(${mappedBlockToBlockStateCode(data.treeVines)}, Direction.EAST));
                 }
             }
 
 			if (random.nextInt(3) > 0) {
-				BlockPos pos = blockpos.east();
+				BlockPos bp = blockpos.east();
 				if (Feature.isAir(levelReader, bp)) {
-					biConsumer.accept(pos, oriented(${mappedBlockToBlockStateCode(data.treeVines)}, Direction.WEST));
+					biConsumer.accept(blockpos, oriented(${mappedBlockToBlockStateCode(data.treeVines)}, Direction.WEST));
 				}
 			}
 
 			if (random.nextInt(3) > 0) {
-				BlockPos pos = blockpos.north();
+				BlockPos bp = blockpos.north();
 				if (Feature.isAir(levelReader, bp)) {
-					biConsumer.accept(pos, oriented(${mappedBlockToBlockStateCode(data.treeVines)}, Direction.SOUTH));
+					biConsumer.accept(blockpos, oriented(${mappedBlockToBlockStateCode(data.treeVines)}, Direction.SOUTH));
 				}
 			}
 
 			if (random.nextInt(3) > 0) {
-				BlockPos pos = blockpos.south();
+				BlockPos bp = blockpos.south();
 				if (Feature.isAir(levelReader, bp)) {
-					biConsumer.accept(pos, oriented(${mappedBlockToBlockStateCode(data.treeVines)}, Direction.NORTH));
+					biConsumer.accept(blockpos, oriented(${mappedBlockToBlockStateCode(data.treeVines)}, Direction.NORTH));
 				}
 			}
         });
