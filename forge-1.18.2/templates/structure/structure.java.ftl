@@ -44,15 +44,23 @@ public class ${name}Structure extends StructureFeature<StructureConfiguration> {
     public static Optional<PieceGenerator<StructureConfiguration>> createPiecesGenerator(PieceGeneratorSupplier.Context<StructureConfiguration> context) {
         BlockPos blockpos = context.chunkPos().getMiddleBlockPosition(0);
 
-        if (context.config().projectStartToHeightmap() != null) {
+        if (context.config().projectStartToHeightmap().isEmpty()) {
             int topLandY = context.chunkGenerator().getFirstFreeHeight(blockpos.getX(), blockpos.getZ(), context.config().projectStartToHeightmap().get(), context.heightAccessor());
-            blockpos = blockpos.above(topLandY + context.config().startHeight().sample(new Random(), new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor())));
+            //to fix blockpos = blockpos.atY(topLandY + context.config().startHeight().sample(new Random(), new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor())));
         } else {
-            blockpos = blockpos.above(context.config().startHeight().sample(new Random(), new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor())));
+            blockpos = blockpos.atY(context.config().startHeight().sample(new Random(), new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor())));
         }
 
         Pools.bootstrap();
 
-        return JigsawPlacement.addPieces(new PieceGeneratorSupplier.Context<JigsawConfiguration>(context.chunkGenerator(), context.biomeSource(), context.seed(), context.chunkPos(), new JigsawConfiguration(context.config().startPool(), context.config().maxDepth()), context.heightAccessor(), context.validBiome(), context.structureManager(), context.registryAccess()), PoolElementStructurePiece::new, blockpos, false, true);
+        JigsawConfiguration jigsawConfig = new JigsawConfiguration(context.config().startPool(), context.config().maxDepth());
+
+        PieceGeneratorSupplier.Context<JigsawConfiguration> jigsawContext = new PieceGeneratorSupplier.Context<>(
+                context.chunkGenerator(), context.biomeSource(), context.seed(), context.chunkPos(), jigsawConfig, context.heightAccessor(), context.validBiome(),
+                context.structureManager(), context.registryAccess());
+
+        Optional<PieceGenerator<JigsawConfiguration>> jigsawResult = JigsawPlacement.addPieces(jigsawContext, PoolElementStructurePiece::new, blockpos, false, true);
+
+        return (Optional<PieceGenerator<StructureConfiguration>>) (Optional<?>) jigsawResult;
     }
 }
