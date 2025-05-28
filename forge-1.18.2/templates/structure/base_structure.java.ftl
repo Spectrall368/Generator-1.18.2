@@ -46,7 +46,7 @@ public class BaseStructure extends StructureFeature<StructureConfiguration> {
 
         if (!context.config().projectStartToHeightmap().isEmpty()) {
             int topLandY = context.chunkGenerator().getFirstFreeHeight(blockpos.getX(), blockpos.getZ(), context.config().projectStartToHeightmap().get(), context.heightAccessor());
-            blockpos = blockpos.above(topLandY + context.config().startHeight().sample(new Random(), new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor())));
+            blockpos = blockpos.atY(topLandY + context.config().startHeight().sample(new Random(), new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor())));
         } else {
             blockpos = blockpos.atY(context.config().startHeight().sample(new Random(), new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor())));
         }
