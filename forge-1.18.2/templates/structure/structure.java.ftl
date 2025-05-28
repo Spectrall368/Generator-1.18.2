@@ -44,7 +44,7 @@ public class ${name}Structure extends StructureFeature<StructureConfiguration> {
     public static Optional<PieceGenerator<StructureConfiguration>> createPiecesGenerator(PieceGeneratorSupplier.Context<StructureConfiguration> context) {
         BlockPos blockpos = context.chunkPos().getMiddleBlockPosition(0);
 
-        if (context.config().projectStartToHeightmap().isEmpty()) {
+        if (!context.config().projectStartToHeightmap().isEmpty()) {
             int topLandY = context.chunkGenerator().getFirstFreeHeight(blockpos.getX(), blockpos.getZ(), context.config().projectStartToHeightmap().get(), context.heightAccessor());
             //to fix blockpos = blockpos.atY(topLandY + context.config().startHeight().sample(new Random(), new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor())));
         } else {
