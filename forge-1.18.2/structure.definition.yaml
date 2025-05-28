@@ -23,7 +23,13 @@ global_templates:
   - template: elementinits/structures.java.ftl
     writer: java
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameStructures.java"
+  - template: structure/base_structure.java.ftl
+    writer: java
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/structures/BaseStructure.java"
+    hidden: true
   - template: structure/structure_configuration.java.ftl
     writer: java
     name: "@SRCROOT/@BASEPACKAGEPATH/world/structures/configurations/StructureConfiguration.java"
     hidden: true
+
+field_exclusions: [maxDistanceFromCenter]
