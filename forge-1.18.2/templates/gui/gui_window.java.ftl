@@ -78,8 +78,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 	</#if>
 
 	@Override public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(ms);
-
 		super.render(ms, mouseX, mouseY, partialTicks);
 
 		<#list data.getComponentsOfType("TextField") as component>
@@ -110,8 +108,17 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			<#if hasProcedure(component.displayCondition)>
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 			</#if>
-				if (mouseX > leftPos + ${x} && mouseX < leftPos + ${x + component.width} && mouseY > topPos + ${y} && mouseY < topPos + ${y + component.height})
-					this.renderTooltip(ms, <#if hasProcedure(component.text)>new TextComponent(<@procedureOBJToStringCode component.text/>)<#else>new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}")</#if>, mouseX, mouseY);
+				if (mouseX > leftPos + ${x} && mouseX < leftPos + ${x + component.width} && mouseY > topPos + ${y} && mouseY < topPos + ${y + component.height}) {
+					<#if hasProcedure(component.text)>
+					String hoverText = <@procedureOBJToStringCode component.text/>;
+					if (hoverText != null) {
+						this.renderComponentTooltip(ms, Arrays.stream(hoverText.split("\n")).map(TextComponent::new).collect(Collectors.toList()), mouseX, mouseY);
+					}
+					<#else>
+						this.renderTooltip(ms, new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}"), mouseX, mouseY);
+
+					</#if>
+				}
 		</#list>
 	}
 

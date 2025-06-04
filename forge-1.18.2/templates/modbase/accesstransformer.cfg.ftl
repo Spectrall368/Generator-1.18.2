@@ -30,3 +30,6 @@ public net.minecraft.world.level.GameRules$IntegerValue m_46312_(I)Lnet/minecraf
 <#if w.getGElementsOfType('gamerule')?filter(e -> e.type.equals('Logic'))?size != 0>
 public net.minecraft.world.level.GameRules$BooleanValue m_46250_(Z)Lnet/minecraft/world/level/GameRules$Type; #create
 </#if>
+
+# Start of user code block custom ATs
+# End of user code block custom ATs

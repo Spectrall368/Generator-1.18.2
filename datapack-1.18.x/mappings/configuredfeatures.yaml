@@ -586,10 +586,6 @@ seagrass_short:
   - seagrass_short
   - AquaticFeatures.SEAGRASS_SHORT
   - ProbabilityFeatureConfiguration
-seagrass_simple:
-  - seagrass_simple
-  - AquaticFeatures.SEAGRASS_SIMPLE
-  - SimpleBlockConfiguration
 seagrass_slightly_less_short:
   - seagrass_slightly_less_short
   - AquaticFeatures.SEAGRASS_SLIGHTLY_LESS_SHORT

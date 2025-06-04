@@ -53,6 +53,7 @@ public class ${name}Command {
 		}
 	</#if>
 
+	${extra_templates_code}
 }
 
 <#macro commandRegistrationCode>

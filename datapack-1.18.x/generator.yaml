@@ -1,9 +1,10 @@
 name: Data Pack for Java Edition @minecraft
 status: deprecated
-buildfileversion: 1.3
+buildfileversion: 40.3.10
 
 # gradle task definitions
 gradle:
+  run_client: ":packloader:runClient"
   export_file: "build/export/export.zip"
 
 # base generator roots
