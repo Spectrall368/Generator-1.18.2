@@ -52,7 +52,7 @@ public class ${name}FruitDecorator extends CocoaDecorator {
 
     @Override ${mcc.getMethod("net.minecraft.world.level.levelgen.feature.treedecorators.CocoaDecorator", "place", "LevelSimulatedReader", "java.util.function.BiConsumer<BlockPos, BlockState>", "Random", "List", "List")
         .replace("this.probability", "0.2F")
-        .replace("Blocks.COCOA.defaultBlockState().setValue(CocoaBlock.AGE,Integer.valueOf(randomsource.nextInt(3))).setValue(CocoaBlock.FACING,direction)", "oriented(" + mappedBlockToBlockStateCode(data.treeFruits) + ", direction1)")
+        .replace("Blocks.COCOA.defaultBlockState().setValue(CocoaBlock.AGE,Integer.valueOf(p_161721_.nextInt(3))).setValue(CocoaBlock.FACING,direction)", "oriented(" + mappedBlockToBlockStateCode(data.treeFruits) + ", direction1)")
         .replace("p_161719_", "level")
         .replace("p_161720_", "biConsumer")
         .replace("p_161721_", "random")
