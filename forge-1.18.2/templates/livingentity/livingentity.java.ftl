@@ -64,8 +64,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	<#if data.spawnThisMob>
 		<#assign spawnBiomes = w.filterBrokenReferences(data.restrictionBiomes)>
 
-		<#if spawnBiomes?has_content>
         private static final Set<ResourceLocation> SPAWN_BIOMES =
+	<#if spawnBiomes?has_content>
         Set.of(
             <#list spawnBiomes as restrictionBiome>
                 new ResourceLocation("${restrictionBiome?replace("#", "")}")<#sep>,
