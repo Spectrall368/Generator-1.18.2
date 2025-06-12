@@ -40,23 +40,40 @@ package ${package}.init;
 <#assign hasItemsWithProperties = w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0
 	|| w.getGElementsOfType("tool")?filter(e -> e.toolType == "Shield")?size != 0>
 <#assign tabMap = w.getCreativeTabMap()>
-<#assign customTabs = tabMap.keySet()?filter(e -> e?starts_with('CUSTOM:'))>
-<#assign vanillaTabs = tabMap.keySet()?filter(e -> !e?starts_with('CUSTOM:'))>
 <#assign orderedCustomItems = []>
 <#assign orderedVanillaItems = []>
 <#assign orderedNullItems = []>
-<#list items as item>
-    <#assign itemName = item.getModElement().getName()>
-    <#assign currentTabs><@CreativeTabs item.creativeTabs/></#assign>
+<#assign itemList = items>
 
+<#list itemList as item>
     <#if item.creativeTabs == "[]">
         <#assign orderedNullItems = orderedNullItems + [item]>
-    <#elseif currentTabs?contains("CreativeModeTab.")>
-        <@setItem false vanillaTabs currentTabs itemName item/>
-    <#else>
-        <@setItem true customTabs currentTabs itemName item/>
     </#if>
 </#list>
+
+<#assign itemList = itemList?filter(item -> !orderedNullItems?seq_contains(item))>
+
+<#list tabMap.keySet() as tabType>
+	<#assign tab = tabType>
+	<#assign isCustom = tabType?starts_with('CUSTOM:')>
+
+	<#if isCustom>
+		<#assign tab = "CUSTOM:" + w.getWorkspace().getModElementByName(tabType.replace("CUSTOM:", "")).getGeneratableElement().getModElement().getName()>
+	</#if>
+
+	<#list tabMap.get(tab) as tabElement>
+		<#assign tabEName = tabElement?replace("CUSTOM:", "")?keep_before(".")>
+
+		<#if prevElement?? && prevElement == tabEName>
+			<#continue>
+		</#if>
+
+		<@setItem isCustom tabType tabEName/>
+
+		<#assign prevElement = tabEName>
+	</#list>
+</#list>
+
 <#assign orderedItems = orderedCustomItems + orderedVanillaItems + orderedNullItems>
 
 <#if hasItemsWithProperties>
@@ -156,32 +173,20 @@ public class ${JavaModName}Items {
 	</#if>
 }
 <#-- @formatter:on -->
-<#macro setItem isCustom tabTypes currentTabs itemName item>
-	<#assign exit = false>
+<#macro setItem isCustom tabType itemName>
+	<#list itemList as item>
+	    <#assign currentTabs><@CreativeTabs item.creativeTabs/></#assign>
 
-	<#list tabTypes as tabType>
-		<#assign tab = tabType>
-
-		<#if isCustom>
-			<#assign tab = "CUSTOM:" + w.getWorkspace().getModElementByName(tabType.replace("CUSTOM:", "")).getGeneratableElement().getModElement().getName()>
-		</#if>
-
-		<#if currentTabs?trim == generator.map(tabType, "tabs")?trim>
-			<#list tabMap.get(tab) as tabElement>
-				<#if tabElement?replace("CUSTOM:", "")?keep_before(".") == itemName>
-					<#if isCustom>
-						<#assign orderedCustomItems = orderedCustomItems + [item]>
-					<#else>
-						<#assign orderedVanillaItems = orderedVanillaItems + [item]>
-					</#if>
-					<#assign exit = true>
-					<#break>
+	    <#if currentTabs?trim == generator.map(tabType, "tabs")?trim>
+			<#if item.getModElement().getName() == itemName>
+				<#if isCustom>
+					<#assign orderedCustomItems = orderedCustomItems + [item]>
+				<#else>
+					<#assign orderedVanillaItems = orderedVanillaItems + [item]>
 				</#if>
-
-			</#list>
-			<#if exit>
+				<#assign itemList = itemList?filter(n -> n != item)>
 				<#break>
 			</#if>
-	  	</#if>
+		</#if>
 	</#list>
 </#macro>
