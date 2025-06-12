@@ -25,7 +25,7 @@
   "adapt_noise": <#if data.terrainAdaptation == "none" || data.terrainAdaptation == "bury" || data.terrainAdaptation == "encapsulate">false<#else>true</#if>,
   "spawn_overrides": {},
   <#if spawnBiomes?size == 1>
-  "biomes": "${spawnBiomes?first?replace("#minecraft:is_overworld", "#forge:is_overworld")?replace("#minecraft:is_end", "#forge:is_overworld")}"
+  "biomes": "${spawnBiomes?first?replace("#minecraft:is_overworld", "#forge:is_overworld")?replace("#minecraft:is_end", "#forge:is_end")}"
   <#else>
   "biomes": [
     <#list spawnBiomes as spawnBiome>"${spawnBiome}"<#sep>,</#list>
