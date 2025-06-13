@@ -164,7 +164,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 						BlockPos blockPos = new BlockPos((int) blockAABB.minX, (int) blockAABB.minY, (int) blockAABB.minZ);
 						Vec3 intersectionPoint = new Vec3((blockAABB.minX + blockAABB.maxX) / 2, (blockAABB.minY + blockAABB.maxY) / 2, (blockAABB.minZ + blockAABB.maxZ) / 2);
 						Direction hitDirection = determineHitDirection(this.getBoundingBox(), blockAABB);
-						this.hitTargetOrDeflectSelf(new BlockHitResult(intersectionPoint, hitDirection, blockPos, false));
+						this.onHitBlock(new BlockHitResult(intersectionPoint, hitDirection, blockPos, false));
 					}
 				}
 			}
