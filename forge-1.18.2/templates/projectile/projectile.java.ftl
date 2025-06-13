@@ -156,6 +156,21 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 	@Override public void tick() {
 		super.tick();
 
+		<#if (data.modelWidth > 0.5) || (data.modelHeight > 0.5)>
+		if (!this.isNoPhysics()) {
+			for (VoxelShape collision : this.level.getBlockCollisions(this, this.getBoundingBox())) {
+				for (AABB blockAABB : collision.toAabbs()) {
+					if (this.getBoundingBox().intersects(blockAABB)) {
+						BlockPos blockPos = new BlockPos((int) blockAABB.minX, (int) blockAABB.minY, (int) blockAABB.minZ);
+						Vec3 intersectionPoint = new Vec3((blockAABB.minX + blockAABB.maxX) / 2, (blockAABB.minY + blockAABB.maxY) / 2, (blockAABB.minZ + blockAABB.maxZ) / 2);
+						Direction hitDirection = determineHitDirection(this.getBoundingBox(), blockAABB);
+						this.hitTargetOrDeflectSelf(new BlockHitResult(intersectionPoint, hitDirection, blockPos, false));
+					}
+				}
+			}
+		}
+		</#if>
+
 		<#if hasProcedure(data.onFlyingTick)>
 			<@procedureCode data.onFlyingTick, {
 				"x": "this.getX()",
