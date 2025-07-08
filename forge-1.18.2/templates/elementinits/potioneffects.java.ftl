@@ -58,7 +58,7 @@ package ${package}.init;
 				"x": "entity.getX()",
 				"y": "entity.getY()",
 				"z": "entity.getZ()",
-				"world": "entity.level()",
+				"world": "entity.level",
 				"entity": "entity",
 				"amplifier": "entity.getEffect(" + JavaModName + "MobEffects." + effect.getModElement().getRegistryNameUpper() + ".get()).getAmplifier()",
 				"damagesource": "event.getSource()",
@@ -82,7 +82,7 @@ package ${package}.init;
                     "x": "entity.getX()",
                     "y": "entity.getY()",
                     "z": "entity.getZ()",
-                    "world": "entity.level()",
+                    "world": "entity.level",
                     "entity": "entity",
                     "amplifier": "entity.getEffect(" + JavaModName + "MobEffects." + effect.getModElement().getRegistryNameUpper() + ".get()).getAmplifier()"
                 }/>
