@@ -72,11 +72,11 @@ public class ${name}Feature extends RandomPatchFeature {
 		PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE, List.of(CountPlacement.of(${data.frequencyOnChunks}),
 			<#if data.generationType == "Flower" || data.plantType == "growapable">
 			RarityFilter.onAverageOnceEvery(32),</#if>
-			InSquarePlacement.spread(),
+			InSquarePlacement.spread(), PlacementUtils.
 			<#if data.generateAtAnyHeight>
-                PlacementUtils.FULL_RANGE
+	                	FULL_RANGE
 			<#else>
-			    PlacementUtils.HEIGHTMAP<#if !(data.generationType == "Grass" || data.plantType == "growapable")>_WORLD_SURFACE</#if>
+			    HEIGHTMAP<#if !(data.generationType == "Grass" || data.plantType == "growapable")>_WORLD_SURFACE</#if>
             </#if>,
             BiomeFilter.biome()));
 		return FEATURE;
