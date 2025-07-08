@@ -33,7 +33,6 @@
 package ${package}.world.features.treedecorators;
 
 public class ${name}TrunkDecorator extends TrunkVineDecorator {
-
     public static final Codec<${name}TrunkDecorator> CODEC = Codec.unit(${name}TrunkDecorator::new);
     public static final TreeDecoratorType<?> DECORATOR_TYPE = new TreeDecoratorType<>(CODEC);
 
@@ -42,13 +41,11 @@ public class ${name}TrunkDecorator extends TrunkVineDecorator {
         ForgeRegistries.TREE_DECORATOR_TYPES.register(DECORATOR_TYPE);
     }
 
-    @Override
-    protected TreeDecoratorType<?> type() {
+    @Override protected TreeDecoratorType<?> type() {
         return DECORATOR_TYPE;
     }
 
-    @Override
-    public void place(LevelSimulatedReader levelReader, BiConsumer<BlockPos, BlockState> biConsumer, Random random, List<BlockPos> listBlockPos, List<BlockPos> listBlockPos2) {
+    @Override public void place(LevelSimulatedReader levelReader, BiConsumer<BlockPos, BlockState> biConsumer, Random random, List<BlockPos> listBlockPos, List<BlockPos> listBlockPos2) {
         listBlockPos.forEach(blockpos -> {
             if (random.nextInt(3) > 0) {
                 BlockPos bp = blockpos.west();

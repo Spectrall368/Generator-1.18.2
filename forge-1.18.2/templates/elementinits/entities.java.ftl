@@ -33,8 +33,12 @@
  *    MCreator note: This file will be REGENERATED on each build.
  */
 package ${package}.init;
+<#assign hasLivingEntities = w.hasElementsOfType("livingentity")>
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Entities {
+<#if hasLivingEntities>
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+</#if>
+public class ${JavaModName}Entities {
 	public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITIES, ${JavaModName}.MODID);
 
 	<#list entities as entity>
@@ -68,6 +72,7 @@ package ${package}.init;
 		return REGISTRY.register(registryname, () -> (EntityType<T>) entityTypeBuilder.build(registryname));
 	}
 
+	<#if hasLivingEntities>
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
 		event.enqueueWork(() -> {
 		<#list entities as entity>
@@ -85,5 +90,6 @@ package ${package}.init;
 			</#if>
 		</#list>
 	}
+	</#if>
 }
 <#-- @formatter:on -->

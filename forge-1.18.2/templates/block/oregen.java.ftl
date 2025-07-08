@@ -35,18 +35,22 @@ package ${package}.world.features.ores;
 <#assign cond = false>
 <#if data.restrictionBiomes?has_content>
 	<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-		<#if restrictionBiome?contains(":is_")>
+	    <#assign biomeName = fixNamespace(restrictionBiome)>
+        <#if biomeName == "#minecraft:is_overworld" || biomeName == "#minecraft:is_nether" || biomeName == "#minecraft:is_end">
 			<#assign cond = true>
 			 <#break>
 		</#if>
-		<#break>
 	</#list>
 </#if>
 
 public class ${name}Feature extends OreFeature {
-	public static ${name}Feature FEATURE = null;
+	private static ${name}Feature FEATURE = null;
 	public static Holder<ConfiguredFeature<OreConfiguration, ?>> CONFIGURED_FEATURE = null;
-	public static Holder<PlacedFeature> PLACED_FEATURE = null;
+	private static Holder<PlacedFeature> PLACED_FEATURE = null;
+
+	public ${name}Feature() {
+		super(OreConfiguration.CODEC);
+	}
 
 	public static Feature<?> feature() {
 		FEATURE = new ${name}Feature();
@@ -67,8 +71,11 @@ public class ${name}Feature extends OreFeature {
 	<#if data.restrictionBiomes?has_content && !cond>
 	Set.of(
 		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-			new ResourceLocation("${restrictionBiome?replace("#", "")}")<#sep>,
-		</#list>
+		    <#assign expandedBiomes = expandBiomeTag(restrictionBiome)>
+		    <#list expandedBiomes as expandedBiome>
+			new ResourceLocation("${expandedBiome}")<#sep>,
+            </#list>
+        </#list>
 	);
 	<#else>
 	null;
@@ -76,52 +83,88 @@ public class ${name}Feature extends OreFeature {
 
     <#if data.restrictionBiomes?has_content && cond>
 	private final Set<ResourceKey<Level>> generate_dimensions = Set.of(
-	    <#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
-			<#if restrictionBiome == "#minecraft:is_overworld">
+			<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
+	        <#assign biomeName = fixNamespace(restrictionBiome)>
+			<#if biomeName == "#minecraft:is_overworld">
 				Level.OVERWORLD
-			<#elseif restrictionBiome == "#minecraft:is_nether">
+			<#elseif biomeName == "#minecraft:is_nether">
 				Level.NETHER
-			<#elseif restrictionBiome == "#minecraft:is_end">
-				Level.END
 			<#else>
-			    ResourceKey.create(Registry.DIMENSION_REGISTRY,
-                						new ResourceLocation("${modid}:${restrictionBiome?keep_after("is_")}"))
+				Level.END
 			</#if><#sep>,
 		</#list>
 	);
-	</#if>
-
-	public ${name}Feature() {
-		super(OreConfiguration.CODEC);
-	}
 
 	@Override public boolean place(FeaturePlaceContext<OreConfiguration> context) {
 		WorldGenLevel world = context.level();
-		<#if data.restrictionBiomes?has_content && cond>
 		if (!generate_dimensions.contains(world.getLevel().dimension()))
 			return false;
-        </#if>
 
 		return super.place(context);
 	}
+	</#if>
 
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) private static class ${name}FeatureRuleTest extends RuleTest {
 		static final ${name}FeatureRuleTest INSTANCE = new ${name}FeatureRuleTest();
-
-		private static final com.mojang.serialization.Codec<${name}FeatureRuleTest> CODEC = com.mojang.serialization.Codec.unit(() -> INSTANCE);
+		private static final Codec<${name}FeatureRuleTest> CODEC = Codec.unit(() -> INSTANCE);
 		private static final RuleTestType<${name}FeatureRuleTest> CUSTOM_MATCH = () -> CODEC;
 
 		@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
 			Registry.register(Registry.RULE_TEST, new ResourceLocation("${modid}:${registryname}_match"), CUSTOM_MATCH);
 		}
 
-		public boolean test(BlockState blockstate, Random random) {
+		@Override public boolean test(BlockState blockstate, Random random) {
 		    return ${containsAnyOfBlocks(data.blocksToReplace "blockstate")};
 		}
 
-		protected RuleTestType<?> getType() {
+		@Override protected RuleTestType<?> getType() {
 			return CUSTOM_MATCH;
 		}
 	}
 }
 <#-- @formatter:on -->
+<#function expandBiomeTag biomeTag>
+    <#local result = []>
+
+    <#if biomeTag?contains("#")>
+        <#local biomeName = fixNamespace(biomeTag)>
+        <#local tagKey = "BIOMES:" + biomeName?substring(1)>
+
+        <#local tagFound = false>
+        <#list w.getWorkspace().getTagElements()?keys as tagElement>
+            <#if tagElement.toString().replace("mod:", modid + ":") == tagKey>
+                <#local tagFound = true>
+                <#local biomeValues = w.getWorkspace().getTagElements().get(tagElement)>
+                <#list biomeValues as biomeValue>
+                    <#if biomeValue?starts_with("#")>
+                        <#local expandedSubValues = expandBiomeTag(biomeValue?replace("mod:", modid + ":"))>
+                        <#list expandedSubValues as expandedSubValue>
+                            <#local result = result + [expandedSubValue]>
+                        </#list>
+                    <#else>
+                        <#local result = result + [generator.map(biomeValue, "biomes")]>
+                    </#if>
+                </#list>
+                <#break>
+            </#if>
+        </#list>
+
+        <#if !tagFound>
+            <#local result = result + [biomeName?substring(1)]>
+        </#if>
+    <#else>
+        <#local result = result + [biomeTag]>
+    </#if>
+
+    <#return result>
+</#function>
+<#function fixNamespace input>
+    <#assign noHash = input?starts_with("#")?then(input?substring(1), input)/>
+
+    <#if noHash?contains(":")>
+        <#return input>
+    <#else>
+        <#assign result = "minecraft:" + noHash />
+        <#return input?starts_with("#")?then("#" + result, result)/>
+    </#if>
+</#function>

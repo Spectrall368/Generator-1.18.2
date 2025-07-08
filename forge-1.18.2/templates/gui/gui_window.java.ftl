@@ -78,6 +78,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 	</#if>
 
 	@Override public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
+		this.renderBackground(ms);
 		super.render(ms, mouseX, mouseY, partialTicks);
 
 		<#list data.getComponentsOfType("TextField") as component>

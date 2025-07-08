@@ -62,27 +62,27 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	</#list>
 
 	<#if data.spawnThisMob>
-		<#assign spawnBiomes = w.filterBrokenReferences(data.restrictionBiomes)>
-
-        private static final Set<ResourceLocation> SPAWN_BIOMES =
-	<#if spawnBiomes?has_content>
-        Set.of(
-            <#list spawnBiomes as restrictionBiome>
-                new ResourceLocation("${restrictionBiome?replace("#", "")}")<#sep>,
+	private static final Set<ResourceLocation> GENERATE_BIOMES =
+	<#if data.restrictionBiomes?has_content>
+	Set.of(
+		<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
+		    <#assign expandedBiomes = expandBiomeTag(restrictionBiome)>
+		    <#list expandedBiomes as expandedBiome>
+			new ResourceLocation("${expandedBiome}")<#sep>,
             </#list>
-        );
-        <#else>
-        null;
-        </#if>
+        </#list>
+	);
+	<#else>
+	null;
+	</#if>
 
-		@SubscribeEvent public static void addLivingEntityToBiomes(BiomeLoadingEvent event) {
-			<#if spawnBiomes?has_content>
-			if (SPAWN_BIOMES.contains(event.getName()))
-			</#if>
-				event.getSpawns().getSpawner(${generator.map(data.mobSpawningType, "mobspawntypes")})
-						.add(new MobSpawnSettings.SpawnerData(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
-							${data.spawningProbability}, ${data.minNumberOfMobsPerGroup}, ${data.maxNumberOfMobsPerGroup}));
-		}
+	@SubscribeEvent public static void addLivingEntityToBiomes(BiomeLoadingEvent event) {
+	    <#if data.restrictionBiomes?has_content>
+	    if (SPAWN_BIOMES.contains(event.getName()))
+	    </#if>
+			event.getSpawns().getSpawner(${generator.map(data.mobSpawningType, "mobspawntypes")}).add(new MobSpawnSettings.SpawnerData(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
+			    ${data.spawningProbability}, ${data.minNumberOfMobsPerGroup}, ${data.maxNumberOfMobsPerGroup}));
+	}
 	</#if>
 
 	<#if data.isBoss>
@@ -973,3 +973,48 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
 }
 <#-- @formatter:on -->
+<#function expandBiomeTag biomeTag>
+    <#local result = []>
+
+    <#if biomeTag?contains("#")>
+        <#local biomeName = fixNamespace(biomeTag)>
+        <#local tagKey = "BIOMES:" + biomeName?substring(1)>
+
+        <#local tagFound = false>
+        <#list w.getWorkspace().getTagElements()?keys as tagElement>
+            <#if tagElement.toString().replace("mod:", modid + ":") == tagKey>
+                <#local tagFound = true>
+                <#local biomeValues = w.getWorkspace().getTagElements().get(tagElement)>
+                <#list biomeValues as biomeValue>
+                    <#if biomeValue?starts_with("#")>
+                        <#local expandedSubValues = expandBiomeTag(biomeValue?replace("mod:", modid + ":"))>
+                        <#list expandedSubValues as expandedSubValue>
+                            <#local result = result + [expandedSubValue]>
+                        </#list>
+                    <#else>
+                        <#local result = result + [generator.map(biomeValue, "biomes")]>
+                    </#if>
+                </#list>
+                <#break>
+            </#if>
+        </#list>
+
+        <#if !tagFound>
+            <#local result = result + [biomeName?substring(1)]>
+        </#if>
+    <#else>
+        <#local result = result + [biomeTag]>
+    </#if>
+
+    <#return result>
+</#function>
+<#function fixNamespace input>
+    <#assign noHash = input?starts_with("#")?then(input?substring(1), input)/>
+
+    <#if noHash?contains(":")>
+        <#return input>
+    <#else>
+        <#assign result = "minecraft:" + noHash />
+        <#return input?starts_with("#")?then("#" + result, result)/>
+    </#if>
+</#function>
