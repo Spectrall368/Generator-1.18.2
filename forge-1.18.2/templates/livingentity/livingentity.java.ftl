@@ -69,7 +69,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		    <#assign expandedBiomes = expandBiomeTag(restrictionBiome)>
 		    <#list expandedBiomes as expandedBiome>
 			new ResourceLocation("${expandedBiome}")<#sep>,
-            </#list>
+		    </#list><#sep>,
         </#list>
 	);
 	<#else>

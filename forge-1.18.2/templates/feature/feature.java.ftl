@@ -83,7 +83,7 @@ public class ${name}Feature extends ${extends} {
 		    <#assign expandedBiomes = expandBiomeTag(restrictionBiome)>
 		    <#list expandedBiomes as expandedBiome>
 			new ResourceLocation("${expandedBiome}")<#sep>,
-            </#list>
+		    </#list><#sep>,
         </#list>
 	);
 	<#else>
