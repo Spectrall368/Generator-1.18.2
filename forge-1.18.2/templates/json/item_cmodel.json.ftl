@@ -1,7 +1,7 @@
 {
     <#if parent?? && parent.hasGUITexture?? && parent.hasGUITexture()><#assign guiTexture = parent.guiTexture><#elseif data.guiTexture??><#assign guiTexture = data.guiTexture></#if>
     <#if guiTexture?has_content>
-    "loader": "forge:separate_transforms",
+    "loader": "forge:separate-perspective",
     "gui_light": "front",
     "base": { <@modelDefinition/> },
     "perspectives": {
