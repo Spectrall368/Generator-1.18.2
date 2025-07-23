@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2021, Pylo, opensource contributors
+ # Copyright (C) 2020-2025, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -29,11 +29,9 @@
 -->
 
 <#-- @formatter:off -->
-
 /*
  *	MCreator note: This file will be REGENERATED on each build.
  */
-
 package ${package}.init;
 <#include "../procedures.java.ftl">
 
@@ -64,7 +62,7 @@ package ${package}.init;
 				"damagesource": "event.getSource()",
 				"damage": "event.getAmount()"
 			}/>
-        }
+        }<#sep>else
 		</#list>
         </#compress>
     }
@@ -86,7 +84,7 @@ package ${package}.init;
                     "entity": "entity",
                     "amplifier": "entity.getEffect(" + JavaModName + "MobEffects." + effect.getModElement().getRegistryNameUpper() + ".get()).getAmplifier()"
                 }/>
-            }
+            }<#sep>else
             </#list>
         }
         </#compress>

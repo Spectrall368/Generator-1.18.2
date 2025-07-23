@@ -36,17 +36,22 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class ${name}Block extends LiquidBlock {
 	public ${name}Block() {
-		super(() -> (FlowingFluid) ${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()}.get(),
+		super(() -> (FlowingFluid) ${JavaModName}Fluids.${REGISTRYNAME}.get(),
+			BlockBehaviour.Properties.of(Material.${data.type}
 			<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
-			BlockBehaviour.Properties.of(Material.${data.type}, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
-			<#else>
-			BlockBehaviour.Properties.of(Material.${data.type})
-			</#if>
+			, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")}
+			</#if>)
 			.strength(${data.resistance}f)
 			<#if data.emissiveRendering>.hasPostProcess((bs, br, bp) -> true).emissiveRendering((bs, br, bp) -> true)</#if>
 			<#if data.luminance != 0>.lightLevel(s -> ${data.luminance})</#if>
 		);
 	}
+
+	<#if data.ignitedByLava>
+	@Override public boolean isFlammable(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+	    return true;
+	}
+	</#if>
 
 	<#if data.flammability != 0>
 	@Override public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {

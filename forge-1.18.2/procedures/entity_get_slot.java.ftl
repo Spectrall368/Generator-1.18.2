@@ -1,1 +1,1 @@
-/*@ItemStack*/(${input$entity}.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) instanceof IItemHandlerModifiable _modHandler ? _modHandler.getStackInSlot(${opt.toInt(input$slotid)}).copy() : ItemStack.EMPTY)
+/*@ItemStack*/(${input$entity}.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) instanceof IItemHandlerModifiable _modHandler${cbi} ? _modHandler${cbi}.getStackInSlot(${opt.toInt(input$slotid)}).copy() : ItemStack.EMPTY)

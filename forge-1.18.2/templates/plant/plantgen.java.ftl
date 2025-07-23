@@ -61,11 +61,11 @@ public class ${name}Feature extends RandomPatchFeature {
 			<#if data.plantType == "growapable">
 				FeatureUtils.simpleRandomPatchConfiguration(${data.patchSize}, PlacementUtils.filtered(
 								Feature.BLOCK_COLUMN, BlockColumnConfiguration.simple(BiasedToBottomInt.of(2, 4),
-										BlockStateProvider.simple(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().defaultBlockState())),
-						BlockPredicate.allOf(BlockPredicate.ONLY_IN_AIR_PREDICATE, BlockPredicate.wouldSurvive(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().defaultBlockState(), Vec3i.ZERO))))
+										BlockStateProvider.simple(${JavaModName}Blocks.${REGISTRYNAME}.get().defaultBlockState())),
+						BlockPredicate.allOf(BlockPredicate.ONLY_IN_AIR_PREDICATE, BlockPredicate.wouldSurvive(${JavaModName}Blocks.${REGISTRYNAME}.get().defaultBlockState(), Vec3i.ZERO))))
 			<#else>
 				FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK,
-						new SimpleBlockConfiguration(BlockStateProvider.simple(${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().defaultBlockState())),
+						new SimpleBlockConfiguration(BlockStateProvider.simple(${JavaModName}Blocks.${REGISTRYNAME}.get().defaultBlockState())),
 						List.of(), ${data.patchSize})
 			</#if>
 		);

@@ -33,26 +33,29 @@
 <#include "../mcitems.ftl">
 <#include "../triggers.java.ftl">
 package ${package}.item;
+<#assign hasCustomJAVAModels = data.hasCustomJAVAModel() || data.getModels()?filter(e -> e.hasCustomJAVAModel())?has_content>
 
 <#compress>
-public class ${name}Item extends <#if data.isMusicDisc>Record</#if>Item {
-
+public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern<#elseif data.isMusicDisc>Record</#if>Item {
 	public ${name}Item() {
-	    super(<#if data.isMusicDisc>
-                ${data.musicDiscAnalogOutput}, () -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.musicDiscMusic}" )),
+    super(<#if data.hasBannerPatterns()>${JavaModName}BannerPatterns.${data.providedBannerPatterns[0]},
+                <#elseif data.isMusicDisc>
+                ${data.musicDiscAnalogOutput}, () -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.musicDiscMusic}")),
                 </#if>new Item.Properties()
 				.tab(<@CreativeTabs data.creativeTabs/>)
 				<#if data.hasInventory()>
 				.stacksTo(1)
 				<#elseif data.damageCount != 0>
 				.durability(${data.damageCount})
-				<#else>
+				<#elseif data.stackSize != 64>
 				.stacksTo(${data.stackSize})
 				</#if>
 				<#if data.immuneToFire>
 				.fireResistant()
 				</#if>
+				<#if data.rarity != "COMMON">
 				.rarity(Rarity.${data.rarity})
+				</#if>
 				<#if data.isFood>
 				.food((new FoodProperties.Builder())
 					.nutrition(${data.nutritionalValue})
@@ -61,8 +64,31 @@ public class ${name}Item extends <#if data.isMusicDisc>Record</#if>Item {
 					<#if data.isMeat>.meat()</#if>
 					.build())
 				</#if>
+				<#if data.stayInGridWhenCrafting && (!data.recipeRemainder?? || data.recipeRemainder.isEmpty()) && data.damageCount != 0>
+				.setNoRepair()
+				</#if>
 		);
 	}
+
+	<#if hasCustomJAVAModels>
+	@Override public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+		consumer.accept(new IItemRenderProperties() {
+			private ${name}ItemRenderer rendererInstance;
+
+			@Override public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+				if (rendererInstance == null)
+					rendererInstance = new ${name}ItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+				return rendererInstance;
+			}
+		});
+	}
+	</#if>
+
+	<#if data.hasBannerPatterns()> <#-- Workaround to allow both music disc and patterns info in description -->
+	public MutableComponent getDisplayName() {
+		return new TranslatableComponent(this.getDescriptionId() + ".patterns");
+	}
+	</#if>
 
 	<#if data.hasNonDefaultAnimation()>
 	@Override public UseAnim getUseAnimation(ItemStack itemstack) {
@@ -88,20 +114,10 @@ public class ${name}Item extends <#if data.isMusicDisc>Record</#if>Item {
 				}
 				return retval;
 			}
-
-			@Override public boolean isRepairable(ItemStack itemstack) {
-				return false;
-			}
 		<#else>
 			@Override public ItemStack getContainerItem(ItemStack itemstack) {
 				return new ItemStack(this);
 			}
-
-			<#if data.damageCount != 0>
-			@Override public boolean isRepairable(ItemStack itemstack) {
-				return false;
-			}
-			</#if>
 		</#if>
 	</#if>
 
@@ -285,10 +301,10 @@ public class ${name}Item extends <#if data.isMusicDisc>Record</#if>Item {
 			<#if data.enableRanged && !data.shootConstantly>
 				if (!world.isClientSide() && entity instanceof ServerPlayer player) {
 					<#if data.rangedItemChargesPower>
- 						float pullingPower = BowItem.getPowerForTime(this.getUseDuration(itemstack) - time);
- 						if (pullingPower < 0.1)
- 							return;
- 					</#if>
+						float pullingPower = BowItem.getPowerForTime(this.getUseDuration(itemstack) - time);
+						if (pullingPower < 0.1)
+							return;
+					</#if>
 					<@arrowShootCode/>
 				}
 			</#if>
@@ -309,7 +325,7 @@ public class ${name}Item extends <#if data.isMusicDisc>Record</#if>Item {
 		<#if data.projectileDisableAmmoCheck>
  		return new ItemStack(${generator.map(data.projectile.getUnmappedValue(), "projectiles", 2)});
  		<#else>
- 		ItemStack stack = ProjectileWeaponItem.getHeldProjectile(player, e -> e.getItem() == ${generator.map(data.projectile.getUnmappedValue(), "projectiles", 2)});
+		ItemStack stack = ProjectileWeaponItem.getHeldProjectile(player, e -> e.getItem() == ${generator.map(data.projectile.getUnmappedValue(), "projectiles", 2)});
 		if(stack == ItemStack.EMPTY) {
 			for (int i = 0; i < player.getInventory().items.size(); i++) {
 				ItemStack teststack = player.getInventory().items.get(i);

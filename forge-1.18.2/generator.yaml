@@ -1,7 +1,7 @@
 name: Forge for @minecraft (@buildfileversion)
 status: deprecated
-buildfileversion: 40.3.10
-subversion: 1.5 # force setup re-run to update build script for MCREATOR_JVM_OPTIONS
+buildfileversion: 40.3.11
+subversion: 1.6 # force setup re-run to update build script for MCREATOR_JVM_OPTIONS
 
 import:
   - datapack-1.18.x
@@ -26,6 +26,11 @@ import_formatter:
     Nullable: javax.annotation
     Codec: com.mojang.serialization
     SoundEvent: net.minecraft.sounds
+    Blocks: net.minecraft.world.level.block
+    Items: net.minecraft.world.item
+    Multimap: com.google.common.collect
+    ImmutableSet: com.google.common.collect
+    Iterables: com.google.common.collect
     Attributes: net.minecraft.world.entity.ai.attributes
 
 # base generator roots
@@ -80,14 +85,26 @@ base_templates:
     name: "@RESROOT/META-INF/accesstransformer.cfg"
     condition_any:
       - "${w.getGElementsOfType('gamerule')?filter(e -> e.type.equals('Number') || e.type.equals('Logic'))?size != 0}"
-      - ${w.hasElementsOfType('dimension')}
+      - "${w.hasElementsOfType('dimension')}"
       - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
-      - ${w.hasElementsOfType('feature')}
+      - "${w.hasElementsOfType('feature')}"
       - "${w.getGElementsOfType('tool')?filter(e -> e.toolType.equals('Fishing rod'))?size != 0}"
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
     condition: hasJavaModels()
-  - template: feature/feature_utils.java.ftl
+  - template: modbase/mixin.json.ftl
+    writer: json
+    condition_any:
+      - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
+    name: "@RESROOT/@modid.mixins.json"
+  - template: elementinits/features.java.ftl
+    writer: java
+    condition_any:
+      - "${w.getGElementsOfType('block')?filter(e -> e.generateFeature)?size != 0}"
+      - "${w.getGElementsOfType('plant')?filter(e -> e.generateFeature)?size != 0}"
+      - "${w.hasElementsOfType('feature')}"
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameFeatures.java"
+  - template: feature/feature_utils.java.ftL
     name: "@SRCROOT/@BASEPACKAGEPATH/world/features/@JavaModNameFeatureUtils.java"
     condition: ${w.hasElementsOfType('feature')}
 

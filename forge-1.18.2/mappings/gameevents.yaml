@@ -1,44 +1,90 @@
-BLOCK_ATTACH: block_attach
-BLOCK_CHANGE: block_change
-BLOCK_CLOSE: block_close
-BLOCK_DESTROY: block_destroy
-BLOCK_DETACH: block_detach
-BLOCK_OPEN: block_open
-BLOCK_PLACE: block_place
-CONTAINER_CLOSE: container_close
-CONTAINER_OPEN: container_open
-DRINK: drinking_finish
-EAT: eat
-ELYTRA_GLIDE: elytra_free_fall
-ENTITY_DAMAGE: entity_damaged
-ENTITY_DIE: entity_killed
-ENTITY_INTERACT: mob_interact
-ENTITY_PLACE: entity_place
-EQUIP: equip
-EXPLODE: explode
-FLAP: flap
-HIT_GROUND: hit_ground
-LIGHTNING_STRIKE: lightning_strike
-PRIME_FUSE: prime_fuse
-PROJECTILE_LAND: projectile_land
-PROJECTILE_SHOOT: projectile_shoot
-SHEAR: shear
-SPLASH: splash
-STEP: step
-SWIM: swim
-TELEPORT: teleport
-RESONATE_1: ring_bell
-RESONATE_2: ring_bell
-RESONATE_3: ring_bell
-RESONATE_4: ring_bell
-RESONATE_5: ring_bell
-RESONATE_6: ring_bell
-RESONATE_7: ring_bell
-RESONATE_8: ring_bell
-RESONATE_9: ring_bell
-RESONATE_10: ring_bell
-RESONATE_11: ring_bell
-RESONATE_12: ring_bell
-RESONATE_13: ring_bell
-RESONATE_14: ring_bell
-RESONATE_15: ring_bell
+BLOCK_ATTACH:
+  - GameEvent.BLOCK_ATTACH
+  - block_attach
+BLOCK_CHANGE:
+  - GameEvent.BLOCK_CHANGE
+  - block_change
+BLOCK_CLOSE:
+  - GameEvent.BLOCK_CLOSE
+  - block_close
+BLOCK_DESTROY:
+  - GameEvent.BLOCK_DESTROY
+  - block_destroy
+BLOCK_DETACH:
+  - GameEvent.BLOCK_DETACH
+  - block_detach
+BLOCK_OPEN:
+  - GameEvent.BLOCK_OPEN
+  - block_open
+BLOCK_PLACE:
+  - GameEvent.BLOCK_PLACE
+  - block_place
+CONTAINER_CLOSE:
+  - GameEvent.CONTAINER_CLOSE
+  - container_close
+CONTAINER_OPEN:
+  - GameEvent.CONTAINER_OPEN
+  - container_open
+DRINK:
+  - GameEvent.DRINKING_FINISH
+  - drinking_finish
+EAT:
+  - GameEvent.EAT
+  - eat
+ELYTRA_GLIDE:
+  - GameEvent.ELYTRA_FREE_FALL
+  - elytra_free_fall
+ENTITY_DAMAGE:
+  - GameEvent.ENTITY_DAMAGED
+  - entity_damaged
+ENTITY_DIE:
+  - GameEvent.ENTITY_KILLED
+  - entity_killed
+ENTITY_INTERACT:
+  - GameEvent.MOB_INTERACT
+  - mob_interact
+ENTITY_PLACE:
+  - GameEvent.ENTITY_PLACE
+  - entity_place
+EQUIP:
+  - GameEvent.EQUIP
+  - equip
+EXPLODE:
+  - GameEvent.EXPLODE
+  - explode
+FLAP:
+  - GameEvent.FLAP
+  - flap
+FLUID_PICKUP:
+  - GameEvent.FLUID_PICKUP
+  - fluid_pickup
+FLUID_PLACE:
+  - GameEvent.FLUID_PLACE
+  - fluid_place
+HIT_GROUND:
+  - GameEvent.HIT_GROUND
+  - hit_ground
+LIGHTNING_STRIKE:
+  - GameEvent.LIGHTNING_STRIKE
+  - lightning_strike
+PRIME_FUSE:
+  - GameEvent.PRIME_FUSE
+  - prime_fuse
+PROJECTILE_LAND:
+  - GameEvent.PROJECTILE_LAND
+  - projectile_land
+PROJECTILE_SHOOT:
+  - GameEvent.PROJECTILE_SHOOT
+  - projectile_shoot
+SHEAR:
+  - GameEvent.SHEAR
+  - shear
+SPLASH:
+  - GameEvent.SPLASH
+  - splash
+STEP:
+  - GameEvent.STEP
+  - step
+SWIM:
+  - GameEvent.SWIM
+  - swim

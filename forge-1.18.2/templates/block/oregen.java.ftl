@@ -55,7 +55,7 @@ public class ${name}Feature extends OreFeature {
 	public static Feature<?> feature() {
 		FEATURE = new ${name}Feature();
 		CONFIGURED_FEATURE = FeatureUtils.register("${modid}:${registryname}", FEATURE,
-				new OreConfiguration(${name}FeatureRuleTest.INSTANCE, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().defaultBlockState(), ${data.frequencyOnChunk}));
+				new OreConfiguration(${name}FeatureRuleTest.INSTANCE, ${JavaModName}Blocks.${REGISTRYNAME}.get().defaultBlockState(), ${data.frequencyOnChunk}));
 		PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE, List.of(
 				CountPlacement.of(${data.frequencyPerChunks}), InSquarePlacement.spread(),
 				HeightRangePlacement.${data.generationShape?lower_case}(VerticalAnchor.absolute(${data.minGenerateHeight}), VerticalAnchor.absolute(${data.maxGenerateHeight})),

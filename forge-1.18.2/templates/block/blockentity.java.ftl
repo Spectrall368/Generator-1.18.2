@@ -33,14 +33,20 @@ package ${package}.block.entity;
 <#include "../procedures.java.ftl">
 
 <#compress>
-public class ${name}BlockEntity extends RandomizableContainerBlockEntity implements WorldlyContainer {
+public class ${name}BlockEntity extends RandomizableContainerBlockEntity implements WorldlyContainer
+ 		<#if data.sensitiveToVibration>, VibrationListener.VibrationListenerConfig</#if> {
 
-	private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(${data.inventorySize}, ItemStack.EMPTY);
+	private NonNullList<ItemStack> stacks = NonNullList.withSize(${data.inventorySize}, ItemStack.EMPTY);
 
 	private final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.values());
 
+	<#if data.sensitiveToVibration>
+	private VibrationListener vibrationListener = new VibrationListener(new BlockPositionSource(this.getBlockPos()), getListenerRadius(), this);
+	private Entity entityOnSignal = null;
+	</#if>
+
 	public ${name}BlockEntity(BlockPos position, BlockState state) {
-		super(${JavaModName}BlockEntities.${data.getModElement().getRegistryNameUpper()}.get(), position, state);
+		super(${JavaModName}BlockEntities.${REGISTRYNAME}.get(), position, state);
 	}
 
 	@Override public void load(CompoundTag compound) {
@@ -101,9 +107,11 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		return new TextComponent("${registryname}");
 	}
 
+	<#if data.inventoryStackSize != 99>
 	@Override public int getMaxStackSize() {
 		return ${data.inventoryStackSize};
 	}
+	</#if>
 
 	@Override public AbstractContainerMenu createMenu(int id, Inventory inventory) {
 		<#if !data.guiBoundTo?has_content>
@@ -236,6 +244,64 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		for(LazyOptional<? extends IItemHandler> handler : handlers)
 			handler.invalidate();
 	}
+
+    <#if data.sensitiveToVibration>
+    public VibrationListener getListener() {
+    	return this.vibrationListener;
+    }
+
+	public int getListenerRadius() {
+        <#if hasProcedure(data.vibrationSensitivityRadius)>
+            Level world = this.getLevel();
+            double x = this.getBlockPos().getX();
+            double y = this.getBlockPos().getY();
+            double z = this.getBlockPos().getZ();
+            BlockState blockstate = this.getBlockState();
+            return (int) <@procedureOBJToNumberCode data.vibrationSensitivityRadius/>;
+        <#else>
+            return ${data.vibrationSensitivityRadius.getFixedValue()};
+        </#if>
+	}
+
+	@Override public boolean shouldListen(Level world, GameEventListener eventListener, BlockPos vibrationPos, GameEvent holder, Entity context) {
+	    <#if data.vibrationalEvents?has_content>
+	    if(!holder.is(TagKey.create(Registry.GAME_EVENT_REGISTRY, new ResourceLocation("${registryname}_can_listen")))) return false;
+	    </#if>
+		entityOnSignal = context;
+		<#if hasProcedure(data.canReceiveVibrationCondition)>
+			return <@procedureCode data.canReceiveVibrationCondition {
+				"x": "this.getBlockPos().getX()",
+				"y": "this.getBlockPos().getY()",
+				"z": "this.getBlockPos().getZ()",
+				"vibrationX": "vibrationPos.getX()",
+				"vibrationY": "vibrationPos.getY()",
+				"vibrationZ": "vibrationPos.getZ()",
+				"world": "world",
+				"entity": "context",
+				"blockstate": "this.getBlockState()"
+			}/>
+		<#else>
+			return true;
+		</#if>
+	}
+
+	@Override public void onSignalReceive(Level world, GameEventListener eventListener, GameEvent holder, int distance) {
+		<#if hasProcedure(data.onReceivedVibration)>
+			<@procedureCode data.onReceivedVibration {
+				"x": "this.getBlockPos().getX()",
+				"y": "this.getBlockPos().getY()",
+				"z": "this.getBlockPos().getZ()",
+				"vibrationX": "eventListener.getListenerSource().getPosition(world).get().getX()",
+				"vibrationY": "eventListener.getListenerSource().getPosition(world).get().getY()",
+				"vibrationZ": "eventListener.getListenerSource().getPosition(world).get().getZ()",
+				"world": "world",
+				"blockstate": "this.getBlockState()",
+				"entity": "entityOnSignal",
+				"sourceentity": "entityOnSignal"
+			}/>
+		</#if>
+	}
+    </#if>
 }
 </#compress>
 <#-- @formatter:on -->

@@ -1,15 +1,14 @@
 {
   "id": "generator-1.18.2",
-  "supportedversions": [2025001],
-  "weight": 11,
+  "supportedversions": [2025002],
   "info": {
     "name": "Minecraft Forge 1.18.2 Java Edition/Datapack Generator",
-    "version": "2.0",
+    "version": "2.1",
     "description": "Minecraft Forge 1.18.2 Java Edition/Datapack Generator",
     "author": "_Spectrall",
     "credits": "",
     "dependencies":  [],
-    "updateJSONURL": "https://raw.githubusercontent.com/Spectrall368/Generator-1.18.2/2025.1/update.json",
+    "updateJSONURL": "https://raw.githubusercontent.com/Spectrall368/Generator-1.18.2/2025.2/update.json",
     "pluginPageID": 97054
   }
 }

@@ -22,6 +22,7 @@ templates:
   # Plant item template
   - template: json/plant_item.json.ftl
     writer: json
+    condition: hasBlockItem
     name: "@MODASSETSROOT/models/item/@registryname.json"
 
   # Block model templates
@@ -81,12 +82,6 @@ localizationkeys:
     mapto: name
   - fromlist: data.getFixedSpecialInformation()
     key: block.@modid.@registryname.description_@item_index
-
-global_templates:
-  - template: elementinits/features.java.ftl
-    writer: java
-    condition: '${w.getGElementsOfType("plant")?filter(e -> e.generateFeature )?size != 0}'
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameFeatures.java"
 
 tags:
   - tag: BLOCKS:minecraft:saplings

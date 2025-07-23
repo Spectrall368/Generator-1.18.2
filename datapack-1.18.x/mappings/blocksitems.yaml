@@ -118,15 +118,9 @@ Blocks.SAND#1:
 Blocks.GRAVEL:
   - Blocks.GRAVEL
   - "gravel"
-Blocks.FLOWING_WATER:
-  - Blocks.WATER
-  - "water"
 Blocks.WATER:
   - Blocks.WATER
   - "water"
-Blocks.FLOWING_LAVA:
-  - Blocks.LAVA
-  - "lava"
 Blocks.LAVA:
   - Blocks.LAVA
   - "lava"
@@ -143,9 +137,6 @@ Blocks.IRON_ORE:
   - Blocks.IRON_ORE
   - "iron_ore"
 Blocks.REDSTONE_ORE:
-  - Blocks.REDSTONE_ORE
-  - "redstone_ore"
-Blocks.LIT_REDSTONE_ORE:
   - Blocks.REDSTONE_ORE
   - "redstone_ore"
 Blocks.GOLD_ORE:
@@ -244,9 +235,6 @@ Blocks.LOG#2:
 Blocks.LOG#3:
   - Blocks.JUNGLE_LOG
   - "jungle_log"
-Blocks.LOG2:
-  - Blocks.ACACIA_LOG
-  - "#minecraft:logs"
 Blocks.LOG2#0:
   - Blocks.ACACIA_LOG
   - "acacia_log"
@@ -268,9 +256,6 @@ Blocks.LEAVES#2:
 Blocks.LEAVES#3:
   - Blocks.JUNGLE_LEAVES
   - "jungle_leaves"
-Blocks.LEAVES2:
-  - Blocks.ACACIA_LEAVES
-  - "#minecraft:leaves"
 Blocks.LEAVES2#0:
   - Blocks.ACACIA_LEAVES
   - "acacia_leaves"
@@ -331,19 +316,10 @@ Blocks.DETECTOR_RAIL:
 Blocks.ACTIVATOR_RAIL:
   - Blocks.ACTIVATOR_RAIL
   - "activator_rail"
-Blocks.BED:
-  - Blocks.WHITE_BED
-  - "white_bed"
 Blocks.WEB:
   - Blocks.COBWEB
   - "cobweb"
 Blocks.DEADBUSH:
-  - Blocks.DEAD_BUSH
-  - "dead_bush"
-Blocks.TALLGRASS:
-  - Blocks.GRASS
-  - "grass"
-Blocks.TALLGRASS#0:
   - Blocks.DEAD_BUSH
   - "dead_bush"
 Blocks.TALLGRASS#1:
@@ -577,13 +553,7 @@ Blocks.TRIPWIRE:
 Blocks.DAYLIGHT_DETECTOR:
   - Blocks.DAYLIGHT_DETECTOR
   - "daylight_detector"
-Blocks.DAYLIGHT_DETECTOR_INVERTED:
-  - Blocks.DAYLIGHT_DETECTOR
-  - "daylight_detector"
 Blocks.REDSTONE_TORCH:
-  - Blocks.REDSTONE_TORCH
-  - "redstone_torch"
-Blocks.UNLIT_REDSTONE_TORCH:
   - Blocks.REDSTONE_TORCH
   - "redstone_torch"
 Blocks.REDSTONE_WIRE:
@@ -592,19 +562,10 @@ Blocks.REDSTONE_WIRE:
 Blocks.UNPOWERED_REPEATER:
   - Blocks.REPEATER
   - "repeater"
-Blocks.POWERED_REPEATER:
-  - Blocks.REPEATER
-  - "repeater"
 Blocks.UNPOWERED_COMPARATOR:
   - Blocks.COMPARATOR
   - "comparator"
-Blocks.POWERED_COMPARATOR:
-  - Blocks.COMPARATOR
-  - "comparator"
 Blocks.REDSTONE_LAMP:
-  - Blocks.REDSTONE_LAMP
-  - "redstone_lamp"
-Blocks.LIT_REDSTONE_LAMP:
   - Blocks.REDSTONE_LAMP
   - "redstone_lamp"
 Blocks.DISPENSER:
@@ -803,9 +764,6 @@ Blocks.PURPUR_PILLAR:
   - Blocks.PURPUR_PILLAR
   - "purpur_pillar"
 Blocks.PURPUR_SLAB:
-  - Blocks.PURPUR_SLAB
-  - "purpur_slab"
-Blocks.PURPUR_DOUBLE_SLAB:
   - Blocks.PURPUR_SLAB
   - "purpur_slab"
 Blocks.BEETROOTS:
@@ -1442,18 +1400,6 @@ Blocks.STRUCTURE_VOID:
   - Blocks.STRUCTURE_VOID
   - "structure_void"
 Blocks.STRUCTURE_BLOCK:
-  - Blocks.STRUCTURE_BLOCK
-  - "structure_block"
-Blocks.STRUCTURE_BLOCK#1:
-  - Blocks.STRUCTURE_BLOCK
-  - "structure_block"
-Blocks.STRUCTURE_BLOCK#2:
-  - Blocks.STRUCTURE_BLOCK
-  - "structure_block"
-Blocks.STRUCTURE_BLOCK#3:
-  - Blocks.STRUCTURE_BLOCK
-  - "structure_block"
-Blocks.STRUCTURE_BLOCK#4:
   - Blocks.STRUCTURE_BLOCK
   - "structure_block"
 Blocks.NORMAL_STONE_STAIRS:
