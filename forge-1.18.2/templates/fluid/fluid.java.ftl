@@ -54,7 +54,7 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 			<#elseif data.tintType == "Foliage" || data.tintType == "Default foliage">
 			-12012264
 			<#elseif data.tintType == "Birch foliage">
-		    -8345771
+			-8345771
 			<#elseif data.tintType == "Spruce foliage">
 			-10380959
 			<#elseif data.tintType == "Water">
@@ -65,13 +65,14 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 			-4138753
 			<#else>
 			-16448205
+			</#if>)
 		</#if>)
 	    .explosionResistance(${data.resistance}f)
 	    <#if data.canMultiply>.canMultiply()</#if>
-		<#if data.flowRate != 5>.tickRate(${data.flowRate})</#if>
-		<#if data.levelDecrease != 1>.levelDecreasePerBlock(${data.levelDecrease})</#if>
-		<#if data.slopeFindDistance != 4>.slopeFindDistance(${data.slopeFindDistance})</#if>
-		<#if data.generateBucket>.bucket(${JavaModName}Items.${REGISTRYNAME}_BUCKET)</#if>
+	    <#if data.flowRate != 5>.tickRate(${data.flowRate})</#if>
+	    <#if data.levelDecrease != 1>.levelDecreasePerBlock(${data.levelDecrease})</#if>
+	    <#if data.slopeFindDistance != 4>.slopeFindDistance(${data.slopeFindDistance})</#if>
+	    <#if data.generateBucket>.bucket(${JavaModName}Items.${REGISTRYNAME}_BUCKET)</#if>
 		.block(() -> (LiquidBlock) ${JavaModName}Blocks.${REGISTRYNAME}.get()
 	);
 

@@ -32,18 +32,18 @@
 package ${package}.world.features;
 
 <#compress>
-@Mod.EventBusSubscriber public class StructureFeature extends Feature<StructureFeatureConfiguration> {
+@Mod.EventBusSubscriber public class StructureModFeature extends Feature<StructureModFeatureConfiguration> {
 	public static final DeferredRegister<Feature<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.FEATURES, ${JavaModName}.MODID);
-	public static final RegistryObject<Feature<?>> STRUCTURE_FEATURE = REGISTRY.register("structure_feature", () -> new StructureFeature(StructureFeatureConfiguration.CODEC));
+	public static final RegistryObject<Feature<?>> STRUCTURE_FEATURE = REGISTRY.register("structure_feature", () -> new StructureModFeature(StructureModFeatureConfiguration.CODEC));
 
-	public StructureFeature(Codec<StructureFeatureConfiguration> codec) {
+	public StructureModFeature(Codec<StructureModFeatureConfiguration> codec) {
 		super(codec);
 	}
 
-	public boolean place(FeaturePlaceContext<StructureFeatureConfiguration> context) {
+	public boolean place(FeaturePlaceContext<StructureModFeatureConfiguration> context) {
 		Random random = context.random();
 		WorldGenLevel worldGenLevel = context.level();
-		StructureFeatureConfiguration config = context.config();
+		StructureModFeatureConfiguration config = context.config();
 		Rotation rotation = config.randomRotation() ? Rotation.getRandom(random) : Rotation.NONE;
 		Mirror mirror = config.randomMirror() ? Mirror.values()[random.nextInt(2)] : Mirror.NONE;
 		// Load the structure template

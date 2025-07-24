@@ -149,6 +149,6 @@ feature_spring:
 
 # Custom NBT-based feature, not present in vanilla
 feature_custom_structure:
-  - StructureFeature
-  - StructureFeatureConfiguration
-  - StructureFeature.STRUCTURE_FEATURE
+  - StructureModFeature
+  - StructureModFeatureConfiguration
+  - StructureModFeature.STRUCTURE_FEATURE

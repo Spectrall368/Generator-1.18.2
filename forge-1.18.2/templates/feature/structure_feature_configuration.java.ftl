@@ -31,8 +31,8 @@
 <#-- @formatter:off -->
 package ${package}.world.features.configurations;
 
-public record StructureFeatureConfiguration(ResourceLocation structure, boolean randomRotation, boolean randomMirror, HolderSet<Block> ignoredBlocks, Vec3i offset) implements FeatureConfiguration {
-    public StructureFeatureConfiguration(ResourceLocation structure, boolean randomRotation, boolean randomMirror, TagKey<Block> ignoredBlocks, Vec3i offset) {
+public record StructureModFeatureConfiguration(ResourceLocation structure, boolean randomRotation, boolean randomMirror, HolderSet<Block> ignoredBlocks, Vec3i offset) implements FeatureConfiguration {
+    public StructureModFeatureConfiguration(ResourceLocation structure, boolean randomRotation, boolean randomMirror, TagKey<Block> ignoredBlocks, Vec3i offset) {
         this(structure, randomRotation, randomMirror, Minecraft.getInstance().level.registryAccess()
                                                           .registryOrThrow(Registry.BLOCK_REGISTRY)
                                                           .getTag(ignoredBlocks)
@@ -40,7 +40,7 @@ public record StructureFeatureConfiguration(ResourceLocation structure, boolean 
                                                           .orElseGet(() -> HolderSet.<Block>direct()), offset);
     }
 
-	public static final Codec<StructureFeatureConfiguration> CODEC = RecordCodecBuilder.create(builder -> {
+	public static final Codec<StructureModFeatureConfiguration> CODEC = RecordCodecBuilder.create(builder -> {
 		return builder.group(ResourceLocation.CODEC.fieldOf("structure").forGetter(config -> {
 			return config.structure;
 		}), Codec.BOOL.fieldOf("random_rotation").orElse(false).forGetter(config -> {
@@ -51,7 +51,7 @@ public record StructureFeatureConfiguration(ResourceLocation structure, boolean 
 			return config.ignoredBlocks;
 		}), Vec3i.offsetCodec(48).optionalFieldOf("offset", Vec3i.ZERO).forGetter(config -> {
 			return config.offset;
-		})).apply(builder, StructureFeatureConfiguration::new);
+		})).apply(builder, StructureModFeatureConfiguration::new);
 	});
 }
 <#-- @formatter:on -->
