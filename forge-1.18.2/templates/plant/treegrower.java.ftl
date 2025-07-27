@@ -62,7 +62,7 @@ public class ${name}TreeGrower extends <#if (data.megaTrees[0]?has_content) || (
 <#-- @formatter:on -->
 <#macro toTreeKey tree="">
 <#if tree?has_content>
-ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY).getHolderOrThrow(ResourceKey.create(Registry.CONFIGURED_FEATURE_REGISTRY, new ResourceLocation("${tree}")))
+${generator.map(tree, "configuredfeatures", 1)}
 <#else>
 null
 </#if>
