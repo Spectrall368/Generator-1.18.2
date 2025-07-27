@@ -50,6 +50,7 @@ package ${package}.init;
 			</#if>
 		</#if>
 	<#elseif block.getModElement().getTypeString() == "plant">
+	        <#assign hasTransparentBlocks = true> <#-- Plants always have cutout transparency -->
 		<#if block.tintType != "No tint">
 			<#assign hasTintedBlocks = true>
 			<#if block.isItemTinted && block.hasBlockItem>
