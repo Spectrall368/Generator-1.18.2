@@ -56,6 +56,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 	<#assign interfaces += ["VibrationListener.VibrationListenerConfig"]>
 </#if>
 
+<#if data.spawnThisMob>@Mod.EventBusSubscriber</#if>
 public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>implements ${interfaces?join(",")}</#if> {
 
 	<#list data.entityDataEntries as entry>
