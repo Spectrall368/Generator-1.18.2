@@ -36,7 +36,7 @@ package ${package}.item.inventory;
 @Mod.EventBusSubscriber public class ${name}InventoryCapability implements ICapabilitySerializable<CompoundTag> {
 
 	@SubscribeEvent public static void onItemDropped(ItemTossEvent event) {
-		if (event.getEntity().getItem().getItem() == ${JavaModName}Items.${REGISTRYNAME}.get()) {
+		if (event.getEntityItem().getItem().getItem() == ${JavaModName}Items.${REGISTRYNAME}.get()) {
 			Player player = event.getPlayer();
 			if (player.containerMenu instanceof ${data.guiBoundTo}Menu)
 				player.closeContainer();
