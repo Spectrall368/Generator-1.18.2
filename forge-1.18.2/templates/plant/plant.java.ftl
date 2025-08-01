@@ -176,7 +176,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	}
 	</#if>
 
-	<#if data.offsetType != "NONE">
+	<#if data.offsetType != "XZ">
 	@Override public BlockBehaviour.OffsetType getOffsetType() {
 		return BlockBehaviour.OffsetType.${data.offsetType};
 	}
@@ -427,4 +427,5 @@ this.registerDefaultState(this.stateDefinition.any()
 	.setValue(WATERLOGGED, false)
 	</#if>
 );
+
 </#macro>
