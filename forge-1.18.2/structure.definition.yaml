@@ -25,7 +25,7 @@ global_templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameStructures.java"
   - template: structure/base_structure.java.ftl
     writer: java
-    name: "@SRCROOT/@BASEPACKAGEPATH/world/structures/BaseStructure.java"
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/structures/@JavaModNameStructureBase.java"
     hidden: true
   - template: structure/structure_configuration.java.ftl
     writer: java
