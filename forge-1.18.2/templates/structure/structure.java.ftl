@@ -31,7 +31,7 @@
 <#-- @formatter:off -->
 package ${package}.world.structures;
 
-public class ${name}Structure extends BaseStructure {
+public class ${name}Structure extends ${JavaModName}StructureBase {
 
     @Override
     public GenerationStep.Decoration step() {

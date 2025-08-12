@@ -31,9 +31,9 @@
 <#-- @formatter:off -->
 package ${package}.world.structures;
 
-public class BaseStructure extends StructureFeature<StructureConfiguration> {
-    public BaseStructure() {
-        super(StructureConfiguration.CODEC, BaseStructure::createPiecesGenerator);
+public class ${JavaModName}StructureBase extends StructureFeature<StructureConfiguration> {
+    public ${JavaModName}StructureBase() {
+        super(StructureConfiguration.CODEC, ${JavaModName}StructureBase::createPiecesGenerator);
     }
 
     @Override
@@ -42,13 +42,12 @@ public class BaseStructure extends StructureFeature<StructureConfiguration> {
     }
 
     public static Optional<PieceGenerator<StructureConfiguration>> createPiecesGenerator(PieceGeneratorSupplier.Context<StructureConfiguration> context) {
-        BlockPos blockpos = context.chunkPos().getMiddleBlockPosition(0);
+        int topLandY = context.config().startHeight().sample(new Random(), new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor()));
+        BlockPos blockpos = context.chunkPos().getMiddleBlockPosition(0).atY(topLandY);
 
-        if (!context.config().projectStartToHeightmap().isEmpty()) {
-            int topLandY = context.chunkGenerator().getFirstFreeHeight(blockpos.getX(), blockpos.getZ(), context.config().projectStartToHeightmap().get(), context.heightAccessor());
-            blockpos = blockpos.atY(topLandY + context.config().startHeight().sample(new Random(), new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor())));
-        } else {
-            blockpos = blockpos.atY(context.config().startHeight().sample(new Random(), new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor())));
+        if (context.config().projectStartToHeightmap().isPresent()) {
+            topLandY = context.chunkGenerator().getFirstFreeHeight(blockpos.getX(), blockpos.getZ(), context.config().projectStartToHeightmap().get(), context.heightAccessor());
+            blockpos = blockpos.atY(blockpos.getY() + topLandY);
         }
 
         Pools.bootstrap();
