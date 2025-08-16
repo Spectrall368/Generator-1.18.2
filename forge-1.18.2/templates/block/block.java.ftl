@@ -110,11 +110,11 @@ public class ${name}Block extends
 	</#list>
 
 	<#macro blockProperties>
-	    BlockBehaviour.Properties.of(
+	    BlockBehaviour.Properties.of(Material.
 	    <#if blockSetType == "null">
-	    (new Material.Builder(MaterialColor.NONE)).build()
+	    BUILDABLE_GLASS
 	    <#else>
-	    Material.${blockSetType?replace("IRON", "METAL")?replace("OAK", "NETHER_WOOD")}
+	    ${blockSetType?replace("IRON", "METAL")?replace("OAK", "NETHER_WOOD")}
 	    </#if>
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 		    , MaterialColor.${generator.map(data.colorOnMap, "mapcolors")}
@@ -755,5 +755,4 @@ public class ${name}Block extends
 	</#list>
 }
 </#compress>
-
 <#-- @formatter:on -->
