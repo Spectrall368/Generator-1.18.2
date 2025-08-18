@@ -1,7 +1,6 @@
 package net.mcreator.packloader;
 
 import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -53,5 +52,4 @@ import java.io.File;
 			}
 		}
 	}
-
 }
