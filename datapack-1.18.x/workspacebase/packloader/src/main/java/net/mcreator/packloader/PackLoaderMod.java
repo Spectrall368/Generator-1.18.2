@@ -8,7 +8,6 @@ import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.FolderRepositorySource;
 
-import java.io.File;
 import java.nio.file.Path;
 
 @Mod(PackLoaderMod.MODID) public class PackLoaderMod {
