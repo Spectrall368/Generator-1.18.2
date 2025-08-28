@@ -119,10 +119,6 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 	</#if>
 
 	public static class Source extends ${name}Fluid {
-		public Source() {
-			super();
-		}
-
 		public int getAmount(FluidState state) {
 			return 8;
 		}
@@ -133,10 +129,6 @@ public abstract class ${name}Fluid extends ForgeFlowingFluid {
 	}
 
 	public static class Flowing extends ${name}Fluid {
-		public Flowing() {
-			super();
-		}
-
 		protected void createFluidStateDefinition(StateDefinition.Builder<Fluid, FluidState> builder) {
 			super.createFluidStateDefinition(builder);
 			builder.add(LEVEL);
