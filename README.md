@@ -1,19 +1,26 @@
-# MCreator generator for Minecraft Forge 1.18.2 Java Edition mods/Datapack.
-![License](https://img.shields.io/badge/License-GPLv3-blue.svg)
+# MCreator generator for Forge 1.18.2
+[![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/Spectrall368/Generator-1.18.2/blob/master/LICENSE)
 
-MCreator generator plugin for Minecraft Forge 1.18.2 Java Edition mods/Datapack.
+MCreator generator plugin for Forge 1.18.2.
+
+<img src="https://github.com/Spectrall368/Generator-1.18.2/blob/2025.2/forge_logo.png" width="250" height="250" alt="Plugin logo"/>
 
 ## How to install
 
-Please check https://mcreator.net/wiki/understand-plugins#toc-index-1 for installation guide.
+Please check https://mcreator.net/wiki/developing-mcreator-plugins#wiki-index-6 for installation guide.
 
 ## Info
 
 This Generator is built over the old official generator, but this one is NOT official, and is not being maintained by the MCreator Team.
 
+This plugin is intended for generator plugin developers to offer name mappings to work from and offer
+examples on how to use Freemarker mechanics and to see what data is available in the templates.
+
 MCreator's official website: https://mcreator.net/
 
-MCreator is a trademark of Pylo. 
+MCreator is a trademark of Pylo.
+
+Other components of MCreator are licensed under other licenses, this license only applies to the files in this repository.
 
 ## More documentation on generators
 
