@@ -82,7 +82,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 	)
 	<#else>
 	null
-	</#if>:
+	</#if>;
 
 	@SubscribeEvent public static void addLivingEntityToBiomes(BiomeLoadingEvent event) {
 	    <#if data.restrictionBiomes?has_content>
