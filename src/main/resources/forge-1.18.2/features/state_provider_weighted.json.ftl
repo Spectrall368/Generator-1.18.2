@@ -1,1 +1,1 @@
-/*@BlockStateProvider*/new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()<#list input_list$entry as entry>.add(${entry}.defaultBlockState(), ${field_list$weight[entry?index]})</#list>.build())
+/*@BlockStateProvider*/new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()<#list input_list$entry as entry>.add(${entry}.defaultBlockState(), ${field_list$weight[entry?index]}f)</#list>.build())

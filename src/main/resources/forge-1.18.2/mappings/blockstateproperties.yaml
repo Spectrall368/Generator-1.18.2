@@ -89,15 +89,9 @@ WATERLOGGED:
 BERRIES:
   - BlockStateProperties.BERRIES
   - berries
-BLOOM:
-  - BlockStateProperties.BLOOM
-  - bloom
 SHRIEKING:
   - BlockStateProperties.SHRIEKING
   - shrieking
-CAN_SUMMON:
-  - BlockStateProperties.CAN_SUMMON
-  - can_summon
 HORIZONTAL_AXIS:
   - BlockStateProperties.HORIZONTAL_AXIS
   - axis
