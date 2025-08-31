@@ -1,1 +1,1 @@
-BlockPredicate.matchesFluids(${generator.map(field$fluid, "fluids")?replace("FLOWING_", "")}, new Vec3i(${field$x}, ${field$y}, ${field$z}))
+BlockPredicate.matchesFluid(${generator.map(field$fluid, "fluids")}, new Vec3i(${field$x}, ${field$y}, ${field$z}))
