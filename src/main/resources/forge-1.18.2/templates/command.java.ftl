@@ -42,10 +42,10 @@ public class ${name}Command {
 	<#else>
 		@SubscribeEvent public static void registerCommand(RegisterCommandsEvent event) {
 			<#if data.type == "MULTIPLAYER_ONLY">
-				if (event.getCommandSelection() == Commands.CommandSelection.DEDICATED)
+				if (event.getEnvironment() == Commands.CommandSelection.DEDICATED)
 					<@commandRegistrationCode/>
 			<#elseif data.type == "SINGLEPLAYER_ONLY">
-				if (event.getCommandSelection() == Commands.CommandSelection.INTEGRATED)
+				if (event.getEnvironment() == Commands.CommandSelection.INTEGRATED)
 					<@commandRegistrationCode/>
 			<#else>
 				<@commandRegistrationCode/>
