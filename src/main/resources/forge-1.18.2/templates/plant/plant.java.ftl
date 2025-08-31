@@ -75,6 +75,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.placeSound}")),
 				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hitSound}")),
 				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.fallSound}"))
+			))
 		<#elseif data.soundOnStep != "STONE">
 			.sound(SoundType.${data.soundOnStep})
 		</#if>
