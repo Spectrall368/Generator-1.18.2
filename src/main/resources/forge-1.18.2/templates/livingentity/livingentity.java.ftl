@@ -99,7 +99,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 	</#if>
 
 	<#if data.sensitiveToVibration>
-	private final VibrationListener vibrationListener = new VibrationListener(new EntityPositionSource(this, this.getEyeHeight()), getListenerRadius(), this);
+	private final VibrationListener vibrationListener = new VibrationListener(new EntityPositionSource(this.getId()), getListenerRadius(), this);
 	private final GameEventListenerRegistrar dynamicGameEventListener = new GameEventListenerRegistrar(vibrationListener);
 	private Entity entityOnSignal = null;
 	</#if>
@@ -520,7 +520,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 	</#if>
 
 	<#if data.sensitiveToVibration>
-	@Override public void getGameEventListenerRegistrar() {
+	@Override public GameEventListenerRegistrar getGameEventListenerRegistrar() {
         return dynamicGameEventListener;
 	}
 	</#if>
@@ -646,9 +646,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
  	@Override public void tick() {
  		super.tick();
 
-		if (this.level instanceof Level level) {
-		    this.vibrationListener.tick(level);
-		}
+ 		this.vibrationListener.tick(this.level);
  	}
  	</#if>
 
@@ -1035,7 +1033,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 			</#if>
 		}
 
-		@Override public void onSignalReceive(ServerLevel world, GameEventListener eventListener, GameEvent holder, int distance) {
+		@Override public void onSignalReceive(Level world, GameEventListener eventListener, GameEvent holder, int distance) {
 			<#if hasProcedure(data.onReceivedVibration)>
 				<@procedureCode data.onReceivedVibration {
 					"x": "this.getX()",
