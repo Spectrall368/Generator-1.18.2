@@ -95,10 +95,10 @@ public class ${name}Feature extends RandomPatchFeature {
 			new ResourceLocation("${expandedBiome}")<#sep>,
 		    </#list><#sep>,
         </#list>
-	);
+	)
 	<#else>
-	null;
-	</#if>
+	null
+	</#if>;
 
 	<#if data.restrictionBiomes?has_content && cond>
 	private final Set<ResourceKey<Level>> generate_dimensions = Set.of(

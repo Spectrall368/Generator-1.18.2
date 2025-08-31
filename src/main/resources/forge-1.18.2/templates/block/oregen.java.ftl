@@ -76,10 +76,10 @@ public class ${name}Feature extends OreFeature {
 			new ResourceLocation("${expandedBiome}")<#sep>,
 		    </#list><#sep>,
         </#list>
-	);
+	)
 	<#else>
-	null;
-	</#if>
+	null
+	</#if>;
 
     <#if data.restrictionBiomes?has_content && cond>
 	private final Set<ResourceKey<Level>> generate_dimensions = Set.of(

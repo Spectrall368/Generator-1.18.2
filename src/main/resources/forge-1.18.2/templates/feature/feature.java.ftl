@@ -32,18 +32,11 @@
 <#include "../procedures.java.ftl">
 <#include "../mcitems.ftl">
 package ${package}.world.features;
-<#assign configuration = generator.map(featuretype, "features", 1)>
-<#assign extends = generator.map(featuretype, "features")>
 
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
-<#if configurationcode?contains("^")>
-    <#assign parts = configurationcode?split("^")>
-    <#assign configurationcode = parts[0]>
-    <#assign configuration = parts[1]>
-    <#assign extends = "Feature<" + configuration + ">">
-</#if>
+<#assign configuration = generator.map(featuretype, "features", 1)>
 <#assign cond = false>
 <#if data.restrictionBiomes?has_content>
 	<#list w.filterBrokenReferences(data.restrictionBiomes) as restrictionBiome>
@@ -55,7 +48,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 	</#list>
 </#if>
 <#compress>
-public class ${name}Feature extends ${extends} {
+public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 	private static ${name}Feature FEATURE = null;
 	public static Holder<ConfiguredFeature<${configuration}, ?>> CONFIGURED_FEATURE = null;
 	private static Holder<PlacedFeature> PLACED_FEATURE = null;
@@ -66,7 +59,7 @@ public class ${name}Feature extends ${extends} {
 
 	public static Feature<?> feature() {
 		FEATURE = new ${name}Feature();
-		CONFIGURED_FEATURE = FeatureUtils.register("${modid}:${registryname}", FEATURE, ${configurationcode});
+		CONFIGURED_FEATURE = <#if featuretype == "configured_feature_reference">${configurationcode}<#else>FeatureUtils.register("${modid}:${registryname}", FEATURE, ${configurationcode})</#if>;
 		PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE,
 			List.of(${placementcode?remove_ending(",")}));
 		return FEATURE;
@@ -85,10 +78,10 @@ public class ${name}Feature extends ${extends} {
 			new ResourceLocation("${expandedBiome}")<#sep>,
 		    </#list><#sep>,
         </#list>
-	);
+	)
 	<#else>
-	null;
-	</#if>
+	null
+	</#if>;
 
     <#if data.restrictionBiomes?has_content && cond>
 	private final Set<ResourceKey<Level>> generateDimensions = Set.of(
@@ -105,7 +98,7 @@ public class ${name}Feature extends ${extends} {
 	);
 	</#if>
 
-	<#if (data.restrictionBiomes?has_content && cond) || data.hasGenerationConditions() || parts??>
+	<#if (data.restrictionBiomes?has_content && cond) || data.hasGenerationConditions()>
 	@Override public boolean place(FeaturePlaceContext<${configuration}> context) {
 		<#-- #4781 - we need to use WorldGenLevel instead of Level, or one can run incompatible procedures in condition -->
 		WorldGenLevel world = context.level();
@@ -122,7 +115,7 @@ public class ${name}Feature extends ${extends} {
 			return false;
 		</#if>
 
-		return <#if parts??>${configurationcode?keep_before(".config()")}.feature()<#else>super</#if>.place(context);
+		return super.place(context);
 	}
 	</#if>
 }</#compress>
