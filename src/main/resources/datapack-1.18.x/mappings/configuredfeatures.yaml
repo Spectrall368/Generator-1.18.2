@@ -384,7 +384,7 @@ ore_copper_large:
   - OreConfiguration
 ore_copper_small:
   - ore_copper_small
-  - OreFeatures.ORE_COPPER_SMALL
+  - OreFeatures.ORE_COPPPER_SMALL
   - OreConfiguration
 ore_diamond_buried:
   - ore_diamond_buried
