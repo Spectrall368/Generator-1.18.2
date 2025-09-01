@@ -80,7 +80,6 @@ Smoker: SmokerScreen
 Stonecutter: StonecutterScreen
 KeyBinds: KeyBindsScreen
 AccessibilityOptions: AccessibilityOptionsScreen
-GenericWaiting: GenericWaitingScreen
 OnlineOptions: OnlineOptionsScreen
 Win: WinScreen
 Advancements: AdvancementsScreen
