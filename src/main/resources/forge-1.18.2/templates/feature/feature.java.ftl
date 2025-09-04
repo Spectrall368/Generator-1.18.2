@@ -61,7 +61,7 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 		FEATURE = new ${name}Feature();
 		CONFIGURED_FEATURE = <#if featuretype == "configured_feature_reference">${configurationcode}<#else>FeatureUtils.register("${modid}:${registryname}", FEATURE, ${configurationcode})</#if>;
 		PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE,
-			List.of(${placementcode?remove_ending(",")}));
+			List.of(<#if data.hasPlacedFeature()>${placementcode?remove_ending(",")}</#if>));
 		return FEATURE;
 	}
 
@@ -98,7 +98,7 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 	);
 	</#if>
 
-	<#if (data.restrictionBiomes?has_content && cond) || data.hasGenerationConditions()>
+	<#if data.hasPlacedFeature() && ((data.restrictionBiomes?has_content && cond) || data.hasGenerationConditions())>
 	@Override public boolean place(FeaturePlaceContext<${configuration}> context) {
 		<#-- #4781 - we need to use WorldGenLevel instead of Level, or one can run incompatible procedures in condition -->
 		WorldGenLevel world = context.level();
