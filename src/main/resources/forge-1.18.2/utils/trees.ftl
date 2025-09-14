@@ -35,7 +35,7 @@ new RandomSpreadFoliagePlacer(ConstantInt.of(${radius}), ConstantInt.of(${offset
 </#macro>
 
 <#macro twoLayersFeatureSize limit lower_size upper_size min_clipped_height=-1>
-new TwoLayersFeatureSize(${limit}, ${lower_size}, ${upper_size}<#if min_clipped_height != -1>, ${min_clipped_height}</#if>)
+new TwoLayersFeatureSize(${limit}, ${lower_size}, ${upper_size}<#if min_clipped_height != -1>, OptionalInt.of(${min_clipped_height})</#if>)
 </#macro>
 
 <#macro threeLayersFeatureSize limit upper_limit lower_size middle_size upper_size>
