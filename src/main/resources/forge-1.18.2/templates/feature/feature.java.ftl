@@ -47,6 +47,20 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 		</#if>
 	</#list>
 </#if>
+<#assign placementPattern = r'\$([^$]+)\$'>
+<#assign placementMatches = placementcode?matches(placementPattern)>
+<#assign placementHardcodedElements = []>
+<#list placementMatches as match>
+    <#assign placementHardcodedElements = placementHardcodedElements + [match?groups[1]]>
+</#list>
+<#assign nonHardcodedPlacement = placementcode?replace(placementPattern, "", "r")>
+<#assign configurationMatches = configurationcode?matches(placementPattern)>
+<#assign configurationHardcodedElements = []>
+<#list configurationMatches as match>
+    <#assign configurationHardcodedElements = configurationHardcodedElements + [match?groups[1]]>
+</#list>
+<#assign nonHardcodedConfiguration = configurationcode?replace(placementPattern, "", "r")>
+<#assign allHardcodedElements = placementHardcodedElements + configurationHardcodedElements>
 <#compress>
 public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 	private static ${name}Feature FEATURE = null;
@@ -59,9 +73,9 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 
 	public static Feature<?> feature() {
 		FEATURE = new ${name}Feature();
-		CONFIGURED_FEATURE = <#if featuretype == "configured_feature_reference">${configurationcode}<#else>FeatureUtils.register("${modid}:${registryname}", FEATURE, ${configurationcode})</#if>;
+		CONFIGURED_FEATURE = <#if featuretype == "configured_feature_reference">${nonHardcodedConfiguration}<#else>FeatureUtils.register("${modid}:${registryname}", FEATURE, ${nonHardcodedConfiguration})</#if>;
 		PLACED_FEATURE = PlacementUtils.register("${modid}:${registryname}", CONFIGURED_FEATURE,
-			List.of(<#if data.hasPlacedFeature()>${placementcode?remove_ending(",")}</#if>));
+			List.of(<#if data.hasPlacedFeature()>${nonHardcodedPlacement?remove_ending(",")}</#if>));
 		return FEATURE;
 	}
 
@@ -98,7 +112,7 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 	);
 	</#if>
 
-	<#if data.hasPlacedFeature() && ((data.restrictionBiomes?has_content && cond) || data.hasGenerationConditions())>
+	<#if data.hasPlacedFeature() && (((data.restrictionBiomes?has_content && cond) || data.hasGenerationConditions()) || (allHardcodedElements?size > 0))>
 	@Override public boolean place(FeaturePlaceContext<${configuration}> context) {
 		<#-- #4781 - we need to use WorldGenLevel instead of Level, or one can run incompatible procedures in condition -->
 		WorldGenLevel world = context.level();
@@ -113,6 +127,12 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 		int z = context.origin().getZ();
 		if (!<@procedureOBJToConditionCode data.generateCondition/>)
 			return false;
+		</#if>
+
+		<#if (allHardcodedElements?size > 0)>
+		    <#list allHardcodedElements as element>
+		    ${element}
+		    </#list>
 		</#if>
 
 		return super.place(context);
