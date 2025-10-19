@@ -151,4 +151,4 @@ feature_spring:
 feature_custom_structure:
   - StructureModFeature
   - StructureModFeatureConfiguration
-  - StructureModFeature.STRUCTURE_FEATURE
+  - StructureModFeature.STRUCTURE_FEATURE.get()
