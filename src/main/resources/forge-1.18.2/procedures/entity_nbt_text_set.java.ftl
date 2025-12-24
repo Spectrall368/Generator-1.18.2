@@ -1,1 +1,1 @@
-${input$entity}.getTileData().putString(${input$tagName}, ${input$tagValue});
+${input$entity}.getPersistentData().putString(${input$tagName}, ${input$tagValue});

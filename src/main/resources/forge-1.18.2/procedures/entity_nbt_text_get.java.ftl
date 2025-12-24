@@ -1,1 +1,1 @@
-(${input$entity}.getTileData().getString(${input$tagName}))
+(${input$entity}.getPersistentData().getString(${input$tagName}))
