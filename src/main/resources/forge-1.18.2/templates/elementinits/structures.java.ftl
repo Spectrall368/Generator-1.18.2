@@ -39,7 +39,7 @@ public class ${JavaModName}Structures {
 
     <#list structures as structure>
 	public static final RegistryObject<StructureFeature<?>> ${structure.getModElement().getRegistryNameUpper()} =
-	    REGISTRY.register("${structure.getModElement().getRegistryName()}", () -> new ${structure.getModElement().getName()}Structure());
+	    REGISTRY.register("${structure.getModElement().getRegistryName()}", ${structure.getModElement().getName()}Structure::new);
 	</#list>
 }
 <#-- @formatter:on -->
