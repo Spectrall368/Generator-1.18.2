@@ -1,1 +1,1 @@
-(${input$entity}.getPersistentData().getDouble(${input$tagName}))
+(${input$entity}.getTileData().getDouble(${input$tagName}))

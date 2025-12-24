@@ -1,1 +1,1 @@
-(${input$entity}.getPersistentData().getBoolean(${input$tagName}))
+(${input$entity}.getTileData().getBoolean(${input$tagName}))

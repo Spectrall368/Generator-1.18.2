@@ -6,7 +6,7 @@ if (!world.isClientSide()) {
 	BlockState _bs = world.getBlockState(_bp);
 	if(_blockEntity != null) {
 </@head>
-		_blockEntity.getPersistentData().putString(${input$tagName}, ${input$tagValue});
+		_blockEntity.getTileData().putString(${input$tagName}, ${input$tagValue});
 <@tail>
 	}
 	if(world instanceof Level _level)
