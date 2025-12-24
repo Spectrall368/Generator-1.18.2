@@ -1,2 +1,8 @@
-if (!world.isClientSide() && world.getServer() != null)
-	world.getServer().getPlayerList().broadcastMessage(new TextComponent(${input$text}), ChatType.SYSTEM, Util.NIL_UUID);
+if (world instanceof ServerLevel _level) {
+	_level.getServer().getPlayerList().broadcastMessage(new TextComponent(${input$text})
+		<#if (field$color!"#ffffff")?substring(1) != "ffffff">.withStyle(_s -> _s.withColor(0x${(field$color!"#ffffff")?substring(1)}))</#if>
+		<#if (field$bold!"false")?lower_case == "true">.withStyle(ChatFormatting.BOLD)</#if>
+		<#if (field$italic!"false")?lower_case == "true">.withStyle(ChatFormatting.ITALIC)</#if>
+		<#if (field$underlined!"false")?lower_case == "true">.withStyle(ChatFormatting.UNDERLINE)</#if>
+	, ChatType.SYSTEM, Util.NIL_UUID);
+}

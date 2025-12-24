@@ -315,7 +315,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 
 	<#if hasProcedure(data.onOpen)>
 	@SubscribeEvent public static void onContainerOpen(PlayerContainerEvent.Open event) {
-		Player entity = event.getEntity();
+		Player entity = event.getPlayer();
 		if(event.getContainer() instanceof ${name}Menu menu) {
 			Level world = menu.world;
 			double x = menu.x;
