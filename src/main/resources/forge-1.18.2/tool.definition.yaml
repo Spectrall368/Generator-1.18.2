@@ -24,25 +24,6 @@ templates:
     condition: "toolType %= Shield"
     name: "@MODASSETSROOT/models/item/@registryname_0.json"
 
-tags:
-  - tag: ITEMS:forge:tools/pickaxes
-    condition_any:
-      - "toolType %= Pickaxe"
-      - "toolType %= Special"
-      - "toolType %= MultiTool"
-  - tag: ITEMS:forge:tools/axes
-    condition_any:
-      - "toolType %= Axe"
-      - "toolType %= MultiTool"
-  - tag: ITEMS:forge:tools/swords
-    condition_any:
-      - "toolType %= Sword"
-      - "toolType %= MultiTool"
-  - tag: ITEMS:forge:tools/shovels
-    condition: "toolType %= Spade"
-  - tag: ITEMS:forge:tools/hoes
-    condition: "toolType %= Hoe"
-
 localizationkeys:
   - key: item.@modid.@registryname
     mapto: name
