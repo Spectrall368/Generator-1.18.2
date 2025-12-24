@@ -33,7 +33,7 @@
 <#include "procedures.java.ftl">
 package ${package}.potion;
 
-<#compress>
+<@javacompress>
 public class ${name}MobEffect extends MobEffect {
 
 	public ${name}MobEffect() {
@@ -134,7 +134,7 @@ public class ${name}MobEffect extends MobEffect {
 	}
 	</#if>
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->
 <#function getAttributeOperation operation>
     <#if operation == "ADD_VALUE">
@@ -147,7 +147,7 @@ public class ${name}MobEffect extends MobEffect {
 </#function>
 <#macro startedContext>
 <#if data.onAddedSound?has_content && data.onAddedSound.getMappedValue()?has_content>
-    entity.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse("${data.onAddedSound}")), entity.getSoundSource(), 1.0F, 1.0F);
+    entity.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.onAddedSound}")), entity.getSoundSource(), 1.0F, 1.0F);
 </#if>
 <#if hasProcedure(data.onStarted)>
     <@procedureCode data.onStarted, {

@@ -1,7 +1,7 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onBlockBreak(BlockEvent.BreakEvent event) {
-		<#assign dependenciesCode><#compress>
+		<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 			"xpAmount": "event.getExpToDrop()",
 			"x": "event.getPos().getX()",
@@ -14,6 +14,6 @@
 			"entity": "event.getPlayer()",
 			"blockstate": "event.getState()"
 			}/>
-		</#compress></#assign>
+		</#assign>
 		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}

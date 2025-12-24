@@ -9,8 +9,8 @@
 			if (capability instanceof IItemHandlerModifiable) {
 				ItemStack _stk = capability.getStackInSlot(_slotid).copy();
 				if (_stk.hurt(_amount, new Random(), null)) {
-    				_stk.shrink(1);
-    				_stk.setDamageValue(0);
+					_stk.shrink(1);
+					_stk.setDamageValue(0);
 				}
 				((IItemHandlerModifiable) capability).setStackInSlot(_slotid, _stk);
 			}

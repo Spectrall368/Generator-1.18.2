@@ -87,4 +87,3 @@ ItemCombiner: ItemCombinerScreen
 Warning: WarningScreen
 SocialInteractions: SocialInteractionsScreen
 Realms: RealmsScreen
-DisconnectedRealms: DisconnectedRealmsScreen

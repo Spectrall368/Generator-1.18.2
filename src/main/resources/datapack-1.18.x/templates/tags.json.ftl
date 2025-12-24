@@ -10,9 +10,13 @@
           <#list w.normalizeTagElements(tag.resourcePath(), 2, elements) as value>
 			<@tagEntry value value.getMappedValue(2)/><#sep>,
           </#list>
-      <#elseif type == "biomes" || type == "structures" || type == "game_events">
+      <#elseif type == "biomes" || type == "structures">
           <#list w.normalizeTagElements(tag.resourcePath(), 0, elements) as value>
 			<@tagEntry value value/><#sep>,
+          </#list>
+      <#elseif type == "game_events">
+          <#list w.normalizeTagElements(tag.resourcePath(), 1, elements) as value>
+			<@tagEntry value value.getMappedValue(1)/><#sep>,
           </#list>
       <#elseif type == "functions">
           <#list w.filterBrokenReferences(elements) as value>

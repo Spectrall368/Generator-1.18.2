@@ -1,7 +1,6 @@
 <#if field$dimension??><#--Here for legacy reasons as field$dimension does not exist in older workspaces-->
 if (${input$entity} instanceof ServerPlayer _player && !_player.level.isClientSide()) {
 	ResourceKey<Level> destinationType = ${generator.map(field$dimension, "dimensions")};
-
 	if (_player.level.dimension() == destinationType) return;
 
 	ServerLevel nextLevel = _player.server.getLevel(destinationType);

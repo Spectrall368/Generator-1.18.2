@@ -1,6 +1,10 @@
-if (${input$entity}.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) instanceof IItemHandler _modHandlerIter) {
-	for(int _idx = 0; _idx < _modHandlerIter.getSlots(); _idx++) {
-		ItemStack itemstackiterator = _modHandlerIter.getStackInSlot(_idx).copy();
-		${statement$foreach}
+{
+	AtomicReference<IItemHandler> _iitemhandlerref = new AtomicReference<>();
+	${input$entity}.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(_iitemhandlerref::set);
+	if (_iitemhandlerref.get() != null) {
+		for(int _idx = 0; _idx < _iitemhandlerref.get().getSlots(); _idx++) {
+			ItemStack itemstackiterator = _iitemhandlerref.get().getStackInSlot(_idx).copy();
+			${statement$foreach}
+		}
 	}
 }

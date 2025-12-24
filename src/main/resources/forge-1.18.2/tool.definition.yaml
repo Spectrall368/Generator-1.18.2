@@ -25,16 +25,23 @@ templates:
     name: "@MODASSETSROOT/models/item/@registryname_0.json"
 
 tags:
-  - tag: ITEMS:minecraft:pickaxes
-    condition: ${data.toolType == "Pickaxe" || data.toolType == "Special" || data.toolType == "MultiTool"}
-  - tag: ITEMS:minecraft:axes
-    condition: ${data.toolType == "Axe" || data.toolType == "MultiTool"}
-  - tag: ITEMS:minecraft:swords
-    condition: ${data.toolType == "Sword" || data.toolType == "MultiTool"}
-  - tag: ITEMS:minecraft:shovels
-    condition: ${data.toolType == "Spade"}
-  - tag: ITEMS:minecraft:hoes
-    condition: ${data.toolType == "Hoe"}
+  - tag: ITEMS:forge:tools/pickaxes
+    condition_any:
+      - "toolType %= Pickaxe"
+      - "toolType %= Special"
+      - "toolType %= MultiTool"
+  - tag: ITEMS:forge:tools/axes
+    condition_any:
+      - "toolType %= Axe"
+      - "toolType %= MultiTool"
+  - tag: ITEMS:forge:tools/swords
+    condition_any:
+      - "toolType %= Sword"
+      - "toolType %= MultiTool"
+  - tag: ITEMS:forge:tools/shovels
+    condition: "toolType %= Spade"
+  - tag: ITEMS:forge:tools/hoes
+    condition: "toolType %= Hoe"
 
 localizationkeys:
   - key: item.@modid.@registryname

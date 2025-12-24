@@ -32,7 +32,7 @@
 package ${package}.block.entity;
 <#include "../procedures.java.ftl">
 
-<#compress>
+<@javacompress>
 public class ${name}BlockEntity extends RandomizableContainerBlockEntity implements WorldlyContainer
  		<#if data.sensitiveToVibration>, VibrationListener.VibrationListenerConfig</#if> {
 
@@ -303,5 +303,5 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 	}
     </#if>
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->

@@ -1,30 +1,30 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2022, Pylo, opensource contributors
- #
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
  # the Free Software Foundation, either version 3 of the License, or
  # (at your option) any later version.
- #
+ # 
  # This program is distributed in the hope that it will be useful,
  # but WITHOUT ANY WARRANTY; without even the implied warranty of
  # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  # GNU General Public License for more details.
- #
+ # 
  # You should have received a copy of the GNU General Public License
  # along with this program.  If not, see <https://www.gnu.org/licenses/>.
- #
+ # 
  # Additional permission for code generator templates (*.ftl files)
- #
- # As a special exception, you may create a larger work that contains part or
- # all of the MCreator code generator templates (*.ftl files) and distribute
- # that work under terms of your choice, so long as that work isn't itself a
- # template for code generation. Alternatively, if you modify or redistribute
- # the template itself, you may (at your option) remove this special exception,
- # which will cause the template and the resulting code generator output files
- # to be licensed under the GNU General Public License without this special
+ # 
+ # As a special exception, you may create a larger work that contains part or 
+ # all of the MCreator code generator templates (*.ftl files) and distribute 
+ # that work under terms of your choice, so long as that work isn't itself a 
+ # template for code generation. Alternatively, if you modify or redistribute 
+ # the template itself, you may (at your option) remove this special exception, 
+ # which will cause the template and the resulting code generator output files 
+ # to be licensed under the GNU General Public License without this special 
  # exception.
 -->
 
@@ -36,8 +36,8 @@ package ${package}.world.inventory;
 
 import ${package}.${JavaModName};
 
-<#compress>
-<#if hasProcedure(data.onTick)>
+<@javacompress>
+<#if hasProcedure(data.onTick) || hasProcedure(data.onOpen)>
 @Mod.EventBusSubscriber
 </#if>
 public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}Menus.MenuAccessor {
@@ -117,7 +117,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 						${component.gy(data.height) + 1}) {
 						private final int slot = ${component.id}; <#-- #5209, this is needed for procedure dependencies -->
 						private int x = ${name}Menu.this.x; <#-- #5239 - x and y provided by slot are in-GUI, not in-world coordinates -->
- 						private int y = ${name}Menu.this.y;
+						private int y = ${name}Menu.this.y;
 
 						<#if hasProcedure(component.disablePickup) || component.disablePickup.getFixedValue()>
 						@Override public boolean mayPickup(Player entity) {
@@ -179,10 +179,6 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 
 			for (int si = 0; si < 9; ++si)
 				this.addSlot(new Slot(inv, si, ${coffx} + 8 + si * 18, ${coffy} + 142));
-		</#if>
-
-		<#if hasProcedure(data.onOpen)>
-			<@procedureOBJToCode data.onOpen/>
 		</#if>
 	}
 
@@ -305,17 +301,31 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 	}
 
 	<#if hasProcedure(data.onTick)>
-		@SubscribeEvent public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-			Player entity = event.player;
-			if(event.phase == TickEvent.Phase.END && entity.containerMenu instanceof ${name}Menu menu) {
-				Level world = menu.world;
-				double x = menu.x;
-				double y = menu.y;
-				double z = menu.z;
-				<@procedureOBJToCode data.onTick/>
-			}
+	@SubscribeEvent public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+		Player entity = event.player;
+		if(event.phase == TickEvent.Phase.END && entity.containerMenu instanceof ${name}Menu menu) {
+			Level world = menu.world;
+			double x = menu.x;
+			double y = menu.y;
+			double z = menu.z;
+			<@procedureOBJToCode data.onTick/>
 		}
+	}
 	</#if>
+
+	<#if hasProcedure(data.onOpen)>
+	@SubscribeEvent public static void onContainerOpen(PlayerContainerEvent.Open event) {
+		Player entity = event.getEntity();
+		if(event.getContainer() instanceof ${name}Menu menu) {
+			Level world = menu.world;
+			double x = menu.x;
+			double y = menu.y;
+			double z = menu.z;
+			<@procedureOBJToCode data.onOpen/>
+		}
+	}
+	</#if>
+
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->

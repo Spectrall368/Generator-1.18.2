@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2021, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -30,12 +30,14 @@
 
 <#-- @formatter:off -->
 /*
- *    MCreator note: This file will be REGENERATED on each build.
+ *	MCreator note: This file will be REGENERATED on each build.
  */
 package ${package}.init;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}GameRules {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+public class ${JavaModName}GameRules {
 
+	<@javacompress>
 	<#list gamerules as gamerule>
 		<#if gamerule.type == "Number">
 		public static final GameRules.Key<GameRules.IntegerValue> ${gamerule.getModElement().getRegistryNameUpper()} =
@@ -47,5 +49,6 @@ package ${package}.init;
 				GameRules.Category.${gamerule.category}, GameRules.BooleanValue.create(${gamerule.defaultValueLogic}));
 		</#if>
 	</#list>
+	</@javacompress>
 }
 <#-- @formatter:on -->

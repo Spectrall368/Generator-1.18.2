@@ -29,30 +29,48 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../procedures.java.ftl">
+
 package ${package}.client.renderer.item;
 
-<#compress>
-@OnlyIn(Dist.CLIENT)
-public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
+<@javacompress>
+@OnlyIn(Dist.CLIENT) public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
+
 	private final EntityModelSet entityModelSet;
 	private final ItemStack transformSource;
+
+	private final Map<Integer, EntityModel<?>> models = new HashMap<>();
+	private final long start;
 
 	public ${name}ItemRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher, EntityModelSet entityModelSet) {
 		super(blockEntityRenderDispatcher, entityModelSet);
 		this.entityModelSet = entityModelSet;
 		this.transformSource = new ItemStack(${JavaModName}Items.${REGISTRYNAME}.get());
+
+		this.start = System.currentTimeMillis();
+
+		<#if data.hasCustomJAVAModel()>
+			<#if !data.animations?has_content>
+			this.models.put(0, new ${data.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION)));
+			</#if>
+		</#if>
+		<#list data.getModels() as model>
+			<#if model.hasCustomJAVAModel()>
+			this.models.put(${model?index + 1}, new ${model.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${model.customModelName.split(":")[0]}.LAYER_LOCATION)));
+			</#if>
+		</#list>
 	}
 
 	@Override public void renderByItem(ItemStack itemstack, ItemTransforms.TransformType displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-		Model model = <#if data.hasCustomJAVAModel()>new ${data.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION))<#else>null</#if>;
+		EntityModel<?> model = this.models.get(0);
 		ResourceLocation texture = new ResourceLocation("${data.texture.format("%s:textures/item/%s")}.png");
 		<#list data.getModels() as model>
 			<#if model.hasCustomJAVAModel()>
 			if (<#list model.stateMap.entrySet() as entry>
-					ItemProperties.getProperty(itemstack, new ResourceLocation("${generator.map(entry.getKey().getPrefixedName(registryname + "_"), "itemproperties")}"))
+					ItemProperties.getProperty(itemstack.getItem(), new ResourceLocation("${generator.map(entry.getKey().getPrefixedName(registryname + "_"), "itemproperties")}"))
 						.call(itemstack, Minecraft.getInstance().level, Minecraft.getInstance().player, 0) >= ${entry.getValue()?is_boolean?then(entry.getValue()?then("1", "0"), entry.getValue())}
 				<#sep> && </#list>) {
-				model = new ${model.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${model.customModelName.split(":")[0]}.LAYER_LOCATION));
+				model = models.get(${model?index + 1});
 				texture = new ResourceLocation("${model.texture.format("%s:textures/item/%s")}.png");
 			}
 			</#if>
@@ -62,8 +80,10 @@ public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
 		poseStack.pushPose();
 		Minecraft.getInstance().getItemRenderer().getModel(this.transformSource, null, null, 0).handlePerspective(displayContext, poseStack);
 		poseStack.translate(0.5, isInventory(displayContext) ? 1.5 : 2, 0.5);
-		poseStack.scale(1, -1, displayContext == ItemTransforms.TransformType.GUI ? -1 : 1);
+		poseStack.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
+		poseStack.scale(1, 1, displayContext == ItemTransforms.TransformType.GUI ? -1 : 1);
 		VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, model.renderType(texture), false, itemstack.hasFoil());
+		model.setupAnim(null, 0, 0, (System.currentTimeMillis() - start) / 50.0f, 0, 0);
 		model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
 		poseStack.popPose();
 	}
@@ -72,5 +92,5 @@ public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
 		return type == ItemTransforms.TransformType.GUI || type == ItemTransforms.TransformType.FIXED;
 	}
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->

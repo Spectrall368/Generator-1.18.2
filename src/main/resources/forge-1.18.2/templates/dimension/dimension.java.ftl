@@ -33,7 +33,7 @@
 <#include "../procedures.java.ftl">
 package ${package}.world.dimension;
 
-<#compress>
+<@javacompress>
 @Mod.EventBusSubscriber public class ${name}Dimension {
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public static class ${name}SpecialEffectsHandler {
 		@SubscribeEvent public static void registerFillerBlocks(FMLCommonSetupEvent event) {
@@ -108,4 +108,4 @@ package ${package}.world.dimension;
 	}
     </#if>
 }
-</#compress>
+</@javacompress>

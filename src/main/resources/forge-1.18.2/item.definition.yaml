@@ -74,5 +74,7 @@ localizationkeys:
     condition: hasBannerPatterns()
   - fromlist: data.getFixedSpecialInformation()
     key: item.@modid.@registryname.description_@item_index
+  - tag: ITEMS:minecraft:piglin_loved
+    condition: isPiglinCurrency
 
-field_exclusions: [musicDiscLengthInTicks]
+field_exclusions: [musicDiscLengthInTicks, animations]

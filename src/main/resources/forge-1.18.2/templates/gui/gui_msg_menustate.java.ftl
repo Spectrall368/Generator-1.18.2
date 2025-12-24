@@ -52,6 +52,8 @@ package ${package}.network;
 			elementState = buffer.readUtf();
 		} else if (elementType == 1) {
 			elementState = buffer.readBoolean();
+		} else if (elementType == 2) {
+         	elementState = buffer.readDouble();
 		}
         this.elementState = elementState;
 	}
@@ -63,6 +65,8 @@ package ${package}.network;
 			buffer.writeUtf((String) message.elementState);
 		} else if (message.elementType == 1) {
 			buffer.writeBoolean((boolean) message.elementState);
+		} else if (message.elementType == 2 && message.elementState instanceof Number n) {
+			buffer.writeDouble(n.doubleValue());
 		}
 	}
 

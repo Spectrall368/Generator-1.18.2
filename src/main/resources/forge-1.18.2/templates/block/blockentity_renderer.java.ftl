@@ -43,7 +43,7 @@ package ${package}.client.renderer.block;
 	}
 
 	@Override public void render(${name}BlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource renderer, int light, int overlayLight) {
-		<#compress>
+		<@javacompress>
 		poseStack.pushPose();
 		poseStack.scale(-1, -1, 1);
 		poseStack.translate(-0.5, -0.5, 0.5);
@@ -53,28 +53,28 @@ package ${package}.client.renderer.block;
 				Direction facing = state.getValue(${name}Block.FACING);
         	    switch (facing) {
 					case NORTH -> {}
-					case EAST -> poseStack.mulPose(Axis.YP.rotationDegrees(90));
-					case WEST -> poseStack.mulPose(Axis.YP.rotationDegrees(-90));
-					case SOUTH -> poseStack.mulPose(Axis.YP.rotationDegrees(180));
+					case EAST -> poseStack.mulPose(Vector3f.YP.rotationDegrees(90));
+					case WEST -> poseStack.mulPose(Vector3f.YP.rotationDegrees(-90));
+					case SOUTH -> poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
         	    	<#if data.rotationMode == 2 || data.rotationMode == 4>
-        	    		case UP -> poseStack.mulPose(Axis.XN.rotationDegrees(90));
-        	    		case DOWN -> poseStack.mulPose(Axis.XN.rotationDegrees(-90));
+        	    		case UP -> poseStack.mulPose(Vector3f.XN.rotationDegrees(90));
+        	    		case DOWN -> poseStack.mulPose(Vector3f.XN.rotationDegrees(-90));
 					</#if>
 				}
 				<#if data.enablePitch>
 				if (facing != Direction.UP && facing != Direction.DOWN) {
 					switch (state.getValue(${name}Block.FACE)) {
 						case FLOOR -> {}
-						case WALL -> poseStack.mulPose(Axis.XP.rotationDegrees(90));
-						case CEILING -> poseStack.mulPose(Axis.XP.rotationDegrees(180));
+						case WALL -> poseStack.mulPose(Vector3f.XP.rotationDegrees(90));
+						case CEILING -> poseStack.mulPose(Vector3f.XP.rotationDegrees(180));
 					};
 				}
 				</#if>
 			<#else>
         	    switch (state.getValue(${name}Block.AXIS)) {
-					case X -> poseStack.mulPose(Axis.ZN.rotationDegrees(90));
+					case X -> poseStack.mulPose(Vector3f.ZN.rotationDegrees(90));
 					case Y -> {}
-					case Z -> poseStack.mulPose(Axis.XP.rotationDegrees(90));
+					case Z -> poseStack.mulPose(Vector3f.XP.rotationDegrees(90));
 				}
 			</#if>
 		</#if>
@@ -83,7 +83,7 @@ package ${package}.client.renderer.block;
 		model.setupBlockEntityAnim(blockEntity, blockEntity.getLevel().getGameTime() + partialTick);
 		model.renderToBuffer(poseStack, builder, light, overlayLight, 1, 1, 1, 1);
 		poseStack.popPose();
-		</#compress>
+		</@javacompress>
 	}
 
 	@SubscribeEvent public static void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
@@ -100,10 +100,6 @@ package ${package}.client.renderer.block;
 
 		public void setupBlockEntityAnim(${name}BlockEntity blockEntity, float ageInTicks) {
 			super.setupAnim(null, 0, 0, ageInTicks, 0, 0);
-		}
-
-		public ModelPart getRoot() {
-			return root;
 		}
 	}
 }

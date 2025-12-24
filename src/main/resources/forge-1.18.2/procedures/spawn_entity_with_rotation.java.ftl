@@ -3,8 +3,10 @@
 if (world instanceof ServerLevel _level) {
 	Entity entityToSpawn = new ${generator.map(field$entity, "entities", 0)}(${entity}, _level);
 	entityToSpawn.moveTo(${input$x}, ${input$y}, ${input$z}, ${opt.toFloat(input$yaw)}, ${opt.toFloat(input$pitch)});
-	entityToSpawn.setYBodyRot(${opt.toFloat(input$yaw)});
-	entityToSpawn.setYHeadRot(${opt.toFloat(input$yaw)});
+	<#if input$yaw != "/*@int*/0">
+		entityToSpawn.setYBodyRot(${opt.toFloat(input$yaw)});
+		entityToSpawn.setYHeadRot(${opt.toFloat(input$yaw)});
+	</#if>
 
 	if (entityToSpawn instanceof Mob _mobToSpawn)
 		_mobToSpawn.finalizeSpawn(_level, _level.getCurrentDifficultyAt(entityToSpawn.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);

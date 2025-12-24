@@ -34,7 +34,7 @@
 <#include "procedures.java.ftl">
 package ${package}.item.extension;
 
-<#compress>
+<@javacompress>
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}ItemExtension {
     	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
     		event.enqueueWork(() -> DispenserBlock.registerBehavior(${mappedMCItemToItem(data.item)}, new OptionalDispenseItemBehavior() {
@@ -69,4 +69,4 @@ package ${package}.item.extension;
     			}
     		}));
     	}
-}</#compress>
+}</@javacompress>

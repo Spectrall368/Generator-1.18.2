@@ -6,6 +6,7 @@ if(${input$entity} instanceof ServerPlayer _ent) {
 		@Override public Component getDisplayName() {
 			return new TextComponent("${field$guiname}");
 		}
+
 		@Override public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
 			return new ${(field$guiname)}Menu(id, inventory, new FriendlyByteBuf(Unpooled.buffer()).writeBlockPos(_bpos));
 		}

@@ -1,6 +1,6 @@
 name: Forge for @minecraft (@buildfileversion)
 status: deprecated
-buildfileversion: 40.3.11
+buildfileversion: 40.3.12
 subversion: 1.6 # force setup re-run to update build script for MCREATOR_JVM_OPTIONS
 
 import:
