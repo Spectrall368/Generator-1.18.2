@@ -100,8 +100,8 @@ import ${package}.${JavaModName};
             }
         }
 
-        @SubscribeEvent public static void onWorldTick(TickEvent.LevelTickEvent event) {
-            if (event.phase == TickEvent.Phase.END && event.level instanceof ServerLevel level) {
+        @SubscribeEvent public static void onWorldTick(TickEvent.WorldTickEvent event) {
+            if (event.phase == TickEvent.Phase.END && event.world instanceof ServerLevel level) {
                 WorldVariables worldVariables = WorldVariables.get(level);
                 if (worldVariables._syncDirty) {
                     ${JavaModName}.PACKET_HANDLER.send(PacketDistributor.DIMENSION.with(level::dimension), new SavedDataSyncMessage(1, worldVariables));
