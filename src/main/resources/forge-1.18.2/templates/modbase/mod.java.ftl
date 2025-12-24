@@ -13,26 +13,29 @@ import org.apache.logging.log4j.Logger;
 	public ${JavaModName}() {
 		// Start of user code block mod constructor
 		// End of user code block mod constructor
-	    MinecraftForge.EVENT_BUS.register(this);
-		<#if w.hasItemsInTabs()>${JavaModName}Tabs.load();</#if>
+		MinecraftForge.EVENT_BUS.register(this);
+
+		<#if types["tabs"]??>${JavaModName}Tabs.load();</#if>
 
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+		<@javacompress>
 		<#if w.hasSounds()>${JavaModName}Sounds.REGISTRY.register(bus);</#if>
-		<#if w.hasElementsOfBaseType("block")>${JavaModName}Blocks.REGISTRY.register(bus);</#if>
-		<#if w.hasElementsOfBaseType("item")>${JavaModName}Items.REGISTRY.register(bus);</#if>
-		<#if w.hasElementsOfBaseType("entity")>${JavaModName}Entities.REGISTRY.register(bus);</#if>
-		<#if w.hasElementsOfBaseType("blockentity")>${JavaModName}BlockEntities.REGISTRY.register(bus);</#if>
-		<#if w.getGElementsOfType("block")?filter(e -> e.generateFeature )?size != 0 || w.getGElementsOfType("plant")?filter(e -> e.generateFeature )?size != 0 || w.hasElementsOfType("feature")>${JavaModName}Features.REGISTRY.register(bus);</#if>
-		<#if w.getElementsOfType("feature")?filter(e -> e.getMetadata("has_nbt_structure")??)?size != 0>StructureModFeature.REGISTRY.register(bus);</#if>
-		<#if w.hasElementsOfType("enchantment")>${JavaModName}Enchantments.REGISTRY.register(bus);</#if>
-		<#if w.hasElementsOfType("potioneffect")>${JavaModName}MobEffects.REGISTRY.register(bus);</#if>
-		<#if w.hasElementsOfType("potion")>${JavaModName}Potions.REGISTRY.register(bus);</#if>
-		<#if w.hasElementsOfType("gui")>${JavaModName}Menus.REGISTRY.register(bus);</#if>
-		<#if w.hasElementsOfType("particle")>${JavaModName}ParticleTypes.REGISTRY.register(bus);</#if>
-		<#if w.hasElementsOfType("structure")>${JavaModName}Structures.REGISTRY.register(bus);</#if>
-		<#if w.hasElementsOfType("villagerprofession")>${JavaModName}VillagerProfessions.PROFESSIONS.register(bus);</#if>
-		<#if w.hasElementsOfType("fluid")>${JavaModName}Fluids.REGISTRY.register(bus);</#if>
-		<#if w.hasElementsOfType("attribute")>${JavaModName}Attributes.REGISTRY.register(bus);</#if>
+		<#if types["base:blocks"]??>${JavaModName}Blocks.REGISTRY.register(bus);</#if>
+		<#if types["base:blockentities"]??>${JavaModName}BlockEntities.REGISTRY.register(bus);</#if>
+		<#if types["base:items"]??>${JavaModName}Items.REGISTRY.register(bus);</#if>
+		<#if types["base:entities"]??>${JavaModName}Entities.REGISTRY.register(bus);</#if>
+		<#if w.getGElementsOfType("block")?filter(e -> e.generateFeature )?size != 0 || w.getGElementsOfType("plant")?filter(e -> e.generateFeature )?size != 0 || types["base:features"]??>${JavaModName}Features.REGISTRY.register(bus);</#if>
+		<#if w.getElementsOfType("feature")?filter(e -> e.getMetadata("has_nbt_structure")??)?size != 0>StructureFeature.REGISTRY.register(bus);</#if>
+		<#if types["structures"]??>${JavaModName}Structures.REGISTRY.register(bus);</#if>
+		<#if types["potions"]??>${JavaModName}Potions.REGISTRY.register(bus);</#if>
+		<#if types["potioneffects"]??>${JavaModName}MobEffects.REGISTRY.register(bus);</#if>
+		<#if types["enchantments"]??>${JavaModName}Enchantments.REGISTRY.register(bus);</#if>
+		<#if types["guis"]??>${JavaModName}Menus.REGISTRY.register(bus);</#if>
+		<#if types["particles"]??>${JavaModName}ParticleTypes.REGISTRY.register(bus);</#if>
+		<#if types["villagerprofessions"]??>${JavaModName}VillagerProfessions.PROFESSIONS.register(bus);</#if>
+		<#if types["fluids"]??>${JavaModName}Fluids.REGISTRY.register(bus);</#if>
+		<#if types["attributes"]??>${JavaModName}Attributes.REGISTRY.register(bus);</#if>
+		</@javacompress>
 
 		// Start of user code block mod init
 		// End of user code block mod init
