@@ -2,8 +2,7 @@
 <#assign defaultSlabDrops = data.getModElement().getTypeString() == "block" && data.blockBase?has_content && data.blockBase == "Slab" && !(data.customDrop?? && !data.customDrop.isEmpty())/>
 <#assign isFlowerPot = data.getModElement().getTypeString() == "block" && data.blockBase! == "FlowerPot">
 {
-  "type": "minecraft:block",
-  "random_sequence": "${modid}:blocks/${registryname}"
+  "type": "minecraft:block"
   <#if data.hasDrops() || isFlowerPot>,
   "pools": [
     <#if isFlowerPot>
