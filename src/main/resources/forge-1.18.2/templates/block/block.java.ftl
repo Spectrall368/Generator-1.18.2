@@ -35,12 +35,20 @@
 <#include "../triggers.java.ftl">
 <#assign filteredCustomProperties = data.customProperties?filter(e ->
  	e.property().getName().startsWith("CUSTOM:") || generator.map(e.property().getName(), "blockstateproperties") != "")>
-<#assign blockSetType = "null">
+<#assign blockSetType = "BUILDABLE_GLASS">
 <#if data.blockBase?has_content>
-    <#if data.blockBase == "PressurePlate" || data.blockBase == "TrapDoor" || data.blockBase == "Door" || data.blockBase == "Button">
+    <#if data.blockBase == "PressurePlate" || data.blockBase == "TrapDoor" || data.blockBase == "Door" || data.blockBase == "Fence" || data.blockBase == "Button">
         <#assign blockSetType = data.blockSetType>
+    <#elseif data.blockBase == "Stairs" || data.blockBase == "Slab" || data.blockBase == "Wall">
+        <#assign blockSetType = "STONE">
     <#elseif data.blockBase == "Leaves">
         <#assign blockSetType = "LEAVES">
+    <#elseif data.blockBase == "Pane">
+        <#assign blockSetType = "GLASS">
+    <#elseif data.isSign() || data.blockBase == "FenceGate">
+        <#assign blockSetType = "WOOD">
+    <#elseif data.blockBase == "FlowerPot" || data.blockBase == "EndRod">
+        <#assign blockSetType = "DECORATION">
     </#if>
 </#if>
 <#if data.blockBase?has_content && data.blockBase == "Wall">
@@ -114,12 +122,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	</#if>
 
 	<#macro blockProperties>
-	    BlockBehaviour.Properties.of(Material.
-	    <#if blockSetType == "null">
-	    BUILDABLE_GLASS
-	    <#else>
-	    ${blockSetType?replace("IRON", "METAL")?replace("OAK", "NETHER_WOOD")}
-	    </#if>
+	    BlockBehaviour.Properties.of(Material.${blockSetType?replace("IRON", "METAL")?replace("OAK", "NETHER_WOOD")}
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 		    , MaterialColor.${generator.map(data.colorOnMap, "mapcolors")}
 		</#if>)
