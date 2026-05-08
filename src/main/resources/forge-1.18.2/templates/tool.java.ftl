@@ -120,7 +120,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 
 	<#if data.toolType=="Shears">
         <#if data.enchantability != 0>
-        @Override public int getEnchantmentValue(ItemStack itemstack) {
+        @Override public int getItemEnchantability(ItemStack itemstack) {
             return ${data.enchantability};
         }
         </#if>
@@ -209,7 +209,7 @@ public class ${name}Item extends Item {
 	<@onRightClickedInAir data.onRightClickedInAir/>
 
 	<#if data.enchantability != 0>
-	@Override public int getEnchantmentValue(ItemStack itemstack) {
+	@Override public int getItemEnchantability(ItemStack itemstack) {
 		return ${data.enchantability};
 	}
 	</#if>
@@ -250,7 +250,7 @@ public class ${name}Item extends FishingRodItem {
 	</#if>
 
 	<#if data.enchantability != 1>
-	@Override public int getEnchantmentValue(ItemStack itemstack) {
+	@Override public int getItemEnchantability(ItemStack itemstack) {
 		return ${data.enchantability};
 	}
 	</#if>

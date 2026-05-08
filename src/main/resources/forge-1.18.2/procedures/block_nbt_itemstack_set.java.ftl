@@ -7,7 +7,7 @@ if (!world.isClientSide()) {
 	BlockState _bs = world.getBlockState(_bp);
 	if(_blockEntity != null) {
 </@head>
-		_blockEntity.getPersistentData().put(${input$tagName}, !${mappedMCItemToItemStackCode(input$tagValue, 1)}.isEmpty() ? ${mappedMCItemToItemStackCode(input$tagValue, 1)}.save(new CompoundTag()) : new CompoundTag());
+		_blockEntity.getTileData().put(${input$tagName}, !${mappedMCItemToItemStackCode(input$tagValue, 1)}.isEmpty() ? ${mappedMCItemToItemStackCode(input$tagValue, 1)}.save(new CompoundTag()) : new CompoundTag());
 <@tail>
 	}
 	if(world instanceof Level _level)

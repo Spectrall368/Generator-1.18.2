@@ -40,9 +40,9 @@ public class ${JavaModName}BoatRenderer extends BoatRenderer {
 	private final Map<${JavaModName}Boat.Type, Pair<ResourceLocation, BoatModel>> boatResources;
 
 	public ${JavaModName}BoatRenderer(EntityRendererProvider.Context context) {
-		super(context, hasChest);
+		super(context);
 		this.boatResources = Stream.of(${JavaModName}Boat.Type.values()).collect(ImmutableMap.toImmutableMap(type -> type,
-		    type -> Pair.of(new ResourceLocation("${modid}", getTextureLocation(type, hasChest)), createBoatModel(context, type))));
+		    type -> Pair.of(new ResourceLocation("${modid}", getTextureLocation(type)), createBoatModel(context, type))));
 	}
 
 	private static String getTextureLocation(${JavaModName}Boat.Type type) {

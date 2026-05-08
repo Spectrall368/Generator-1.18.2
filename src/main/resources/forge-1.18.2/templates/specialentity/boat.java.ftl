@@ -97,7 +97,6 @@ public class ${JavaModName}Boat extends Boat {
         private Type(Block block, String name) {
             this.name = name;
             this.planks = block;
-            this.hasChest = hasChest;
         }
 
         public String getName() {
