@@ -38,6 +38,7 @@ import java.util.function.Consumer;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraft.client.model.Model;
 
+<@javacompress>
 public abstract class ${name}Item extends ArmorItem {
 
 	public ${name}Item(EquipmentSlot slot, Item.Properties properties) {
@@ -84,7 +85,7 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Helmet extends ${name}Item {
 
 		public Helmet() {
-			super(EquipmentSlot.HEAD, new Item.Properties().tab(<@CreativeTabs data.creativeTabs/>)<#if data.helmetImmuneToFire>.fireResistant()</#if>);
+			super(EquipmentSlot.HEAD, new Item.Properties().tab(<@CreativeTabs data.creativeTabs/>)<#if data.helmetImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
 		}
 
 		<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
@@ -101,7 +102,23 @@ public abstract class ${name}Item extends ArmorItem {
                             "left_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
                             "right_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
                             "left_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap())
-                        )));
+                        )))
+                        <#if data.helmetTranslucency>
+                        {
+                            @Override
+                            public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float r, float g, float b, float alpha) {
+                                VertexConsumer translucentTexture = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.entityTranslucent(
+                                    new ResourceLocation(
+                                    <#if data.helmetModelTexture?has_content && data.helmetModelTexture != "From armor">
+                                        ${JavaModName}Items.${REGISTRYNAME}_HELMET.get().getArmorTexture(null, null, null, null)
+                                    <#else>
+                                        "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png"
+                                    </#if>)
+                                ));
+                                super.renderToBuffer(poseStack, translucentTexture, packedLight, packedOverlay, r, g, b, alpha);
+                            }
+                        }
+                        </#if>;
                     }
 					armorModel.crouching = living.isShiftKeyDown();
 					armorModel.riding = defaultModel.riding;
@@ -112,15 +129,11 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<@addSpecialInformation data.helmetSpecialInformation, "item." + modid + "." + registryname + "_helmet"/>
-
 		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-			<#if data.helmetModelTexture?has_content && data.helmetModelTexture != "From armor">
-			return "${modid}:textures/entities/${data.helmetModelTexture}";
-			<#else>
-			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png";
-			</#if>
+			return "${modid}:textures/<#if data.helmetModelTexture?has_content && data.helmetModelTexture != "From armor">entities/${data.helmetModelTexture}<#else>models/armor/${data.armorTextureFile}_layer_1.png</#if>";
 		}
+
+		<@addSpecialInformation data.helmetSpecialInformation, "item." + modid + "." + registryname + "_helmet"/>
 
 		<@hasGlow data.helmetGlowCondition/>
 
@@ -134,7 +147,7 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Chestplate extends ${name}Item {
 
 		public Chestplate() {
-			super(EquipmentSlot.CHEST, new Item.Properties().tab(<@CreativeTabs data.creativeTabs/>)<#if data.bodyImmuneToFire>.fireResistant()</#if>);
+			super(EquipmentSlot.CHEST, new Item.Properties().tab(<@CreativeTabs data.creativeTabs/>)<#if data.bodyImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
 		}
 
 		<#if data.bodyModelName != "Default" && data.getBodyModel()??>
@@ -152,7 +165,23 @@ public abstract class ${name}Item extends ArmorItem {
                             "hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
                             "right_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
                             "left_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap())
-                        )));
+                        )))
+                        <#if data.bodyTranslucency>
+                        {
+                            @Override
+                            public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float r, float g, float b, float alpha) {
+                                VertexConsumer translucentTexture = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.entityTranslucent(
+                                    new ResourceLocation(
+                                    <#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">
+                                        ${JavaModName}Items.${REGISTRYNAME}_CHESTPLATE.get().getArmorTexture(null, null, null, null)
+                                    <#else>
+                                        "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png"
+                                    </#if>)
+                                ));
+                                super.renderToBuffer(poseStack, translucentTexture, packedLight, packedOverlay, r, g, b, alpha);
+                            }
+                        }
+                        </#if>;
                     }
 					armorModel.crouching = living.isShiftKeyDown();
 					armorModel.riding = defaultModel.riding;
@@ -163,15 +192,11 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<@addSpecialInformation data.bodySpecialInformation, "item." + modid + "." + registryname + "_chestplate"/>
-
 		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-			<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">
-			return "${modid}:textures/entities/${data.bodyModelTexture}";
-			<#else>
-			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png";
-			</#if>
+			return "${modid}:textures/<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">entities/${data.bodyModelTexture}<#else>models/armor/${data.armorTextureFile}_layer_1.png</#if>";
 		}
+
+		<@addSpecialInformation data.bodySpecialInformation, "item." + modid + "." + registryname + "_chestplate"/>
 
 		<@hasGlow data.bodyGlowCondition/>
 
@@ -185,7 +210,7 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Leggings extends ${name}Item {
 
 		public Leggings() {
-			super(EquipmentSlot.LEGS, new Item.Properties().tab(<@CreativeTabs data.creativeTabs/>)<#if data.leggingsImmuneToFire>.fireResistant()</#if>);
+			super(EquipmentSlot.LEGS, new Item.Properties().tab(<@CreativeTabs data.creativeTabs/>)<#if data.leggingsImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
 		}
 
 		<#if data.leggingsModelName != "Default" && data.getLeggingsModel()??>
@@ -203,7 +228,23 @@ public abstract class ${name}Item extends ArmorItem {
                             "body", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
                             "right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
                             "left_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap())
-                        )));
+                        )))
+                        <#if data.leggingsTranslucency>
+                        {
+                            @Override
+                            public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float r, float g, float b, float alpha) {
+                                VertexConsumer translucentTexture = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.entityTranslucent(
+                                    new ResourceLocation(
+                                    <#if data.leggingsModelTexture?has_content && data.leggingsModelTexture != "From armor">
+                                        ${JavaModName}Items.${REGISTRYNAME}_LEGGINGS.get().getArmorTexture(null, null, null, null)
+                                    <#else>
+                                        "${modid}:textures/models/armor/${data.armorTextureFile}_layer_2.png"
+                                    </#if>)
+                                ));
+                                super.renderToBuffer(poseStack, translucentTexture, packedLight, packedOverlay, r, g, b, alpha);
+                            }
+                        }
+                        </#if>;
                     }
 					armorModel.crouching = living.isShiftKeyDown();
 					armorModel.riding = defaultModel.riding;
@@ -214,15 +255,11 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<@addSpecialInformation data.leggingsSpecialInformation, "item." + modid + "." + registryname + "_leggings"/>
-
 		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-			<#if data.leggingsModelTexture?has_content && data.leggingsModelTexture != "From armor">
-			return "${modid}:textures/entities/${data.leggingsModelTexture}";
-			<#else>
-			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_2.png";
-			</#if>
+			return "${modid}:textures/<#if data.leggingsModelTexture?has_content && data.leggingsModelTexture != "From armor">entities/${data.leggingsModelTexture}<#else>models/armor/${data.armorTextureFile}_layer_2.png</#if>";
 		}
+
+		<@addSpecialInformation data.leggingsSpecialInformation, "item." + modid + "." + registryname + "_leggings"/>
 
 		<@hasGlow data.leggingsGlowCondition/>
 
@@ -236,7 +273,7 @@ public abstract class ${name}Item extends ArmorItem {
 	public static class Boots extends ${name}Item {
 
 		public Boots() {
-			super(EquipmentSlot.FEET, new Item.Properties().tab(<@CreativeTabs data.creativeTabs/>)<#if data.bootsImmuneToFire>.fireResistant()</#if>);
+			super(EquipmentSlot.FEET, new Item.Properties().tab(<@CreativeTabs data.creativeTabs/>)<#if data.bootsImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
 		}
 
 		<#if data.bootsModelName != "Default" && data.getBootsModel()??>
@@ -254,7 +291,23 @@ public abstract class ${name}Item extends ArmorItem {
                             "body", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
                             "right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
                             "left_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap())
-                        )));
+                        )))
+                        <#if data.bootsTranslucency>
+                        {
+                            @Override
+                            public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float r, float g, float b, float alpha) {
+                                VertexConsumer translucentTexture = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.entityTranslucent(
+                                    new ResourceLocation(
+                                    <#if data.bootsModelTexture?has_content && data.bootsModelTexture != "From armor">
+                                        ${JavaModName}Items.${REGISTRYNAME}_BOOTS.get().getArmorTexture(null, null, null, null)
+                                    <#else>
+                                        "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png"
+                                    </#if>)
+                                ));
+                                super.renderToBuffer(poseStack, translucentTexture, packedLight, packedOverlay, r, g, b, alpha);
+                            }
+                        }
+                        </#if>;
                     }
 					armorModel.crouching = living.isShiftKeyDown();
 					armorModel.riding = defaultModel.riding;
@@ -265,15 +318,11 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<@addSpecialInformation data.bootsSpecialInformation, "item." + modid + "." + registryname + "_boots"/>
-
 		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-			<#if data.bootsModelTexture?has_content && data.bootsModelTexture != "From armor">
-			return "${modid}:textures/entities/${data.bootsModelTexture}";
-			<#else>
-			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png";
-			</#if>
+			return "${modid}:textures/<#if data.bootsModelTexture?has_content && data.bootsModelTexture != "From armor">entities/${data.bootsModelTexture}<#else>models/armor/${data.armorTextureFile}_layer_1.png</#if>";
 		}
+
+		<@addSpecialInformation data.bootsSpecialInformation, "item." + modid + "." + registryname + "_boots"/>
 
 		<@hasGlow data.bootsGlowCondition/>
 
@@ -283,4 +332,5 @@ public abstract class ${name}Item extends ArmorItem {
 	}
 	</#if>
 }
+</@javacompress>
 <#-- @formatter:on -->

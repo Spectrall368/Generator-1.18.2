@@ -53,7 +53,7 @@ package ${package}.client.particle;
 
 	private final SpriteSet spriteSet;
 
-	<#if data.angularVelocity != 0 || data.angularAcceleration != 0>
+	<#if data.hasAngularVelocityOrAcceleration()>
 	private float angularVelocity;
 	private float angularAcceleration;
 	</#if>
@@ -64,8 +64,8 @@ package ${package}.client.particle;
 
 		this.setSize(${data.width}f, ${data.height}f);
 
-		<#if data.scale.getFixedValue() != 1 && !hasProcedure(data.scale)>
-		this.quadSize *= ${data.scale.getFixedValue()}f;
+		<#if (data.scale.getFixedValue() != 1 || data.fixedScale)  && !hasProcedure(data.scale)>
+		this.quadSize <#if data.fixedScale>= 0.15f *<#else>*=</#if> ${data.scale.getFixedValue()}f;
 		</#if>
 
 		<#if (data.maxAgeDiff > 0)>
@@ -81,7 +81,7 @@ package ${package}.client.particle;
 		this.yd = vy * ${data.speedFactor};
 		this.zd = vz * ${data.speedFactor};
 
-		<#if data.angularVelocity != 0 || data.angularAcceleration != 0>
+		<#if data.hasAngularVelocityOrAcceleration()>
 		this.angularVelocity = ${data.angularVelocity}f;
 		this.angularAcceleration = ${data.angularAcceleration}f;
 		</#if>
@@ -106,8 +106,60 @@ package ${package}.client.particle;
 	<#if hasProcedure(data.scale)>
 	@Override public float getQuadSize(float scale) {
 		Level world = this.level;
-		return super.getQuadSize(scale) * (float) <@procedureOBJToConditionCode data.scale/>;
+		return <#if data.fixedScale>0.15f<#else>super.getQuadSize(scale)</#if> * (float) <@procedureOBJToConditionCode data.scale/>;
 	}
+	</#if>
+
+	<#if hasProcedure(data.rotationProvider)>
+	@Override public void render(VertexConsumer buffer, Camera camera, float partialTicks) {
+		Vec3 vec = <@procedureCode data.rotationProvider, {
+			"world": "this.level",
+			"x": "this.x",
+			"y": "this.y",
+			"z": "this.z",
+			"speedX": "this.xd",
+			"speedY": "this.yd",
+			"speedZ": "this.zd",
+			"angularVelocity": "this.angularVelocity",
+			"angularAcceleration": "this.angularAcceleration",
+			"age": "this.age + partialTicks"
+		}/>
+		Quaternion tilt = Quaternion.fromXYZ((float) vec.x(), (float) vec.y(), (float) vec.z());
+		this.renderRotatedQuad(buffer, camera, tilt, partialTicks);
+		Quaternion flippedTilt = tilt.copy();
+		flippedTilt.mul(Vector3f.YP.rotation((float) Math.PI));
+		<#-- render a flipped face because by default only a single side renders this makes particle visible from all angles -->
+		this.renderRotatedQuad(buffer, camera, flippedTilt, partialTicks);
+	}
+
+    private void renderRotatedQuad(VertexConsumer buffer, Camera camera, Quaternion rotation, float partialTicks) {
+        Vec3 camPos = camera.getPosition();
+        float cx = (float)(Mth.lerp((double) partialTicks, this.xo, this.x) - camPos.x());
+        float cy = (float)(Mth.lerp((double) partialTicks, this.yo, this.y) - camPos.y());
+        float cz = (float)(Mth.lerp((double) partialTicks, this.zo, this.z) - camPos.z());
+
+        float size = this.getQuadSize(partialTicks);
+        float u0 = this.getU0();
+        float u1 = this.getU1();
+        float v0 = this.getV0();
+        float v1 = this.getV1();
+        int light = this.getLightColor(partialTicks);
+
+        float[][] corners = { { 1,-1}, { 1, 1}, {-1, 1}, {-1,-1} };
+        float[][] uvs = { {u1,v1}, {u1,v0}, {u0,v0}, {u0,v1} };
+
+        for (int i = 0; i < 4; i++) {
+            Vector3f v = new Vector3f(corners[i][0], corners[i][1], 0.0F);
+            v.transform(rotation);
+            v.mul(size);
+            v.add(cx, cy, cz);
+            buffer.vertex(v.x(), v.y(), v.z())
+                .uv(uvs[i][0], uvs[i][1])
+                .color(this.rCol, this.gCol, this.bCol, this.alpha)
+                .uv2(light)
+                .endVertex();
+        }
+    }
 	</#if>
 
 	@Override public void tick() {
@@ -132,7 +184,6 @@ package ${package}.client.particle;
 			this.remove();
 		</#if>
 	}
-
 }
 </@javacompress>
 <#-- @formatter:on -->

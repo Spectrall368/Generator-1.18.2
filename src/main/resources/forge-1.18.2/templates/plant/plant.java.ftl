@@ -48,13 +48,16 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 <#if data.isWaterloggable()>
  	<#assign interfaces += ["SimpleWaterloggedBlock"]>
  </#if>
-public class ${name}Block extends ${getPlantClass(data.plantType)}Block
-	<#if interfaces?size gt 0>
-		implements ${interfaces?join(",")}
-	</#if>{
+public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if interfaces?size gt 0>implements ${interfaces?join(",")}</#if> {
+
 	<#if data.isWaterloggable()>
- 		public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
- 	</#if>
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+	</#if>
+
+	<#if data.customBoundingBox && data.boundingBoxes??>
+	private static final VoxelShape SHAPE = <@boundingBoxWithRotation data/>;
+	</#if>
+
 	public ${name}Block() {
 		super(<#if data.plantType == "normal">
 		() -> ${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},
@@ -99,18 +102,20 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		.lightLevel(s -> ${data.luminance})
 		</#if>
 		<#if data.isSolid>
-		.noOcclusion()
-			<#if (data.customBoundingBox && data.boundingBoxes??) || (data.offsetType != "NONE")>
-			.dynamicShape()
-			</#if>
+			.noOcclusion()
+			<#if data.offsetType != "NONE">.dynamicShape()</#if>
 		<#else>
-		.noCollission()
+			.noCollission()
+		</#if>
+		<#if data.offsetType != "NONE">
+		.offsetType(BlockBehaviour.OffsetType.${data.offsetType})
 		</#if>
 		);
+
 		<#if data.isWaterloggable()>
- 		<@initStateProperties/>
- 		</#if>
- 	}
+		<@initStateProperties/>
+		</#if>
+	}
 
 	<#if data.isWaterloggable()>
  	@Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
@@ -138,12 +143,9 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 
 	<#if data.customBoundingBox && data.boundingBoxes??>
 	@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-		<#if data.isBoundingBoxEmpty()>
-			return Shapes.empty();
-		<#else>
-			<#if !data.disableOffset> Vec3 offset = state.getOffset(world, pos); </#if>
-			<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset 0/>
-		</#if>
+		<#assign offset = !data.shouldDisableOffset() && !data.isBoundingBoxEmpty()>
+		<#if offset>Vec3 offset = state.getOffset(world, pos);</#if>
+		return SHAPE<#if offset>.move(offset.x, offset.y, offset.z)</#if>;
 	}
 	</#if>
 

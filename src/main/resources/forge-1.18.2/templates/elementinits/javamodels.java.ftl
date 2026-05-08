@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2021, Pylo, opensource contributors
+ # Copyright (C) 2020-2022, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -29,21 +29,31 @@
 -->
 
 <#-- @formatter:off -->
-
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
-
 package ${package}.init;
 
+<#assign specialentities = w.getGElementsOfType("specialentity")>
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${JavaModName}Models {
+	<#list specialentities as entity>
+	public static final ModelLayerLocation ${entity.getModElement().getRegistryNameUpper()}_LAYER_LOCATION =
+			new ModelLayerLocation(new ResourceLocation("${modid}:<#if entity.entityType == "Boat">boat<#else>chest_boat</#if>/${entity.getModElement().getRegistryName()}"), "main");
+	</#list>
 
 	@SubscribeEvent public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
 		<#list javamodels as model>
 		event.registerLayerDefinition(${model.getReadableName()}.LAYER_LOCATION, ${model.getReadableName()}::createBodyLayer);
 		</#list>
+
+		<#if specialentities?size != 0>
+		    LayerDefinition boat = BoatModel.createBodyModel(false);
+		    LayerDefinition chestBoat = BoatModel.createBodyModel(true);
+
+		    <#list specialentities as entity>
+		    event.registerLayerDefinition(${entity.getModElement().getRegistryNameUpper()}_LAYER_LOCATION, () -> <#if entity.entityType != "Boat">chestBoat<#else>boat</#if>);
+		    </#list>
+		</#if>
 	}
-
 }
-
 <#-- @formatter:on -->

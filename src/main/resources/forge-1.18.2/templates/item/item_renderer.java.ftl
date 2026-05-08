@@ -42,6 +42,8 @@ package ${package}.client.renderer.item;
 	private final Map<Integer, EntityModel<?>> models = new HashMap<>();
 	private final long start;
 
+	private final ResourceLocation DEFAULT_TEXTURE = new ResourceLocation("${data.texture.format("%s:textures/item/%s")}.png");
+
 	public ${name}ItemRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher, EntityModelSet entityModelSet) {
 		super(blockEntityRenderDispatcher, entityModelSet);
 		this.entityModelSet = entityModelSet;
@@ -63,7 +65,7 @@ package ${package}.client.renderer.item;
 
 	@Override public void renderByItem(ItemStack itemstack, ItemTransforms.TransformType displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 		EntityModel<?> model = this.models.get(0);
-		ResourceLocation texture = new ResourceLocation("${data.texture.format("%s:textures/item/%s")}.png");
+		ResourceLocation texture = DEFAULT_TEXTURE;
 		<#list data.getModels() as model>
 			<#if model.hasCustomJAVAModel()>
 			if (<#list model.stateMap.entrySet() as entry>

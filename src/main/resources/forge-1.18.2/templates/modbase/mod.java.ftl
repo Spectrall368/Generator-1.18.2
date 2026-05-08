@@ -44,6 +44,7 @@ import org.apache.logging.log4j.Logger;
 	// Start of user code block mod methods
 	// End of user code block mod methods
 
+	<#-- Networking support below -->
 	private static final String PROTOCOL_VERSION = "1";
 	public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(
 			new ResourceLocation(MODID, MODID),
@@ -54,30 +55,33 @@ import org.apache.logging.log4j.Logger;
 
 	private static int messageID = 0;
 
-	public static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,
-										BiConsumer<T, Supplier<NetworkEvent.Context>> messageConsumer) {
+	public static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder, BiConsumer<T, Supplier<NetworkEvent.Context>> messageConsumer) {
 		PACKET_HANDLER.registerMessage(messageID, messageType, encoder, decoder, messageConsumer);
 		messageID++;
 	}
 
-	private static final Collection<AbstractMap.SimpleEntry<Runnable, Integer>> workQueue = new ConcurrentLinkedQueue<>();
+	<#-- Wait procedure block support below -->
+	private static final Queue<IntObjectPair<Runnable>> workToBeScheduled = new ConcurrentLinkedQueue<>();
+	private static final PriorityQueue<TickTask> workQueue = new PriorityQueue<>(Comparator.comparingInt(TickTask::getTick));
 
-	public static void queueServerWork(int tick, Runnable action) {
+	public static void queueServerWork(int delay, Runnable action) {
 		if (Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER)
-			workQueue.add(new AbstractMap.SimpleEntry<>(action, tick));
+			workToBeScheduled.add(new IntObjectImmutablePair<>(delay, action));
 	}
 
 	@SubscribeEvent public void tick(TickEvent.ServerTickEvent event) {
-		if (event.phase == TickEvent.Phase.END) {
-			List<AbstractMap.SimpleEntry<Runnable, Integer>> actions = new ArrayList<>();
-			workQueue.forEach(work -> {
-				work.setValue(work.getValue() - 1);
-				if (work.getValue() == 0)
-					actions.add(work);
-			});
-			actions.forEach(e -> e.getKey().run());
-			workQueue.removeAll(actions);
-		}
+		if(event.phase == TickEvent.Phase.END) {
+            int currentTick = event.getServer().getTickCount();
+
+            IntObjectPair<Runnable> work;
+            while ((work = workToBeScheduled.poll()) != null) {
+                workQueue.add(new TickTask(currentTick + work.leftInt(), work.right()));
+            }
+
+            while (!workQueue.isEmpty() && currentTick >= workQueue.peek().getTick()) {
+                workQueue.poll().run();
+            }
+        }
 	}
 }
 <#-- @formatter:on -->

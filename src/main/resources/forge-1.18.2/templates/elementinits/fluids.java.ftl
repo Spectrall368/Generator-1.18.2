@@ -40,9 +40,9 @@ public class ${JavaModName}Fluids {
 
 	<#list fluids as fluid>
 	public static final RegistryObject<Fluid> ${fluid.getModElement().getRegistryNameUpper()} =
-		REGISTRY.register("${fluid.getModElement().getRegistryName()}", () -> new ${fluid.getModElement().getName()}Fluid.Source());
+		REGISTRY.register("${fluid.getModElement().getRegistryName()}", ${fluid.getModElement().getName()}Fluid.Source::new);
 	public static final RegistryObject<Fluid> FLOWING_${fluid.getModElement().getRegistryNameUpper()} =
-		REGISTRY.register("flowing_${fluid.getModElement().getRegistryName()}", () -> new ${fluid.getModElement().getName()}Fluid.Flowing());
+		REGISTRY.register("flowing_${fluid.getModElement().getRegistryName()}", ${fluid.getModElement().getName()}Fluid.Flowing::new);
 	</#list>
 
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class FluidsClientSideHandler {

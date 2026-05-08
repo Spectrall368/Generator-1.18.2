@@ -297,7 +297,8 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 				"world": "world",
 				"blockstate": "this.getBlockState()",
 				"entity": "entityOnSignal",
-				"sourceentity": "entityOnSignal"
+				"sourceentity": "entityOnSignal",
+				"distance": "distance"
 			}/>
 		</#if>
 	}

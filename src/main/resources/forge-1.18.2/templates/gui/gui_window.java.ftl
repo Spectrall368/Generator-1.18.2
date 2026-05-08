@@ -64,6 +64,18 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	private ImageButton ${component.getName()};
 	</#list>
 
+	<#if data.renderBgLayer>
+	private static final ResourceLocation BACKGROUND = new ResourceLocation("${modid}:textures/screens/${registryname}.png");
+	</#if>
+
+	<#list data.getComponentsOfType("Image") as component>
+	private static final ResourceLocation IMAGE_${component?index} = new ResourceLocation("${modid}:textures/screens/${component.image}");
+	</#list>
+
+	<#list data.getComponentsOfType("Sprite") as component>
+	private static final ResourceLocation SPRITE_${component?index} = new ResourceLocation("${modid}:textures/screens/${component.sprite}");
+	</#list>
+
 	<#list sliders as component>
 	private ForgeSlider ${component.getName()};
 	</#list>
@@ -117,10 +129,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	@Override public boolean isPauseScreen() {
 		return true;
 	}
-	</#if>
-
-	<#if data.renderBgLayer>
-	private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/screens/${registryname}.png");
 	</#if>
 
 	@Override public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
@@ -179,13 +187,13 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		RenderSystem.defaultBlendFunc();
 
 		<#if data.renderBgLayer>
-			RenderSystem.setShaderTexture(0, texture);
+			RenderSystem.setShaderTexture(0, BACKGROUND);
 			this.blit(ms, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
 		</#if>
 
 		<#list data.getComponentsOfType("Image") as component>
 			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-				RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.image}"));
+				RenderSystem.setShaderTexture(0, IMAGE_${component?index});
 					this.blit(ms, this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)}, 0, 0,
 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
@@ -194,7 +202,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 
 		<#list data.getComponentsOfType("Sprite") as component>
 			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-				RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.sprite}"));
+				RenderSystem.setShaderTexture(0, SPRITE_${component?index});
 					this.blit(ms, this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
 					<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
 						<@getSpriteByIndex component "width"/>, 0
@@ -247,7 +255,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 			<#if hasProcedure(component.displayCondition)>
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 			</#if>
-			this.font.draw(ms,
+			this.font.draw<#if component.hasShadow>Shadow</#if>(ms,
 				<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}")</#if>,
 				${component.gx(data.width)}, ${component.gy(data.height)}, ${component.color.getRGB()});
 		</#list>

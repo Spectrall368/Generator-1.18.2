@@ -39,6 +39,18 @@ package ${package}.client.gui;
 
 @Mod.EventBusSubscriber(Dist.CLIENT) public class ${name}Overlay {
 
+	<#if data.baseTexture?has_content>
+		private static final ResourceLocation BACKGROUND = new ResourceLocation("${modid}:textures/screens/${data.baseTexture}");
+	</#if>
+
+	<#list data.getComponentsOfType("Image") as component>
+		private static final ResourceLocation IMAGE_${component?index} = new ResourceLocation("${modid}:textures/screens/${component.image}");
+	</#list>
+
+	<#list data.getComponentsOfType("Sprite") as component>
+		private static final ResourceLocation SPRITE_${component?index} = new ResourceLocation("${modid}:textures/screens/${component.sprite}");
+	</#list>
+
 	@SubscribeEvent(priority = EventPriority.${data.priority})
 	<#if generator.map(data.overlayTarget, "screens") == "Ingame">
 	public static void eventHandler(RenderGameOverlayEvent.Pre event) {
@@ -77,7 +89,7 @@ package ${package}.client.gui;
 
 			if (<@procedureOBJToConditionCode data.displayCondition/>) {
 				<#if data.baseTexture?has_content>
-					RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${data.baseTexture}"));
+					RenderSystem.setShaderTexture(0, BACKGROUND);
 					Minecraft.getInstance().gui.blit(event.${stackMethodName}(), 0, 0, 0, 0, w, h, w, h);
 				</#if>
 
@@ -85,8 +97,8 @@ package ${package}.client.gui;
 					<#if hasProcedure(component.displayCondition)>
 										if (<@procedureOBJToConditionCode component.displayCondition/>) {
 					</#if>
-										RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.image}"));
-										Minecraft.getInstance().gui.blit(event.${stackMethodName}(), <@calculatePosition component/>, 0, 0,
+					RenderSystem.setShaderTexture(0, IMAGE_${component?index});
+					Minecraft.getInstance().gui.blit(event.${stackMethodName}(), <@calculatePosition component/>, 0, 0,
 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
 					<#if hasProcedure(component.displayCondition)>}</#if>
@@ -94,7 +106,7 @@ package ${package}.client.gui;
 
         	<#list data.getComponentsOfType("Sprite") as component>
  				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
- 					RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.sprite}"));
+ 					RenderSystem.setShaderTexture(0, SPRITE_${component?index});
  					Minecraft.getInstance().gui.blit(event.${stackMethodName}(), <@calculatePosition component/>,
  						<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
  							<@getSpriteByIndex component "width"/>, 0
@@ -110,7 +122,7 @@ package ${package}.client.gui;
 						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>)
 						</#if>
-						Minecraft.getInstance().font.draw(event.${stackMethodName}(),
+						Minecraft.getInstance().font.draw<#if component.hasShadow>Shadow</#if>(event.${stackMethodName}(),
 							<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}")</#if>,
                     <@calculatePosition component/>, ${component.color.getRGB()});
             </#list>
