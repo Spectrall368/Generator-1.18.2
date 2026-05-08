@@ -107,9 +107,6 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 		<#else>
 			.noCollission()
 		</#if>
-		<#if data.offsetType != "NONE">
-		.offsetType(BlockBehaviour.OffsetType.${data.offsetType})
-		</#if>
 		);
 
 		<#if data.isWaterloggable()>

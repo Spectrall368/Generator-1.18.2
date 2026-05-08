@@ -33,8 +33,6 @@ package ${package}.entity;
 
 import net.minecraft.network.syncher.EntityDataAccessor;
 
-<#assign boatEntities = specialentities?filter(e -> e.entityType == "Boat")>
-
 public class ${JavaModName}Boat extends Boat {
 	private static final EntityDataAccessor<Integer> DATA_ID_TYPE = SynchedEntityData.defineId(${JavaModName}Boat.class, EntityDataSerializers.INT);
 
@@ -42,7 +40,6 @@ public class ${JavaModName}Boat extends Boat {
 		super(entityType, level);
 	}
 
-    <#if boatEntities?size != 0>
     public ${JavaModName}Boat(Level level, double x, double y, double z) {
         this(${JavaModName}Entities.${JavaModName?upper_case}_BOAT.get(), level);
         this.setPos(x, y, z);
@@ -50,15 +47,14 @@ public class ${JavaModName}Boat extends Boat {
         this.yo = y;
         this.zo = z;
     }
-    </#if>
 
 	@Override protected Component getTypeName() {
-		return Component.translatable("entity.minecraft.boat");
+		return new TranslatableComponent("entity.minecraft.boat");
 	}
 
 	@Override public Item getDropItem() {
 		return switch (getModType()) {
-		<#list boatEntities as entity>
+		<#list specialentities as entity>
 		    case ${entity.getModElement().getRegistryNameUpper()} -> ${JavaModName}Items.${entity.getModElement().getRegistryNameUpper()}.get();
 		</#list>
 		    default -> Items.AIR;
@@ -67,11 +63,7 @@ public class ${JavaModName}Boat extends Boat {
 
 	@Override protected void defineSynchedData() {
 		super.defineSynchedData();
-		<#if boatEntities?has_content>
-		this.entityData.define(DATA_ID_TYPE, Type.${boatEntities[0].getModElement().getRegistryNameUpper()}.ordinal());
-		<#else>
 		this.entityData.define(DATA_ID_TYPE, Type.${specialentities[0].getModElement().getRegistryNameUpper()}.ordinal());
-		</#if>
 	}
 
 	@Override protected void addAdditionalSaveData(CompoundTag compound) {
@@ -95,15 +87,14 @@ public class ${JavaModName}Boat extends Boat {
 	public static enum Type {
         <@javacompress>
             <#list specialentities as entity>
-                ${entity.getModElement().getRegistryNameUpper()}(Blocks.OAK_PLANKS, "${entity.getModElement().getRegistryName()}", ${entity.entityType == "ChestBoat"})<#sep>,
+                ${entity.getModElement().getRegistryNameUpper()}(Blocks.OAK_PLANKS, "${entity.getModElement().getRegistryName()}")<#sep>,
             </#list>;
         </@javacompress>
 
         private final String name;
         private final Block planks;
-        private final boolean hasChest;
 
-        private Type(Block block, String name, boolean hasChest) {
+        private Type(Block block, String name) {
             this.name = name;
             this.planks = block;
             this.hasChest = hasChest;
@@ -115,10 +106,6 @@ public class ${JavaModName}Boat extends Boat {
 
         public Block getPlanks() {
             return planks;
-        }
-
-        public boolean hasChest() {
-            return hasChest;
         }
 
         public String toString() {

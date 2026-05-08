@@ -71,7 +71,7 @@ import org.apache.logging.log4j.Logger;
 
 	@SubscribeEvent public void tick(TickEvent.ServerTickEvent event) {
 		if(event.phase == TickEvent.Phase.END) {
-            int currentTick = event.getServer().getTickCount();
+            int currentTick = ServerLifecycleHooks.getCurrentServer().getTickCount();
 
             IntObjectPair<Runnable> work;
             while ((work = workToBeScheduled.poll()) != null) {

@@ -3,7 +3,23 @@ package ${package}.network;
 
 import ${package}.${JavaModName};
 
+<#assign foundVector = false>
+<#list variables as var>
+    <#if var.getType() == "vector" && var.getScope().name() != "GLOBAL_SESSION">
+        <#assign foundVector = true>
+        <#break>
+    </#if>
+</#list>
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Variables {
+	<#if foundVector>
+	public static final Codec<Vec3> CODEC = Codec.DOUBLE.listOf().comapFlatMap((size) -> {
+	    return Util.fixedSize(size, 3).map((list) -> {
+	        return new Vec3(list.get(0), list.get(1), list.get(2));
+	    });
+	}, (vec) -> {
+	    return List.of(vec.x(), vec.y(), vec.z());
+	});
+	</#if>
 
 	<#if w.hasVariablesOfScope("GLOBAL_SESSION")>
 		<#list variables as var>

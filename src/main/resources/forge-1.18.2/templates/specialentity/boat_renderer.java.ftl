@@ -39,27 +39,23 @@ import com.mojang.datafixers.util.Pair;
 public class ${JavaModName}BoatRenderer extends BoatRenderer {
 	private final Map<${JavaModName}Boat.Type, Pair<ResourceLocation, BoatModel>> boatResources;
 
-	public ${JavaModName}BoatRenderer(EntityRendererProvider.Context context, boolean hasChest) {
+	public ${JavaModName}BoatRenderer(EntityRendererProvider.Context context) {
 		super(context, hasChest);
-		this.boatResources = Stream.of(${JavaModName}Boat.Type.values()).filter(type -> type.hasChest() == hasChest).collect(ImmutableMap.toImmutableMap(type -> type,
-		    type -> Pair.of(new ResourceLocation("${modid}", getTextureLocation(type, hasChest)), createBoatModel(context, type, hasChest))));
+		this.boatResources = Stream.of(${JavaModName}Boat.Type.values()).collect(ImmutableMap.toImmutableMap(type -> type,
+		    type -> Pair.of(new ResourceLocation("${modid}", getTextureLocation(type, hasChest)), createBoatModel(context, type))));
 	}
 
-	private static String getTextureLocation(${JavaModName}Boat.Type type, boolean hasChest) {
-		return hasChest ? "textures/entity/chest_boat/" + type.getName() + ".png" : "textures/entity/boat/" + type.getName() + ".png";
+	private static String getTextureLocation(${JavaModName}Boat.Type type) {
+		return "textures/entity/boat/" + type.getName() + ".png";
 	}
 
-	private BoatModel createBoatModel(EntityRendererProvider.Context context, ${JavaModName}Boat.Type type, boolean hasChest) {
-		ModelLayerLocation modellayerlocation = hasChest ? createChestBoatModelName(type) : createBoatModelName(type);
-		return new BoatModel(context.bakeLayer(modellayerlocation), hasChest);
+	private BoatModel createBoatModel(EntityRendererProvider.Context context, ${JavaModName}Boat.Type type) {
+		ModelLayerLocation modellayerlocation = createBoatModelName(type);
+		return new BoatModel(context.bakeLayer(modellayerlocation));
 	}
 
 	private static ModelLayerLocation createBoatModelName(${JavaModName}Boat.Type type) {
 		return createLocation("boat/" + type.getName(), "main");
-	}
-
-	private static ModelLayerLocation createChestBoatModelName(${JavaModName}Boat.Type type) {
-		return createLocation("chest_boat/" + type.getName(), "main");
 	}
 
 	private static ModelLayerLocation createLocation(String path, String model) {
@@ -67,13 +63,7 @@ public class ${JavaModName}BoatRenderer extends BoatRenderer {
 	}
 
 	@Override public Pair<ResourceLocation, BoatModel> getModelWithLocation(Boat boat) {
-		<#if hasBoat && hasChestBoat>
-		return boat instanceof ${JavaModName}Boat modBoat ? this.boatResources.get(modBoat.getModType()) : (boat instanceof ${JavaModName}ChestBoat modChestBoat ? this.boatResources.get(modChestBoat.getModType()) : null);
-		<#elseif hasBoat>
 		return boat instanceof ${JavaModName}Boat modBoat ? this.boatResources.get(modBoat.getModType()) : null;
-		<#else>
-		return boat instanceof ${JavaModName}ChestBoat modChestBoat ? this.boatResources.get(modChestBoat.getModType()) : null;
-		</#if>
 	}
 }
 <#-- @formatter:on -->

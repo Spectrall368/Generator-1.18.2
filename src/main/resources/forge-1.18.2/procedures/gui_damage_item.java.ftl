@@ -2,7 +2,7 @@ if(${input$entity} instanceof Player _player && _player.containerMenu instanceof
 	Slot _slot = _menu.getSlots().get(${opt.toInt(input$slotid)});
 	ItemStack stack = _slot.getItem();
 	if (stack != null && !stack.isEmpty()) {
-		if(stack.hurt(${opt.toInt(input$amount)}, RandomSource.create(), null)) {
+		if(stack.hurt(${opt.toInt(input$amount)}, new Random(), null)) {
 			stack.shrink(1);
 			stack.setDamageValue(0);
 		}

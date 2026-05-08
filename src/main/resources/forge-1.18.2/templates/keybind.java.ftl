@@ -71,7 +71,7 @@ import ${package}.${JavaModName};
 		double z = entity.getZ();
 
 		// security measure to prevent arbitrary chunk generation
-		if (!world.getChunkSource().hasChunk(SectionPos.blockToSectionCoord(x), SectionPos.blockToSectionCoord(z)))
+		if (!world.getChunkSource().hasChunk(SectionPos.blockToSectionCoord(Mth.floor(x)), SectionPos.blockToSectionCoord(Mth.floor(z))))
 			return;
 
 		<#if hasProcedure(data.onKeyPressed)>

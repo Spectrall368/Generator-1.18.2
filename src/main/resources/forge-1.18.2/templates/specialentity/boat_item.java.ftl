@@ -33,33 +33,17 @@ package ${package}.item;
 
 import net.minecraft.world.entity.EntitySelector;
 
-<#assign hasBoat = specialentities?filter(e -> e.entityType == "Boat")?size != 0>
-<#assign hasChestBoat = specialentities?filter(e -> e.entityType == "ChestBoat")?size != 0>
-
 <#assign variantSetterCode>
-<#if hasChestBoat && hasBoat>
-if(boat instanceof ${JavaModName}ChestBoat chestBoat) {
-    chestBoat.setType(this.type);
-} else if(boat instanceof ${JavaModName}Boat boatt) {
-    boatt.setType(this.type);
-}
-<#elseif hasChestBoat>
-if(boat instanceof ${JavaModName}ChestBoat chestBoat)
-    chestBoat.setType(this.type);
-<#else>
 if(boat instanceof ${JavaModName}Boat boatt)
     boatt.setType(this.type);
-</#if>
 </#assign>
 
 public class ${JavaModName}BoatItem extends Item {
 	private static final Predicate<Entity> ENTITY_PREDICATE = EntitySelector.NO_SPECTATORS.and(Entity::isPickable);
 	private final ${JavaModName}Boat.Type type;
-	private final boolean hasChest;
 
 	public ${JavaModName}BoatItem(${JavaModName}Boat.Type type, Item.Properties properties) {
 		super(properties.stacksTo(1));
-		this.hasChest = type.hasChest();
 		this.type = type;
 	}
 
@@ -68,13 +52,7 @@ public class ${JavaModName}BoatItem extends Item {
 	@Override ${useMethod}
 
 	private Boat getBoat(Level level, HitResult hitResult) {
-		<#if hasBoat && hasChestBoat>
-		return hasChest ? new ${JavaModName}ChestBoat(level, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z) : new ${JavaModName}Boat(level, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z);
-		<#elseif hasChestBoat>
-		return new ${JavaModName}ChestBoat(level, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z);
-		<#else>
 		return new ${JavaModName}Boat(level, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z);
-		</#if>
 	}
 }
 <#-- @formatter:on -->

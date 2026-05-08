@@ -56,7 +56,7 @@ package ${package}.network;
 		Level world = entity.level;
 
 		// security measure to prevent arbitrary chunk generation
-		if (!world.getChunkSource().hasChunk(SectionPos.blockToSectionCoord(x), SectionPos.blockToSectionCoord(z)))
+		if (!world.getChunkSource().hasChunk(SectionPos.blockToSectionCoord(Mth.floor(x)), SectionPos.blockToSectionCoord(Mth.floor(z))))
 			return;
 
 		<#assign btid = 0>

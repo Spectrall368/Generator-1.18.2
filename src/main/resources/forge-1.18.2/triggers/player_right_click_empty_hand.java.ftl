@@ -28,8 +28,8 @@
 			NetworkEvent.Context context = contextSupplier.get();
 			context.enqueueWork(() -> {
 					if (!context.getSender().level.getChunkSource().hasChunk(
-						SectionPos.blockToSectionCoord(context.getSender().getX()),
-						SectionPos.blockToSectionCoord(context.getSender().getZ())
+						SectionPos.blockToSectionCoord(Mth.floor(context.getSender().getX())),
+						SectionPos.blockToSectionCoord(Mth.floor(context.getSender().getZ()))
 					)) return;
 				<#assign dependenciesCode>
 					<@procedureDependenciesCode dependencies, {

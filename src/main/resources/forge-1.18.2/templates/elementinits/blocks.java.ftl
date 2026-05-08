@@ -153,7 +153,7 @@ package ${package}.init;
 		</#if>
 
 		<#if signs?size != 0>
-		@SubscribeEvent public static void clientSetup(FMLClientSetupEvent event) {
+		@SubscribeEvent public static void clientSignSetup(FMLClientSetupEvent event) {
 			<#list signs as block>
 				Sheets.addWoodType(${JavaModName}WoodTypes.${block.getModElement().getRegistryNameUpper()}_WOOD_TYPE);
 			</#list>
