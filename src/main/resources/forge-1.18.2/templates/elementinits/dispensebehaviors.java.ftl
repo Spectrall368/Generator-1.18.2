@@ -42,11 +42,6 @@ package ${package}.init;
 <#assign itemextensions = w.getGElementsOfType("itemextension")?filter(e -> e.hasDispenseBehavior)>
 <#assign specialentities = w.getGElementsOfType("specialentity")>
 
-<#assign variantSetterCode>
-if(boat instanceof ${JavaModName}Boat boatt)
-    boatt.setType(this.type);
-</#assign>
-
 <@javacompress>
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}DispenseBehaviors {
 
@@ -137,7 +132,7 @@ if(boat instanceof ${JavaModName}Boat boatt)
 	        this.type = type;
 	    }
 
-	    @Override ${mcc.getMethod("net.minecraft.core.dispenser.BoatDispenseItemBehavior", "execute", "BlockSource", "ItemStack").replace("new Boat", "new " + JavaModName + "Boat").replace("boat.setType(this.type);", variantSetterCode)}
+	    @Override ${mcc.getMethod("net.minecraft.core.dispenser.BoatDispenseItemBehavior", "execute", "BlockSource", "ItemStack").replace("Boat", JavaModName + "Boat")}
 
 	    @Override ${mcc.getMethod("net.minecraft.core.dispenser.BoatDispenseItemBehavior", "playSound", "BlockSource")}
 	}

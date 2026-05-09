@@ -33,11 +33,6 @@ package ${package}.item;
 
 import net.minecraft.world.entity.EntitySelector;
 
-<#assign variantSetterCode>
-if(boat instanceof ${JavaModName}Boat boatt)
-    boatt.setType(this.type);
-</#assign>
-
 public class ${JavaModName}BoatItem extends Item {
 	private static final Predicate<Entity> ENTITY_PREDICATE = EntitySelector.NO_SPECTATORS.and(Entity::isPickable);
 	private final ${JavaModName}Boat.Type type;
@@ -47,12 +42,6 @@ public class ${JavaModName}BoatItem extends Item {
 		this.type = type;
 	}
 
-	<#assign useMethod = mcc.getMethod("net.minecraft.world.item.BoatItem", "use", "Level", "Player", "InteractionHand")>
-	<#assign useMethod = useMethod.replace("boat.setType(this.type);", variantSetterCode)>
-	@Override ${useMethod}
-
-	private Boat getBoat(Level level, HitResult hitResult) {
-		return new ${JavaModName}Boat(level, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z);
-	}
+	@Override ${mcc.getMethod("net.minecraft.world.item.BoatItem", "use", "Level", "Player", "InteractionHand").replace("Boat", JavaModName + "Boat")}
 }
 <#-- @formatter:on -->
