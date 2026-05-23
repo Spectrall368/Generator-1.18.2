@@ -38,7 +38,7 @@
 <#assign blockSetType = "BUILDABLE_GLASS">
 <#if data.blockBase?has_content>
     <#if data.blockBase == "PressurePlate" || data.blockBase == "TrapDoor" || data.blockBase == "Door" || data.blockBase == "Fence" || data.blockBase == "Button">
-        <#assign blockSetType = data.blockSetType>
+        <#assign blockSetType = data.blockSetType?replace("IRON", "METAL")?replace("OAK", "NETHER_WOOD")>
     <#elseif data.blockBase == "Stairs" || data.blockBase == "Slab" || data.blockBase == "Wall">
         <#assign blockSetType = "STONE">
     <#elseif data.blockBase == "Leaves">
@@ -46,7 +46,7 @@
     <#elseif data.blockBase == "Pane">
         <#assign blockSetType = "GLASS">
     <#elseif data.isSign() || data.blockBase == "FenceGate">
-        <#assign blockSetType = "WOOD">
+        <#assign blockSetType = "NETHER_WOOD">
     <#elseif data.blockBase == "FlowerPot" || data.blockBase == "EndRod">
         <#assign blockSetType = "DECORATION">
     </#if>
@@ -122,7 +122,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	</#if>
 
 	<#macro blockProperties>
-	    BlockBehaviour.Properties.of(Material.${blockSetType?replace("IRON", "METAL")?replace("OAK", "NETHER_WOOD")}
+	    BlockBehaviour.Properties.of(Material.${blockSetType}
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 		    , MaterialColor.${generator.map(data.colorOnMap, "mapcolors")}
 		</#if>)
@@ -838,7 +838,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	<#if var_extends_class??><#return var_extends_class>
 	<#elseif data.hasGravity><#return "FallingBlock">
 	<#elseif blockBase == "Button">
-		<#if blockSetType != "OAK">
+		<#if blockSetType != "NETHER_WOOD">
             <#return "net.minecraft.world.level.block.StoneButtonBlock">
         <#else>
             <#return "net.minecraft.world.level.block.WoodButtonBlock">
