@@ -724,7 +724,7 @@ warm_ocean_vegetation:
   - SimpleRandomFeatureConfiguration
 warped_forest_vegetation:
   - warped_forest_vegetation
-  - NetherFeatures.WARPED_FOREST_VEGETATION
+  - NetherFeatures.WARPED_FOREST_VEGETION
   - NetherForestVegetationConfig
 warped_forest_vegetation_bonemeal:
   - warped_forest_vegetation_bonemeal
