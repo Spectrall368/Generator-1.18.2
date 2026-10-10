@@ -54,8 +54,7 @@ package ${package}.world.teleporter;
 
 	${mcc.getMethod("net.minecraft.world.level.portal.PortalForcer", "findPortalAround", "BlockPos", "boolean", "WorldBorder")
 		.replace("PoiType.NETHER_PORTAL", "poi")
-		.replace("TicketType.PORTAL", "CUSTOM_PORTAL")
-		.replace("Blocks.NETHER_PORTAL", JavaModName + "Blocks." + REGISTRYNAME + "_PORTAL.get()")}
+		.replace("TicketType.PORTAL", "CUSTOM_PORTAL")}
 
 	${mcc.getMethod("net.minecraft.world.level.portal.PortalForcer", "createPortal", "BlockPos", "Direction.Axis")
 		.replace("Blocks.OBSIDIAN", mappedBlockToBlock(data.portalFrame)?string)
