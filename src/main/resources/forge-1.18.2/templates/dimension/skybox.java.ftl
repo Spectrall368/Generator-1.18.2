@@ -92,7 +92,8 @@ public class ${JavaModName}SkyboxRenderer {
 		bufferbuilder.vertex(matrix4f1, f12, 100.0F, -f12).uv(1.0F, 0.0F).endVertex();
 		bufferbuilder.vertex(matrix4f1, f12, 100.0F, f12).uv(1.0F, 1.0F).endVertex();
 		bufferbuilder.vertex(matrix4f1, -f12, 100.0F, f12).uv(0.0F, 1.0F).endVertex();
-		BufferUploader.drawWithShader(bufferbuilder.end());
+		bufferbuilder.end();
+		BufferUploader.end(bufferbuilder);
 		RenderSystem.setShaderColor(1, 1, 1, 1);
 		GlStateManager._disableBlend();
 		RenderSystem.defaultBlendFunc();
@@ -128,7 +129,8 @@ public class ${JavaModName}SkyboxRenderer {
 		bufferbuilder.vertex(matrix4f1, f12, -100.0F, f12).uv(f13, f16).endVertex();
 		bufferbuilder.vertex(matrix4f1, f12, -100.0F, -f12).uv(f13, f14).endVertex();
 		bufferbuilder.vertex(matrix4f1, -f12, -100.0F, -f12).uv(f15, f14).endVertex();
-		BufferUploader.drawWithShader(bufferbuilder.end());
+		bufferbuilder.end();
+		BufferUploader.end(bufferbuilder);
 		RenderSystem.setShaderColor(1, 1, 1, 1);
 		GlStateManager._disableBlend();
 		RenderSystem.defaultBlendFunc();
@@ -169,7 +171,8 @@ public class ${JavaModName}SkyboxRenderer {
 		buffer.vertex(matrix, x2, y2, z2).uv(u2, v2).endVertex();
 		buffer.vertex(matrix, x3, y3, z3).uv(u3, v3).endVertex();
 		buffer.vertex(matrix, x4, y4, z4).uv(u4, v4).endVertex();
-		BufferUploader.drawWithShader(buffer.end());
+		buffer.end();
+		BufferUploader.end(buffer);
 	}
 
 }

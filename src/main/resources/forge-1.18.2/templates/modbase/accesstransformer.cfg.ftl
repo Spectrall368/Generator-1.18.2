@@ -8,6 +8,7 @@ public net.minecraft.client.renderer.DimensionSpecialEffects f_108857_ #EFFECTS
 </#if>
 
 <#if w.getGElementsOfType("biome")?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0>
+public net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator f_64318_ #settings
 public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource
 public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource <init>(Ljava/util/List;)V
 </#if>

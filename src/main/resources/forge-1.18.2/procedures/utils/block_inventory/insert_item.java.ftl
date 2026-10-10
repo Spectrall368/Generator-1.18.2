@@ -2,7 +2,7 @@ private static int insertInBlockInventory(LevelAccessor world, BlockPos pos, int
     AtomicReference<Integer> result = new AtomicReference<>(itemstack.getCount());
     BlockEntity entity = world.getBlockEntity(pos);
     if (entity != null && slotId >= 0)
-		entity.getCapability(ForgeCapabilities.ITEM_HANDLER, null)
+		entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
 		    .ifPresent(capability -> {
 		        if (slotId < capability.getSlots()) {
                     ItemStack inserted = itemstack.copy();

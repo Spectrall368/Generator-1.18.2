@@ -2,7 +2,7 @@ private static int getBlockInventorySlotStackLimit(LevelAccessor world, BlockPos
     AtomicReference<Integer> result = new AtomicReference<>(0);
     BlockEntity entity = world.getBlockEntity(pos);
     if (entity != null && slotId >= 0)
-		entity.getCapability(ForgeCapabilities.ITEM_HANDLER, null)
+		entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
 		    .ifPresent(capability -> { if(slotId < capability.getSlots()) result.set(capability.getSlotLimit(slotId)); });
 
 	return result.get();

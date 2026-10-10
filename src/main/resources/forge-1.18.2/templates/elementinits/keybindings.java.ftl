@@ -48,7 +48,7 @@ package ${package}.init;
 			<#else>
 				GLFW.GLFW_KEY_${keybind.triggerKey},
 			</#if>
-			"key.category.${modid}.${keybind.keyBindingCategoryKey}")
+			"key.category.${modid}.${keybind.keyBindingCategoryKey}");
     </#list>
 
 	<#list keybinds as keybind>

@@ -62,9 +62,9 @@ import com.mojang.datafixers.util.Pair;
 		WorldGenSettings worldGenSettings = event.getServer().getWorldData().worldGenSettings();
 		for (Map.Entry<ResourceKey<LevelStem>, LevelStem> entry : worldGenSettings.dimensions().entrySet()) {
 			Holder<DimensionType> dimensionType = entry.getValue().typeHolder();
-			if (dimensionType.is(BuiltinDimensionTypes.NETHER) || dimensionType.is(BuiltinDimensionTypes.OVERWORLD)) {
+			if (dimensionType.is(DimensionType.NETHER_LOCATION) || dimensionType.is(DimensionType.OVERWORLD_LOCATION)) {
 				if(entry.getValue().generator() instanceof NoiseBasedChunkGenerator noiseGenerator) {
-					if ((Object) noiseGenerator.generatorSettings().value() instanceof ${JavaModName}NoiseGeneratorSettings settings) {
+					if ((Object) noiseGenerator.settings.value() instanceof ${JavaModName}NoiseGeneratorSettings settings) {
 						settings.set${modid}DimensionTypeReference(dimensionType);
 					} else {
 						${JavaModName}.LOGGER.error("NoiseGeneratorSettings mixin of ${modid} was not applied, custom biomes may not generate properly");
@@ -76,11 +76,11 @@ import com.mojang.datafixers.util.Pair;
 
 	public static SurfaceRules.RuleSource adaptSurfaceRule(SurfaceRules.RuleSource currentRuleSource, Holder<DimensionType> dimensionType) {
 		<#if spawn_overworld?has_content || spawn_overworld_caves?has_content>
-		if (dimensionType.is(BuiltinDimensionTypes.OVERWORLD)) return injectOverworldSurfaceRules(currentRuleSource);
+		if (dimensionType.is(DimensionType.OVERWORLD_LOCATION)) return injectOverworldSurfaceRules(currentRuleSource);
 		</#if>
 
 		<#if spawn_nether?has_content>
-		if (dimensionType.is(BuiltinDimensionTypes.NETHER)) return injectNetherSurfaceRules(currentRuleSource);
+		if (dimensionType.is(DimensionType.NETHER_LOCATION)) return injectNetherSurfaceRules(currentRuleSource);
 		</#if>
 
 		return currentRuleSource;

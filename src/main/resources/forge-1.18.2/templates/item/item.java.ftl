@@ -98,7 +98,7 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern<#el
 
 	<#if data.hasNonDefaultAnimation()>
 	@Override public UseAnim getUseAnimation(ItemStack itemstack) {
-		return UseAnim.${data.animation?upper_case};
+		return ${data.animation};
 	}
 	</#if>
 
