@@ -30,7 +30,7 @@
 
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
-<#if generator.map(data.overlayTarget, "screens") == "Ingame">
+<#if data.overlayTarget == "Ingame">
 	<#assign stackMethodName = "getMatrixStack">
 <#else>
 	<#assign stackMethodName = "getPoseStack">

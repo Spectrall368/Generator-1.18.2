@@ -132,12 +132,12 @@ public class ${name}Feature extends OreFeature {
 
         <#local tagFound = false>
         <#list w.getWorkspace().getTagElements()?keys as tagElement>
-            <#if tagElement.asTagEntry() == tagKey>
+            <#if tagElement.toString().replace("mod:", modid + ":") == tagKey>
                 <#local tagFound = true>
                 <#local biomeValues = w.getWorkspace().getTagElements().get(tagElement)>
                 <#list biomeValues as biomeValue>
                     <#if biomeValue?starts_with("#")>
-                        <#local expandedSubValues = expandBiomeTag(biomeValue.asTagEntry())>
+                        <#local expandedSubValues = expandBiomeTag(biomeValue?replace("mod:", modid + ":"))>
                         <#list expandedSubValues as expandedSubValue>
                             <#local result = result + [expandedSubValue]>
                         </#list>
