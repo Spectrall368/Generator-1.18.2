@@ -61,14 +61,12 @@ package ${package}.client.renderer.block;
         	    		case DOWN -> poseStack.mulPose(Vector3f.XN.rotationDegrees(-90));
 					</#if>
 				}
-				<#if data.enablePitch>
-				if (facing != Direction.UP && facing != Direction.DOWN) {
-					switch (state.getValue(${name}Block.FACE)) {
-						case FLOOR -> {}
-						case WALL -> poseStack.mulPose(Vector3f.XP.rotationDegrees(90));
-						case CEILING -> poseStack.mulPose(Vector3f.XP.rotationDegrees(180));
-					};
-				}
+				<#if data.enablePitch && (data.rotationMode == 1 || data.rotationMode == 3)>
+				switch (state.getValue(${name}Block.FACE)) {
+					case FLOOR -> {}
+					case WALL -> poseStack.mulPose(Vector3f.XP.rotationDegrees(90));
+					case CEILING -> poseStack.mulPose(Vector3f.XP.rotationDegrees(180));
+				};
 				</#if>
 			<#else>
         	    switch (state.getValue(${name}Block.AXIS)) {

@@ -34,6 +34,7 @@
  */
 package ${package}.init;
 
+<#assign specialentities = w.getGElementsOfType("specialentity")>
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${JavaModName}EntityRenderers {
 
 	@SubscribeEvent public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
@@ -52,7 +53,7 @@ package ${package}.init;
 			</#if>
 		</#list>
 
-		<#if w.getGElementsOfType("specialentity")?size != 0>
+		<#if specialentities?size != 0>
 			event.registerEntityRenderer(${JavaModName}Entities.${JavaModName?upper_case}_BOAT.get(), context -> new ${JavaModName}BoatRenderer(context));
 		</#if>
 	}

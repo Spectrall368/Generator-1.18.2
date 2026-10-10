@@ -265,8 +265,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		super.init();
 
 		<#list textFields as component>
-			${component.getName()} = new EditBox(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
-			${component.width - 2}, ${component.height - 2}, new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}"));
+			${component.getName()} = new EditBox(this.font, this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
+			${component.width}, ${component.height}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"));
 			${component.getName()}.setMaxLength(8192);
 			${component.getName()}.setResponder(content -> {
 				if (!menuStateUpdateActive)
@@ -344,7 +344,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 							menu.sendMenuStateUpdate(entity, 2, "${component.getName()}", this.getValue(), false);
 						<#if hasProcedure(component.whenSliderMoves)>
 							${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}SliderMessage(${slid}, x, y, z, this.getValue()));
-							${name}SliderMessage.handleSliderAction(entity, ${btid}, x, y, z, this.getValue());
+							${name}SliderMessage.handleSliderAction(entity, ${slid}, x, y, z, this.getValue());
 						</#if>
 					}
 				};

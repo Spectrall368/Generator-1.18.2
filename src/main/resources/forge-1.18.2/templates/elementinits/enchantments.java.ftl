@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2021, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -29,12 +29,14 @@
 -->
 
 <#-- @formatter:off -->
-
 /*
- *    MCreator note: This file will be REGENERATED on each build.
+ *	MCreator note: This file will be REGENERATED on each build.
  */
-
 package ${package}.init;
+
+<#assign livingEffects = enchantments?filter(e -> e.effectsxml?contains('ench_component_mob_experience'))>
+<#assign blockEffects = enchantments?filter(e -> e.effectsxml?contains('ench_component_block_experience'))>
+<#assign hasEffects = livingEffects?size != 0 || blockEffects?size != 0>
 
 public class ${JavaModName}Enchantments {
 
@@ -45,5 +47,31 @@ public class ${JavaModName}Enchantments {
 		REGISTRY.register("${enchantment.getModElement().getRegistryName()}", ${enchantment.getModElement().getName()}Enchantment::new);
 	</#list>
 
+    <#if hasEffects>
+	@Mod.EventBusSubscriber public static class EnchantmentEffectsHandler {
+		<#if livingEffects?size != 0>
+		@SubscribeEvent public static void onMobExperienceDrop(LivingExperienceDropEvent event) {
+            Player player = event.getAttackingPlayer();
+
+		    if (player == null) return;
+			ItemStack stack = player.getMainHandItem();
+
+			<#list livingEffects as ench>
+                 ${ench.getModElement().getName()}Enchantment.onMobExperienceDrop(stack, event);
+			</#list>
+		}
+		</#if>
+
+		<#if blockEffects?size != 0>
+		@SubscribeEvent public static void onBlockExperienceDrop(BlockEvent.BreakEvent event) {
+			ItemStack stack = event.getPlayer().getMainHandItem();
+
+			<#list blockEffects as ench>
+                 ${ench.getModElement().getName()}Enchantment.onBlockExperienceDrop(stack, event);
+			</#list>
+		}
+		</#if>
+    }
+    </#if>
 }
 <#-- @formatter:on -->

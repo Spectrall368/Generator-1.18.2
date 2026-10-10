@@ -2,7 +2,7 @@ plugins {
     id "java"
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 
 tasks.named('processResources') {
     filesMatching('plugin.json') {
@@ -12,8 +12,13 @@ tasks.named('processResources') {
                 pluginVersion: pluginVersion,
                 supportedVersion: {
                     def p = mcreatorVersion.split("\\.")
-                    p[0] + p[1].padLeft(3, '0')
-                }()
+                    def majorlong = p[0] + p[1].padLeft(3, '0')
+
+                    if (p.length == 2)
+                        return majorlong
+
+                    return majorlong + p[2]
+                }() // Example: 2026.2 → 2026002, 2026.2.33218 → 202600233218
         )
     }
 }
@@ -46,6 +51,7 @@ subprojects { subproject ->
                 dependsOn rootProject.processResources
                 dependsOn rootProject.jar
 
+                environment("MCREATOR_TESTS_FAIL_ON_WARN", false)
                 environment("MCREATOR_PLUGINS_FOLDER", new File(rootProject.projectDir, "/build/libs"))
                 environment("MCREATOR_TEST_GENERATORS", "forge-${mcVersion}, datapack-1.18.x, resourcepack-${mcVersion}")
 

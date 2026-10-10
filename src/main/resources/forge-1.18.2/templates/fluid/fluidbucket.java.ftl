@@ -36,7 +36,7 @@ public class ${name}Item extends BucketItem {
 
 	public ${name}Item() {
 		super(${JavaModName}Fluids.${REGISTRYNAME},
-			new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(<@CreativeTabs data.creativeTabs/>)
+			new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)<@addTab data.creativeTabs/>
 			<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
 		);
 	}

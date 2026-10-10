@@ -29,8 +29,6 @@
 -->
 
 <#-- @formatter:off -->
-<#assign hasBoat = specialentities?filter(e -> e.entityType == "Boat")?size != 0>
-<#assign hasChestBoat = specialentities?filter(e -> e.entityType == "ChestBoat")?size != 0>
 package ${package}.client.renderer;
 
 import com.mojang.datafixers.util.Pair;
@@ -45,13 +43,13 @@ public class ${JavaModName}BoatRenderer extends BoatRenderer {
 		    type -> Pair.of(new ResourceLocation("${modid}", getTextureLocation(type)), createBoatModel(context, type))));
 	}
 
-	private static String getTextureLocation(${JavaModName}Boat.Type type) {
-		return "textures/entity/boat/" + type.getName() + ".png";
-	}
-
 	private BoatModel createBoatModel(EntityRendererProvider.Context context, ${JavaModName}Boat.Type type) {
 		ModelLayerLocation modellayerlocation = createBoatModelName(type);
 		return new BoatModel(context.bakeLayer(modellayerlocation));
+	}
+
+	private static String getTextureLocation(${JavaModName}Boat.Type type) {
+		return "textures/entity/boat/" + type.getName() + ".png";
 	}
 
 	private static ModelLayerLocation createBoatModelName(${JavaModName}Boat.Type type) {

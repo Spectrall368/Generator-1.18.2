@@ -51,7 +51,7 @@ package ${package}.init;
         <@javacompress>
         LivingEntity entity = event.getEntityLiving();
 		<#list mobHurt as effect>
-		if (entity.hasEffect(${JavaModName}MobEffects.${effect.getModElement().getRegistryNameUpper()}.get())) {
+		if (entity.hasEffect(${effect.getModElement().getRegistryNameUpper()}.get())) {
 			<@procedureCode effect.onMobHurt, {
 				"x": "entity.getX()",
 				"y": "entity.getY()",
@@ -75,7 +75,7 @@ package ${package}.init;
         Entity.RemovalReason reason = entity.getRemovalReason();
         if (reason != null && reason == Entity.RemovalReason.KILLED) {
             <#list mobRemoved as effect>
-            if (entity.hasEffect(${JavaModName}MobEffects.${effect.getModElement().getRegistryNameUpper()}.get())) {
+            if (entity.hasEffect(${effect.getModElement().getRegistryNameUpper()}.get())) {
                 <@procedureCode effect.onMobRemoved, {
                     "x": "entity.getX()",
                     "y": "entity.getY()",

@@ -1,0 +1,1 @@
+(Ingredient.of(ItemTags.create(new ResourceLocation("${field$tag?lower_case}"))))

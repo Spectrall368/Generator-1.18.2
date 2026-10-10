@@ -38,12 +38,12 @@ public class ${name}Block extends LiquidBlock {
 	public ${name}Block() {
 		super(() -> (FlowingFluid) ${JavaModName}Fluids.${REGISTRYNAME}.get(),
 			BlockBehaviour.Properties.of(Material.${data.type}
-			<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
-			, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")}
+			<#if (data.colorOnMap!"DEFAULT") != "DEFAULT">
+			, MaterialColor.${data.colorOnMap}
 			</#if>)
 			.strength(${data.resistance}f)
 			<#if data.emissiveRendering>.hasPostProcess((bs, br, bp) -> true).emissiveRendering((bs, br, bp) -> true)</#if>
-			<#if data.luminance != 0>.lightLevel(s -> ${data.luminance})</#if>
+			<#if data.luminance != 0>.lightLevel(state -> ${data.luminance})</#if>
 		);
 	}
 

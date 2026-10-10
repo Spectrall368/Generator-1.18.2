@@ -123,8 +123,8 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 
 	<#macro blockProperties>
 	    BlockBehaviour.Properties.of(Material.${blockSetType}
-		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
-		    , MaterialColor.${generator.map(data.colorOnMap, "mapcolors")}
+		<#if (data.colorOnMap!"DEFAULT") != "DEFAULT">
+		    , MaterialColor.${data.colorOnMap}
 		</#if>)
 		<#if data.isCustomSoundType>
 			.sound(new ForgeSoundType(1.0f, 1.0f,
@@ -291,7 +291,8 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	}
 	</#if>
 
-	<#if data.connectedSides>
+	<#-- Connected sides skip all faces touching the same block, which only renders correctly on full cube geometry -->
+	<#if data.connectedSides && (!data.blockBase?has_content || data.blockBase == "Leaves")>
 	@Override public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 		return adjacentBlockState.getBlock() == this ? true : super.skipRendering(state, adjacentBlockState, side);
 	}
@@ -342,13 +343,15 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 		builder.add(${props?join(", ")});
 	}
 
-	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext context) {
+	@Override public BlockState getStateForPlacement(BlockPlaceContext context) {
+		BlockState state = super.getStateForPlacement(context);
+		if (state == null) return null;
+
 		<#if data.isWaterloggable>
 		boolean flag = context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER;
 		</#if>
 		<#if data.rotationMode != 3>
-		return super.getStateForPlacement(context)
+		return state
 			<#if data.rotationMode == 1>
 			    <#if data.enablePitch>
 			    .setValue(FACE, faceForDirection(context.getNearestLookingDirection()))
@@ -367,7 +370,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 			</#if>;
 		<#elseif data.rotationMode == 3>
 	    if (context.getClickedFace().getAxis() == Direction.Axis.Y)
-	        return super.getStateForPlacement(context)
+	        return state
 	    		<#if data.enablePitch>
 	    		    .setValue(FACE, context.getClickedFace().getOpposite() == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
 	    		    .setValue(FACING, context.getHorizontalDirection())
@@ -379,7 +382,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	    		.setValue(WATERLOGGED, flag)
 	    		</#if>;
 
-	    return super.getStateForPlacement(context)
+	    return state
 	    	<#if data.enablePitch>
 	    	    .setValue(FACE, AttachFace.WALL)
 	    	</#if>
@@ -473,7 +476,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 
 	<#if data.isReplaceable>
 	@Override public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
-		return context.getItemInHand().getItem() != this.asItem();
+	    return context.getItemInHand().getItem() != this.asItem();
 	}
 	</#if>
 
@@ -542,9 +545,9 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	}
 	</#if>
 
-	<#if generator.map(data.aiPathNodeType, "pathnodetypes") != "DEFAULT">
+	<#if data.aiPathNodeType != "DEFAULT">
 	@Override public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter world, BlockPos pos, Mob entity) {
-		return BlockPathTypes.${generator.map(data.aiPathNodeType, "pathnodetypes")};
+		return BlockPathTypes.${data.aiPathNodeType};
 	}
 	</#if>
 
@@ -624,8 +627,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	<@onBlockPlacedBy data.onBlockPlayedBy/>
 
 	<#if hasProcedure(data.onRightClicked) || data.shouldOpenGUIOnRightClick()>
-	@Override
-	public InteractionResult use(BlockState blockstate, Level world, BlockPos pos, Player entity, InteractionHand hand, BlockHitResult hit) {
+	@Override public InteractionResult use(BlockState blockstate, Level world, BlockPos pos, Player entity, InteractionHand hand, BlockHitResult hit) {
 		super.use(blockstate, world, pos, entity, hand, hit);
 		<#if data.shouldOpenGUIOnRightClick()>
 		if(entity instanceof ServerPlayer player) {
@@ -799,31 +801,30 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 		}
 		</#if>
 	</#if>
-
 	<#list data.customProperties as prop>
 		<#if prop.property().getName().startsWith("CUSTOM:") && prop.property().getClass().getSimpleName().equals("StringType")>
-		<#assign propClassName = StringUtils.snakeToCamel(prop.property().getName().replace("CUSTOM:", ""))>
-		public enum ${propClassName}Property implements StringRepresentable {
-			<#list prop.property.getArrayData() as value>
-			${value?upper_case}("${value}")<#sep>,
-			</#list>;
+ 		<#assign propClassName = StringUtils.snakeToCamel(prop.property().getName().replace("CUSTOM:", ""))>
+ 		public enum ${propClassName}Property implements StringRepresentable {
+ 			<#list prop.property.getArrayData() as value>
+ 			${value?upper_case}("${value}")<#sep>,
+ 			</#list>;
 
-			private final String name;
+ 			private final String name;
 
 			private ${propClassName}Property(String name) {
-				this.name = name;
-			}
+ 				this.name = name;
+ 			}
 
-			@Override public String getSerializedName() {
-				return this.name;
-			}
+ 			@Override public String getSerializedName() {
+ 				return this.name;
+ 			}
 
 			@Override public String toString() {
 				return this.name;
 			}
  		}
-		</#if>
-	</#list>
+ 		</#if>
+ 	</#list>
 }
 </@javacompress>
 <#-- @formatter:on -->

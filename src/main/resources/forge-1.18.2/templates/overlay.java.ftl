@@ -52,14 +52,14 @@ package ${package}.client.gui;
 	</#list>
 
 	@SubscribeEvent(priority = EventPriority.${data.priority})
-	<#if generator.map(data.overlayTarget, "screens") == "Ingame">
+	<#if data.overlayTarget == "Ingame">
 	public static void eventHandler(RenderGameOverlayEvent.Pre event) {
 		if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
 			int w = event.getWindow().getGuiScaledWidth();
 			int h = event.getWindow().getGuiScaledHeight();
 	<#else>
 	public static void eventHandler(ScreenEvent.DrawScreenEvent.Post event) {
-		if (event.getScreen() instanceof ${generator.map(data.overlayTarget, "screens")}) {
+		if (event.getScreen() instanceof ${data.overlayTarget}) {
 			int w = event.getScreen().width;
 			int h = event.getScreen().height;
 	</#if>

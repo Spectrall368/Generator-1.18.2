@@ -1,0 +1,1 @@
+${statement$conditionalEffect?replace("getDroppedExperience", "getExpToDrop")?replace("setDroppedExperience", "setExpToDrop")}

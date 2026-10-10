@@ -64,7 +64,7 @@ package ${package}.init;
 
 <#assign chunks = blocks?chunk(2500)>
 <#assign has_chunks = chunks?size gt 1>
-<#assign noteBlockInstrument = blocks?filter(block -> block.noteBlockInstrument?? && block.noteBlockInstrument != "harp")>
+<#assign noteBlockInstrument = blocks?filter(block -> block.noteBlockInstrument?? && block.noteBlockInstrument.getUnmappedValue() != "harp")>
 
 <#if signs?size != 0>@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)</#if>public class ${JavaModName}Blocks {
 
@@ -168,8 +168,8 @@ package ${package}.init;
             <#compress>
             Block below = event.getWorld().getBlockState(event.getPos().below()).getBlock();
             <#list noteBlockInstrument as block>
-            if (below == ${JavaModName}Blocks.${block.getModElement().getRegistryNameUpper()}.get()) {
-                event.setInstrument(${generator.map(block.noteBlockInstrument, "noteblockinstruments")});
+            if (below == ${block.getModElement().getRegistryNameUpper()}.get()) {
+                event.setInstrument(${block.noteBlockInstrument});
             }<#sep>else
             </#list>
             </#compress>

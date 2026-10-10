@@ -1,8 +1,9 @@
-if(${input$entity} instanceof Player _player && _player.containerMenu instanceof ${JavaModName}Menus.MenuAccessor _menu) {
+<#if w.hasElementsOfType("gui")>
+if(${input$entity} instanceof Player _player && _player.level instanceof ServerLevel _serverLevel && _player.containerMenu instanceof ${JavaModName}Menus.MenuAccessor _menu) {
 	Slot _slot = _menu.getSlots().get(${opt.toInt(input$slotid)});
 	ItemStack stack = _slot.getItem();
 	if (stack != null && !stack.isEmpty()) {
-		if(stack.hurt(${opt.toInt(input$amount)}, new Random(), null)) {
+		if(stack.hurt(${opt.toInt(input$amount)}, RandomSource.create(), null)) {
 			stack.shrink(1);
 			stack.setDamageValue(0);
 		}
@@ -11,3 +12,4 @@ if(${input$entity} instanceof Player _player && _player.containerMenu instanceof
 		_player.containerMenu.broadcastChanges();
 	}
 }
+</#if>

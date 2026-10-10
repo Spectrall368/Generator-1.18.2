@@ -20,7 +20,7 @@
   <#if !data.useStartHeight>
   "project_start_to_heightmap": "${data.surfaceDetectionType}",
   </#if>
-  "max_distance_from_center": ${data.maxDistanceFromCenter}
+  "max_distance_from_center": ${(data.terrainAdaptation != "none")?then([data.maxDistanceFromCenter, 116]?min, data.maxDistanceFromCenter)}
   },
   "adapt_noise": <#if data.terrainAdaptation == "none" || data.terrainAdaptation == "bury" || data.terrainAdaptation == "encapsulate">false<#else>true</#if>,
   "spawn_overrides": {},

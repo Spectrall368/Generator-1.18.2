@@ -43,7 +43,7 @@ package ${package}.init;
 	<#list w.getGElementsOfType("feature") as feature>
 			public static final RegistryObject<Feature<?>> ${feature.getModElement().getRegistryNameUpper()} =
 				register("${feature.getModElement().getRegistryName()}", ${feature.getModElement().getName()}Feature::feature,
-						new FeatureRegistration(GenerationStep.Decoration.${generator.map(feature.generationStep, "generationsteps")},
+						new FeatureRegistration(GenerationStep.Decoration.${feature.generationStep},
 							${feature.getModElement().getName()}Feature.GENERATE_BIOMES,
 							${feature.getModElement().getName()}Feature::placedFeature)
 				);

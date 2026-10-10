@@ -29,7 +29,10 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../procedures.java.ftl">
 package ${package}.entity;
+<#assign boatsWithTickEvent = specialentities?filter(e -> hasProcedure(e.onTickUpdate))>
+<#assign boatsWithCollidesEvent = specialentities?filter(e -> hasProcedure(e.onPlayerCollidesWith))>
 
 import net.minecraft.network.syncher.EntityDataAccessor;
 
@@ -48,8 +51,48 @@ public class ${JavaModName}Boat extends Boat {
         this.zo = z;
     }
 
+	<#if boatsWithTickEvent?size gt 0>
+	@Override public void baseTick() {
+		super.baseTick();
+			<#list boatsWithTickEvent as entity>
+			if (getModType() == Type.${entity.getModElement().getRegistryNameUpper()}) {
+			<@procedureCode entity.onTickUpdate, {
+				"x": "this.getX()",
+				"y": "this.getY()",
+				"z": "this.getZ()",
+				"entity": "this",
+				"world": "this.level"
+			}/>
+			}<#sep>else
+			</#list>
+	}
+	</#if>
+
+	<#if boatsWithCollidesEvent?size gt 0>
+	@Override public void playerTouch(Player sourceentity) {
+		super.playerTouch(sourceentity);
+			<#list boatsWithCollidesEvent as entity>
+			if (getModType() == Type.${entity.getModElement().getRegistryNameUpper()}) {
+            <@procedureCode entity.onPlayerCollidesWith, {
+                "x": "this.getX()",
+                "y": "this.getY()",
+                "z": "this.getZ()",
+                "entity": "this",
+                "sourceentity": "sourceentity",
+                "world": "this.level"
+            }/>
+			}<#sep>else
+			</#list>
+	}
+	</#if>
+
 	@Override protected Component getTypeName() {
 		return new TranslatableComponent("entity.minecraft.boat");
+	}
+
+	@Override protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.entityData.define(DATA_ID_TYPE, Type.${specialentities[0].getModElement().getRegistryNameUpper()}.ordinal());
 	}
 
 	@Override public Item getDropItem() {
@@ -59,11 +102,6 @@ public class ${JavaModName}Boat extends Boat {
 		</#list>
 		    default -> Items.AIR;
 		};
-	}
-
-	@Override protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(DATA_ID_TYPE, Type.${specialentities[0].getModElement().getRegistryNameUpper()}.ordinal());
 	}
 
 	@Override protected void addAdditionalSaveData(CompoundTag compound) {
@@ -87,16 +125,14 @@ public class ${JavaModName}Boat extends Boat {
 	public static enum Type {
         <@javacompress>
             <#list specialentities as entity>
-                ${entity.getModElement().getRegistryNameUpper()}(Blocks.OAK_PLANKS, "${entity.getModElement().getRegistryName()}")<#sep>,
+                ${entity.getModElement().getRegistryNameUpper()}("${entity.getModElement().getRegistryName()}")<#sep>,
             </#list>;
         </@javacompress>
 
         private final String name;
-        private final Block planks;
 
-        private Type(Block block, String name) {
+        private Type(String name) {
             this.name = name;
-            this.planks = block;
         }
 
         public String getName() {
@@ -104,7 +140,7 @@ public class ${JavaModName}Boat extends Boat {
         }
 
         public Block getPlanks() {
-            return planks;
+            return Blocks.OAK_PLANKS;
         }
 
         public String toString() {

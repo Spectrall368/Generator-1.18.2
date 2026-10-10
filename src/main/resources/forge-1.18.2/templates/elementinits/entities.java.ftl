@@ -34,6 +34,7 @@
  */
 package ${package}.init;
 
+<#assign specialentities = w.getGElementsOfType("specialentity")>
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Entities {
 
 	public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITIES, ${JavaModName}.MODID);
@@ -50,7 +51,7 @@ package ${package}.init;
 			<#assign hasLivingEntities = true>
 			public static final RegistryObject<EntityType<${entity.getModElement().getName()}Entity>> ${entity.getModElement().getRegistryNameUpper()} =
 				register("${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}Entity>
-						of(${entity.getModElement().getName()}Entity::new, ${generator.map(entity.mobSpawningType, "mobspawntypes")})
+						of(${entity.getModElement().getName()}Entity::new, ${entity.mobSpawningType})
 							.setShouldReceiveVelocityUpdates(true).setTrackingRange(${entity.trackingRange}).setUpdateInterval(3)
 							.setCustomClientFactory(${entity.getModElement().getName()}Entity::new)
 							<#if entity.immuneToFire>.fireImmune()</#if>
@@ -65,7 +66,7 @@ package ${package}.init;
 		</#if>
 	</#list>
 
-	<#if w.getGElementsOfType("specialentity")?size != 0>
+	<#if specialentities?size != 0>
 			public static final RegistryObject<EntityType<${JavaModName}Boat>> ${JavaModName?upper_case}_BOAT =
 				register("boat", EntityType.Builder.<${JavaModName}Boat>
 					of(${JavaModName}Boat::new, MobCategory.MISC).sized(1.375f, 0.5625f).clientTrackingRange(10));

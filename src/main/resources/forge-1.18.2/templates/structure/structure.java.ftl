@@ -35,6 +35,6 @@ public class ${name}Structure extends ${JavaModName}StructureBase {
 
     @Override
     public GenerationStep.Decoration step() {
-        return GenerationStep.Decoration.${generator.map(data.generationStep, "generationsteps")};
+        return GenerationStep.Decoration.${data.generationStep};
     }
 }

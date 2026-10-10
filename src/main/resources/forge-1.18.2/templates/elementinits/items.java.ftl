@@ -72,7 +72,7 @@ package ${package}.init;
 
         <#if tabEName != prevElement && itemsByName[tabEName]??>
             <#assign item = itemsByName[tabEName]>
-            <#assign currentTabs><@CreativeTabs item.creativeTabs/></#assign>
+            <#assign currentTabs><@getTab item.creativeTabs/></#assign>
 
             <#if currentTabs?trim == generator.map(tabType, "tabs")?trim>
                 <#if isCustom>
@@ -139,11 +139,11 @@ public class ${JavaModName}Items {
 				${item.getModElement().getRegistryNameUpper()}_SPAWN_EGG =
 					REGISTRY.register("${item.getModElement().getRegistryName()}_spawn_egg",
 						() -> new ForgeSpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
-						${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties().tab(<@CreativeTabs item.creativeTabs/>)));
+						${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties()<@addTab item.creativeTabs/>));
 			<#elseif item.getModElement().getTypeString() == "specialentity">
 				${item.getModElement().getRegistryNameUpper()} =
 					REGISTRY.register("${item.getModElement().getRegistryName()}",
-						() -> new ${JavaModName}BoatItem(${JavaModName}Boat.Type.${item.getModElement().getRegistryNameUpper()}, new Item.Properties().tab(<@CreativeTabs item.creativeTabs/>)));
+						() -> new ${JavaModName}BoatItem(${JavaModName}Boat.Type.${item.getModElement().getRegistryNameUpper()}, new Item.Properties()<@addTab item.creativeTabs/><#if item.rarity != "COMMON">.rarity(Rarity.${item.rarity})</#if>));
 			<#elseif item.getModElement().getTypeString() == "dimension" && item.hasIgniter()>
 				${item.getModElement().getRegistryNameUpper()} =
 					REGISTRY.register("${item.getModElement().getRegistryName()}", ${item.getModElement().getName()}Item::new);
@@ -156,17 +156,17 @@ public class ${JavaModName}Items {
 					<#assign hasDoubleBlocks = true>
 					${item.getModElement().getRegistryNameUpper()} =
 					doubleBlock<#if !customProp>Tab</#if>(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()},
-					<#if customProp><@blockItemProperties item/><#else><@CreativeTabs item.creativeTabs/></#if>);
+					<#if customProp><@blockItemProperties item/><#else><@getTab item.creativeTabs/></#if>);
 				<#elseif (item.getModElement().getTypeString() == "block") && ((item.blockBase! == "Sign") || (item.blockBase! == "HangingSign"))>
 					<#assign hasSigns = true>
 					${item.getModElement().getRegistryNameUpper()} =
 					signBlock<#if !customProp>Tab</#if>(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${JavaModName}Blocks.${item.getWallRegistryNameUpper()},
-					<#if customProp><@blockItemProperties item/><#else><@CreativeTabs item.creativeTabs/></#if>);
+					<#if customProp><@blockItemProperties item/><#else><@getTab item.creativeTabs/></#if>);
 				<#else>
 					<#assign hasBlocks = true>
 					${item.getModElement().getRegistryNameUpper()} =
 					block<#if !customProp>Tab</#if>(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()},
-					<#if customProp><@blockItemProperties item/><#else><@CreativeTabs item.creativeTabs/></#if>);
+					<#if customProp><@blockItemProperties item/><#else><@getTab item.creativeTabs/></#if>);
 				</#if>
 			<#else>
 				${item.getModElement().getRegistryNameUpper()} =
@@ -258,6 +258,6 @@ new Item.Properties()
 <#if block.immuneToFire>
 	.fireResistant()
 </#if>
-.tab(<@CreativeTabs block.creativeTabs/>)
+<@addTab block.creativeTabs/>
 </#macro>
 <#-- @formatter:on -->

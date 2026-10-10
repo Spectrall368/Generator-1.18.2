@@ -1,3 +1,4 @@
+_bypass_prefix: "#"
 BLOCK_ATTACH:
   - GameEvent.BLOCK_ATTACH
   - block_attach
